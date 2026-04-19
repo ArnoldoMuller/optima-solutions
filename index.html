@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Optima Trade Solutions | Medicina Regenerativa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1B3A6E;
+      --navy-mid: #234A90;
+      --navy-dark: #0F2347;
+      --gold: #C4922A;
+      --gold-light: #dba94a;
+      --gray-brand: #5A5E68;
+      --cream: #F9F5EE;
+      --cream-dark: #EDE8DE;
+      --white: #ffffff;
+      --text-dark: #1B3A6E;
+      --text-muted: #5A6A82;
+      --text-light: #8A9BB0;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background: var(--white); line-height: 1.6; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(15, 35, 71, 0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(196, 146, 42, 0.25);
+      padding: 0 2.5rem; height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo img { height: 48px; width: auto; object-fit: contain; filter: brightness(0) invert(1); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.72); text-decoration: none; font-size: 0.82rem; font-weight: 400; letter-spacing: 0.04em; transition: color 0.25s; }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-cta { background: var(--gold) !important; color: var(--white) !important; padding: 0.45rem 1.25rem !important; border-radius: 2px; font-weight: 500 !important; transition: background 0.25s !important; }
+    .nav-cta:hover { background: var(--gold-light) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(140deg, #0F2347 0%, #1B3A6E 45%, #234A90 100%);
+      display: flex; align-items: center; position: relative; overflow: hidden; padding-top: 72px;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 72% 48%, rgba(196,146,42,0.13) 0%, transparent 62%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(196,146,42,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(196,146,42,0.05) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    .hero-content {
+      position: relative; z-index: 2; max-width: 1120px; margin: 0 auto; padding: 5rem 2rem;
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(196,146,42,0.14); border: 1px solid rgba(196,146,42,0.35);
+      color: var(--gold-light); font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.22em; text-transform: uppercase; padding: 0.4rem 1rem; border-radius: 2px; margin-bottom: 1.5rem;
+    }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+    h1.hero-title { font-family: 'Cormorant Garamond', serif; font-size: 3.8rem; font-weight: 300; color: var(--white); line-height: 1.08; margin-bottom: 1.5rem; }
+    h1.hero-title em { font-style: italic; color: var(--gold-light); }
+    .hero-desc { color: rgba(255,255,255,0.62); font-size: 1rem; font-weight: 300; margin-bottom: 2.5rem; max-width: 430px; line-height: 1.85; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary { display: inline-block; background: var(--gold); color: var(--white); padding: 0.88rem 2rem; border-radius: 2px; text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.07em; transition: background 0.25s, transform 0.2s; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-outline { display: inline-block; border: 1px solid rgba(255,255,255,0.32); color: rgba(255,255,255,0.82); padding: 0.88rem 2rem; border-radius: 2px; text-decoration: none; font-size: 0.85rem; font-weight: 400; letter-spacing: 0.04em; transition: border-color 0.25s, color 0.25s; }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold-light); }
+    .hero-visual { display: flex; flex-direction: column; gap: 1rem; }
+    .hero-logo-card {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px; padding: 2rem; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+    .hero-logo-card img { width: 180px; max-width: 100%; filter: brightness(0) invert(1); }
+    .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+    .stat-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 1.1rem; text-align: center; transition: border-color 0.3s; }
+    .stat-card:hover { border-color: rgba(196,146,42,0.4); }
+    .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--gold-light); line-height: 1; }
+    .stat-label { font-size: 0.68rem; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; margin-top: 0.35rem; text-transform: uppercase; }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 5rem 2rem; }
+    .container { max-width: 1120px; margin: 0 auto; }
+    .section-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.7rem; display: flex; align-items: center; gap: 0.75rem; }
+    .section-label::before { content: ''; display: block; width: 22px; height: 1px; background: var(--gold); }
+    h2.section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 300; color: var(--navy); line-height: 1.12; margin-bottom: 1rem; }
+    h2.section-title em { font-style: italic; color: var(--gold); }
+    .section-desc { color: var(--text-muted); font-size: 0.97rem; font-weight: 300; max-width: 560px; line-height: 1.85; }
+
+    /* ── PRODUTOS ── */
+    .produtos { background: var(--cream); }
+    .produtos-intro { text-align: center; margin-bottom: 4rem; }
+    .produtos-intro .section-label { justify-content: center; }
+    .produtos-intro .section-label::before { display: none; }
+    .produtos-intro .section-desc { margin: 0 auto; }
+    .produtos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .produto-card { background: var(--white); border-radius: 4px; overflow: hidden; box-shadow: 0 2px 20px rgba(27,58,110,0.07); transition: box-shadow 0.3s, transform 0.3s; }
+    .produto-card:hover { box-shadow: 0 8px 40px rgba(27,58,110,0.13); transform: translateY(-4px); }
+    .produto-card-header { padding: 2.5rem 2rem 1.5rem; border-bottom: 1px solid var(--cream-dark); }
+    .produto-card-header.featured { background: linear-gradient(140deg, #0F2347 0%, #1B3A6E 100%); }
+    .produto-badge { display: inline-block; font-size: 0.63rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.3rem 0.75rem; border-radius: 2px; margin-bottom: 1rem; }
+    .produto-badge.gold { background: rgba(196,146,42,0.14); color: var(--gold); border: 1px solid rgba(196,146,42,0.3); }
+    .produto-badge.light { background: rgba(196,146,42,0.2); color: var(--gold-light); border: 1px solid rgba(196,146,42,0.4); }
+    .produto-card-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; margin-bottom: 0.5rem; }
+    .produto-card-header.featured h3 { color: var(--white); }
+    .produto-card-header p { font-size: 0.87rem; font-weight: 300; color: var(--text-muted); }
+    .produto-card-header.featured p { color: rgba(255,255,255,0.6); }
+    .produto-card-body { padding: 2rem; }
+    .produto-variantes { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.5rem; }
+    .variante { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; border: 1px solid var(--cream-dark); border-radius: 2px; background: var(--cream); }
+    .variante-nome { font-size: 0.88rem; font-weight: 500; color: var(--navy); }
+    .variante-vol { font-size: 0.76rem; color: var(--text-muted); }
+    .produto-indicacoes { margin-bottom: 1.5rem; }
+    .produto-indicacoes h4 { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.7rem; }
+    .indicacao-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .tag { font-size: 0.73rem; padding: 0.28rem 0.72rem; background: var(--cream); border: 1px solid var(--cream-dark); border-radius: 2px; color: var(--text-muted); }
+    .produto-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--gold); text-decoration: none; font-size: 0.81rem; font-weight: 500; letter-spacing: 0.05em; transition: gap 0.2s; }
+    .produto-link:hover { gap: 0.8rem; }
+
+    /* ── SERVIÇOS ── */
+    .servicos-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .servico-cards { display: flex; flex-direction: column; gap: 1.2rem; }
+    .servico-card { display: flex; gap: 1.2rem; align-items: flex-start; padding: 1.5rem; border: 1px solid var(--cream-dark); border-radius: 4px; transition: border-color 0.3s, box-shadow 0.3s; }
+    .servico-card:hover { border-color: var(--gold); box-shadow: 0 4px 20px rgba(196,146,42,0.08); }
+    .servico-icon { width: 48px; height: 48px; border-radius: 4px; background: linear-gradient(140deg, var(--navy-dark), var(--navy)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .servico-icon svg { width: 24px; height: 24px; fill: var(--gold); }
+    .servico-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; font-weight: 500; color: var(--navy); margin-bottom: 0.4rem; }
+    .servico-card p { font-size: 0.84rem; color: var(--text-muted); font-weight: 300; line-height: 1.7; }
+    .servicos-highlight { background: linear-gradient(140deg, #0F2347 0%, #1B3A6E 100%); border-radius: 4px; padding: 3rem; color: var(--white); }
+    .servicos-highlight h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; margin-bottom: 1rem; line-height: 1.2; }
+    .servicos-highlight p { font-size: 0.88rem; color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.8; margin-bottom: 2rem; }
+    .highlight-feature { display: flex; align-items: center; gap: 0.75rem; padding: 0.82rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .highlight-feature:last-child { border-bottom: none; }
+    .highlight-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+    .highlight-feature span { font-size: 0.84rem; color: rgba(255,255,255,0.8); }
+
+    /* ── OPTIMA VISIT ── */
+    .optima-visit { background: var(--cream); }
+    .optima-visit-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .app-mockup { background: linear-gradient(140deg, #0F2347 0%, #234A90 100%); border-radius: 10px; padding: 2.5rem 2rem; box-shadow: 0 20px 60px rgba(27,58,110,0.22); }
+    .app-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+    .app-logo-img { height: 44px; width: auto; filter: brightness(0) invert(1); }
+    .app-status { font-size: 0.68rem; color: var(--gold-light); letter-spacing: 0.1em; background: rgba(196,146,42,0.15); border: 1px solid rgba(196,146,42,0.3); padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .app-cards { display: flex; flex-direction: column; gap: 0.7rem; }
+    .app-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 0.95rem 1.2rem; display: flex; align-items: center; justify-content: space-between; }
+    .app-card-left { display: flex; flex-direction: column; gap: 0.22rem; }
+    .app-card-name { font-size: 0.84rem; color: rgba(255,255,255,0.9); font-weight: 500; }
+    .app-card-detail { font-size: 0.7rem; color: rgba(255,255,255,0.42); }
+    .app-card-badge { font-size: 0.63rem; padding: 0.2rem 0.6rem; border-radius: 2px; font-weight: 500; }
+    .badge-visit { background: rgba(196,146,42,0.25); color: var(--gold-light); }
+    .badge-retorno { background: rgba(30,100,200,0.25); color: #7ab3f5; }
+    .badge-agendado { background: rgba(20,160,100,0.25); color: #5de8a5; }
+    .app-stats { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-around; }
+    .app-stat-n { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--gold-light); text-align: center; }
+    .app-stat-l { font-size: 0.63rem; color: rgba(255,255,255,0.38); text-transform: uppercase; letter-spacing: 0.1em; text-align: center; }
+    .visit-features { }
+    .visit-features h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--navy); margin-bottom: 1rem; line-height: 1.2; }
+    .visit-features p { font-size: 0.9rem; color: var(--text-muted); font-weight: 300; line-height: 1.85; margin-bottom: 2rem; }
+    .feature-list { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem; }
+    .feature-item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.87rem; color: var(--text-dark); }
+    .feature-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(196,146,42,0.12); border: 1px solid rgba(196,146,42,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; color: var(--gold); }
+
+    /* ── ATUAÇÃO ── */
+    .atuacao { background: linear-gradient(140deg, #0F2347 0%, #1B3A6E 100%); }
+    .atuacao .section-label { color: var(--gold-light); }
+    .atuacao .section-label::before { background: var(--gold-light); }
+    .atuacao h2.section-title { color: var(--white); }
+    .atuacao h2.section-title em { color: var(--gold-light); }
+    .atuacao .section-desc { color: rgba(255,255,255,0.52); margin-bottom: 3rem; }
+    .estados-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .estado-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 2rem 1.5rem; text-align: center; transition: border-color 0.3s, background 0.3s; }
+    .estado-card:hover { border-color: rgba(196,146,42,0.4); background: rgba(196,146,42,0.05); }
+    .estado-sigla { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: var(--gold-light); line-height: 1; margin-bottom: 0.5rem; }
+    .estado-nome { font-size: 0.76rem; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; }
+    .especialidades { margin-top: 3rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .esp-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.32); margin-bottom: 1.5rem; }
+    .esp-tags { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .esp-tag { padding: 0.48rem 1.2rem; border: 1px solid rgba(255,255,255,0.11); border-radius: 2px; font-size: 0.81rem; color: rgba(255,255,255,0.68); transition: border-color 0.25s, color 0.25s; }
+    .esp-tag:hover { border-color: var(--gold); color: var(--gold-light); }
+    .esp-tag.featured { border-color: rgba(196,146,42,0.38); color: var(--gold-light); }
+
+    /* ── SOBRE ── */
+    .sobre-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .sobre-valores { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .valor-card { padding: 1.5rem; border: 1px solid var(--cream-dark); border-radius: 4px; border-left: 3px solid var(--gold); }
+    .valor-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 500; color: var(--navy); margin-bottom: 0.4rem; }
+    .valor-card p { font-size: 0.79rem; color: var(--text-muted); font-weight: 300; line-height: 1.7; }
+
+    /* ── CONTATO ── */
+    .contato { background: var(--cream); }
+    .contato-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .contato-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--navy); margin-bottom: 1rem; }
+    .contato-info p { font-size: 0.9rem; color: var(--text-muted); font-weight: 300; line-height: 1.85; margin-bottom: 2rem; }
+    .contato-channels { display: flex; flex-direction: column; gap: 1rem; }
+    .channel { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--white); border-radius: 4px; border: 1px solid var(--cream-dark); text-decoration: none; transition: border-color 0.25s; }
+    .channel:hover { border-color: var(--gold); }
+    .channel-icon { width: 40px; height: 40px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .channel-icon.whatsapp { background: rgba(37,211,102,0.1); }
+    .channel-icon.email { background: rgba(196,146,42,0.1); }
+    .channel-label { font-size: 0.7rem; color: var(--text-light); letter-spacing: 0.1em; text-transform: uppercase; }
+    .channel-value { font-size: 0.9rem; font-weight: 500; color: var(--navy); }
+    .contato-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.38rem; }
+    .form-group label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.75rem 1rem; border: 1px solid var(--cream-dark); border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 0.87rem; color: var(--text-dark); background: var(--white); outline: none; transition: border-color 0.25s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--navy); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-submit { background: var(--navy); color: var(--white); border: none; padding: 1rem 2rem; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 0.87rem; font-weight: 500; letter-spacing: 0.08em; cursor: pointer; transition: background 0.25s; }
+    .form-submit:hover { background: var(--navy-mid); }
+
+    /* ── FOOTER ── */
+    footer { background: #0F2347; padding: 2.5rem 2rem; border-top: 1px solid rgba(196,146,42,0.2); }
+    .footer-inner { max-width: 1120px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo img { height: 40px; width: auto; filter: brightness(0) invert(1); opacity: 0.85; }
+    .footer-copy { font-size: 0.77rem; color: rgba(255,255,255,0.28); }
+    .footer-partner { font-size: 0.77rem; color: rgba(255,255,255,0.32); }
+    .footer-partner span { color: var(--gold); }
+
+    /* ── WHATSAPP ── */
+    .whatsapp-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 200; background: #25D366; color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 20px rgba(37,211,102,0.4); transition: transform 0.25s; }
+    .whatsapp-float:hover { transform: scale(1.08); }
+    .whatsapp-float svg { width: 28px; height: 28px; fill: white; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      h1.hero-title { font-size: 2.5rem; }
+      .hero-content { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem; }
+      .produtos-grid, .servicos-inner, .optima-visit-inner, .sobre-inner, .contato-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .estados-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+      .nav-links { display: none; }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-badge { animation: fadeUp 0.6s ease both; }
+    h1.hero-title { animation: fadeUp 0.6s 0.1s ease both; }
+    .hero-desc { animation: fadeUp 0.6s 0.2s ease both; }
+    .hero-actions { animation: fadeUp 0.6s 0.3s ease both; }
+    .hero-visual { animation: fadeUp 0.6s 0.4s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="Logomarca.jpg" alt="Optima Trade Solutions">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#produtos">Produtos</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#optima-visit">Optima Visit</a></li>
+    <li><a href="#atuacao">Atuação</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#contato" class="nav-cta">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-badge">Medicina Regenerativa · Nordeste</div>
+      <h1 class="hero-title">Inovação que<br><em>transforma</em><br>vidas</h1>
+      <p class="hero-desc">Representação especializada em produtos para medicina regenerativa e procedimentos minimamente invasivos, conectando os melhores médicos às tecnologias mais avançadas do mercado.</p>
+      <div class="hero-actions">
+        <a href="#produtos" class="btn-primary">Conheça os Produtos</a>
+        <a href="#contato" class="btn-outline">Fale Conosco</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-logo-card">
+        <img src="Logomarca.jpg" alt="Optima Trade Solutions">
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Estados Atendidos</div></div>
+        <div class="stat-card"><div class="stat-number">2</div><div class="stat-label">Linhas de Produto</div></div>
+        <div class="stat-card"><div class="stat-number">360°</div><div class="stat-label">Suporte ao Médico</div></div>
+        <div class="stat-card"><div class="stat-number">NE</div><div class="stat-label">Foco Nordeste</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUTOS -->
+<section class="produtos" id="produtos">
+  <div class="container">
+    <div class="produtos-intro">
+      <div class="section-label">Portfólio APtissen</div>
+      <h2 class="section-title">Soluções em <em>Medicina Regenerativa</em></h2>
+      <p class="section-desc">Produtos de referência internacional para procedimentos de alta performance, com evidência clínica comprovada e suporte técnico especializado.</p>
+    </div>
+    <div class="produtos-grid">
+      <div class="produto-card">
+        <div class="produto-card-header featured">
+          <div class="produto-badge light">★ Carro-Chefe</div>
+          <h3>Synolis VA</h3>
+          <p>Viscossuplementação intra-articular com ácido hialurônico e sorbitol</p>
+        </div>
+        <div class="produto-card-body">
+          <div class="produto-variantes">
+            <div class="variante"><span class="variante-nome">Synolis VA 80/160</span><span class="variante-vol">4 ml</span></div>
+            <div class="variante"><span class="variante-nome">Synolis VA 40/80</span><span class="variante-vol">2 ml</span></div>
+          </div>
+          <div class="produto-indicacoes">
+            <h4>Especialidades</h4>
+            <div class="indicacao-tags">
+              <span class="tag">Ortopedia</span>
+              <span class="tag">Cirurgia do Joelho</span>
+              <span class="tag">Medicina do Esporte</span>
+              <span class="tag">Reumatologia</span>
+            </div>
+          </div>
+          <a href="#contato" class="produto-link">Solicitar informações →</a>
+        </div>
+      </div>
+      <div class="produto-card">
+        <div class="produto-card-header">
+          <div class="produto-badge gold">Medicina Regenerativa</div>
+          <h3>Tropocells PRP</h3>
+          <p>Sistema para concentração de Plasma Rico em Plaquetas de alta eficiência</p>
+        </div>
+        <div class="produto-card-body">
+          <div class="produto-variantes">
+            <div class="variante"><span class="variante-nome">Tropocells PRP</span><span class="variante-vol">22 ml</span></div>
+            <div class="variante"><span class="variante-nome">Tropocells PRP</span><span class="variante-vol">11 ml</span></div>
+          </div>
+          <div class="produto-indicacoes">
+            <h4>Aplicações</h4>
+            <div class="indicacao-tags">
+              <span class="tag">Ortopedia</span>
+              <span class="tag">Medicina Regenerativa</span>
+              <span class="tag">Medicina do Esporte</span>
+            </div>
+          </div>
+          <a href="#contato" class="produto-link">Solicitar informações →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos">
+  <div class="container">
+    <div class="servicos-inner">
+      <div>
+        <div class="section-label">Diferencial Exclusivo</div>
+        <h2 class="section-title">Suporte <em>completo</em> ao procedimento</h2>
+        <p class="section-desc" style="margin-bottom:2.5rem;">Não entregamos apenas o produto. Oferecemos uma solução completa para que o médico possa realizar o procedimento com toda a estrutura necessária.</p>
+        <div class="servico-cards">
+          <div class="servico-card">
+            <div class="servico-icon">
+              <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+            </div>
+            <div>
+              <h4>Locação de Centrífuga</h4>
+              <p>Disponibilizamos centrífugas para processamento de gordura e PRP diretamente no consultório ou clínica do médico, sem necessidade de investimento em equipamento.</p>
+            </div>
+          </div>
+          <div class="servico-card">
+            <div class="servico-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+            </div>
+            <div>
+              <h4>Enfermeira Especializada</h4>
+              <p>Fornecemos profissional de enfermagem treinada para auxiliar nos procedimentos de PRP e processamento de gordura, garantindo segurança e eficiência em cada procedimento.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="servicos-highlight">
+        <h3>O médico foca no que importa: <em style="color:var(--gold-light);">o paciente.</em></h3>
+        <p>Nossa estrutura de suporte elimina a barreira operacional, permitindo que o especialista realize procedimentos avançados sem preocupações logísticas.</p>
+        <div class="highlight-feature"><div class="highlight-dot"></div><span>Sem investimento em equipamentos</span></div>
+        <div class="highlight-feature"><div class="highlight-dot"></div><span>Profissional capacitado no local</span></div>
+        <div class="highlight-feature"><div class="highlight-dot"></div><span>Procedimentos de PRP e lipofilling</span></div>
+        <div class="highlight-feature"><div class="highlight-dot"></div><span>Atendimento em RN, CE, PI e MA</span></div>
+        <div class="highlight-feature"><div class="highlight-dot"></div><span>Agendamento flexível e ágil</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPTIMA VISIT -->
+<section class="optima-visit" id="optima-visit">
+  <div class="container">
+    <div class="optima-visit-inner">
+      <div class="app-mockup">
+        <div class="app-topbar">
+          <img src="Optima_Visit.png" alt="Optima Visit" class="app-logo-img">
+          <div class="app-status">● Ativo</div>
+        </div>
+        <div style="font-size:0.68rem;color:rgba(255,255,255,0.32);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;">Visitas de Hoje</div>
+        <div class="app-cards">
+          <div class="app-card">
+            <div class="app-card-left"><span class="app-card-name">Dr. Carlos Menezes</span><span class="app-card-detail">Ortopedia · Clínica Fortaleza · 09:00</span></div>
+            <span class="app-card-badge badge-visit">Visita</span>
+          </div>
+          <div class="app-card">
+            <div class="app-card-left"><span class="app-card-name">Dra. Ana Rodrigues</span><span class="app-card-detail">Med. Esporte · Hospital São Lucas · 11:30</span></div>
+            <span class="app-card-badge badge-retorno">Retorno</span>
+          </div>
+          <div class="app-card">
+            <div class="app-card-left"><span class="app-card-name">Dr. Paulo Alves</span><span class="app-card-detail">Ortopedia · Clínica Prime · 14:00</span></div>
+            <span class="app-card-badge badge-agendado">Agendado</span>
+          </div>
+        </div>
+        <div class="app-stats">
+          <div><div class="app-stat-n">12</div><div class="app-stat-l">Visitas/mês</div></div>
+          <div><div class="app-stat-n">8</div><div class="app-stat-l">Médicos ativos</div></div>
+          <div><div class="app-stat-n">4</div><div class="app-stat-l">Estados</div></div>
+        </div>
+      </div>
+      <div class="visit-features">
+        <div class="section-label">Produto Digital</div>
+        <h3>Gestão inteligente de <em style="color:var(--gold);">visitas médicas</em></h3>
+        <p>Solução desenvolvida para representantes comerciais da área médica organizarem e gerenciarem toda a carteira de médicos e visitas de forma profissional e eficiente.</p>
+        <div class="feature-list">
+          <div class="feature-item"><div class="feature-check">✓</div>Agenda de visitas por médico e especialidade</div>
+          <div class="feature-item"><div class="feature-check">✓</div>Histórico completo de interações com cada médico</div>
+          <div class="feature-item"><div class="feature-check">✓</div>Controle de produtos apresentados em cada visita</div>
+          <div class="feature-item"><div class="feature-check">✓</div>Dashboard de desempenho e cobertura por região</div>
+          <div class="feature-item"><div class="feature-check">✓</div>Gestão de clínicas, hospitais e consultórios</div>
+          <div class="feature-item"><div class="feature-check">✓</div>Relatórios exportáveis para análise comercial</div>
+        </div>
+        <a href="#contato" class="btn-primary">Saiba mais sobre o Optima Visit</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ATUAÇÃO -->
+<section class="atuacao" id="atuacao">
+  <div class="container">
+    <div class="section-label">Área de Atuação</div>
+    <h2 class="section-title">Nordeste como <em>prioridade</em></h2>
+    <p class="section-desc">Cobertura especializada nos principais centros médicos dos estados do Nordeste brasileiro, com atendimento personalizado e presença constante.</p>
+    <div class="estados-grid">
+      <div class="estado-card"><div class="estado-sigla">CE</div><div class="estado-nome">Ceará</div></div>
+      <div class="estado-card"><div class="estado-sigla">RN</div><div class="estado-nome">Rio Grande do Norte</div></div>
+      <div class="estado-card"><div class="estado-sigla">PI</div><div class="estado-nome">Piauí</div></div>
+      <div class="estado-card"><div class="estado-sigla">MA</div><div class="estado-nome">Maranhão</div></div>
+    </div>
+    <div class="especialidades">
+      <div class="esp-label">Especialidades Atendidas</div>
+      <div class="esp-tags">
+        <span class="esp-tag featured">Ortopedia</span>
+        <span class="esp-tag featured">Cirurgia do Joelho</span>
+        <span class="esp-tag featured">Medicina do Esporte</span>
+        <span class="esp-tag">Reumatologia</span>
+        <span class="esp-tag">Clínicas Privadas</span>
+        <span class="esp-tag">Hospitais</span>
+        <span class="esp-tag">Planos de Saúde</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="container">
+    <div class="sobre-inner">
+      <div>
+        <div class="section-label">Sobre a Empresa</div>
+        <h2 class="section-title">Representação com <em>propósito</em></h2>
+        <p style="color:var(--text-muted);font-size:.95rem;font-weight:300;line-height:1.9;margin-bottom:1.5rem;">A Optima Trade Solutions nasceu com a missão de ser mais do que uma representante comercial. Somos um elo estratégico entre tecnologia médica de ponta e os especialistas que transformam a vida dos pacientes no Nordeste.</p>
+        <p style="color:var(--text-muted);font-size:.95rem;font-weight:300;line-height:1.9;">Com foco em medicina regenerativa e viscossuplementação, atuamos com profundo conhecimento técnico dos produtos que representamos, oferecendo suporte consultivo e operacional diferenciado a cada médico parceiro.</p>
+      </div>
+      <div class="sobre-valores">
+        <div class="valor-card"><h4>Especialização</h4><p>Conhecimento técnico profundo sobre cada produto e indicação clínica.</p></div>
+        <div class="valor-card"><h4>Presença</h4><p>Atendimento presencial e constante nos principais centros médicos.</p></div>
+        <div class="valor-card"><h4>Suporte</h4><p>Estrutura completa para que o procedimento aconteça com excelência.</p></div>
+        <div class="valor-card"><h4>Inovação</h4><p>Tecnologia própria para gestão de visitas com o Optima Visit.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="contato" id="contato">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:3.5rem;">
+      <div class="section-label" style="justify-content:center;"><span style="display:none">&nbsp;</span>Fale Conosco</div>
+      <h2 class="section-title">Vamos <em>conversar?</em></h2>
+      <p class="section-desc" style="margin:0 auto;">Entre em contato para conhecer nossos produtos, solicitar uma visita ou obter mais informações sobre o Optima Visit.</p>
+    </div>
+    <div class="contato-inner">
+      <div class="contato-info">
+        <h3>Canais de Atendimento</h3>
+        <p>Prefere uma conversa mais rápida? Entre em contato diretamente pelo WhatsApp. Nossa resposta é sempre ágil e personalizada.</p>
+        <div class="contato-channels">
+          <a href="https://wa.me/55XXXXXXXXXXX" class="channel" target="_blank">
+            <div class="channel-icon whatsapp">💬</div>
+            <div><div class="channel-label">WhatsApp</div><div class="channel-value">(XX) 9 XXXX-XXXX</div></div>
+          </a>
+          <a href="mailto:contato@optimasolutions.com.br" class="channel">
+            <div class="channel-icon email">✉</div>
+            <div><div class="channel-label">E-mail</div><div class="channel-value">contato@optimasolutions.com.br</div></div>
+          </a>
+        </div>
+      </div>
+      <form class="contato-form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group"><label>Nome</label><input type="text" placeholder="Dr. João Silva"></div>
+          <div class="form-group"><label>Especialidade</label><input type="text" placeholder="Ortopedista"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>WhatsApp</label><input type="tel" placeholder="(85) 9 9999-9999"></div>
+          <div class="form-group"><label>Cidade / Estado</label><input type="text" placeholder="Fortaleza, CE"></div>
+        </div>
+        <div class="form-group">
+          <label>Interesse</label>
+          <select>
+            <option value="">Selecione...</option>
+            <option>Synolis VA — Viscossuplementação</option>
+            <option>Tropocells PRP</option>
+            <option>Locação de Centrífuga + Enfermeira</option>
+            <option>Optima Visit — App de Gestão</option>
+            <option>Quero conhecer todos os produtos</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Mensagem</label><textarea placeholder="Como posso ajudar você?"></textarea></div>
+        <button type="submit" class="form-submit">Enviar Mensagem</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><img src="Logomarca.jpg" alt="Optima Trade Solutions"></div>
+    <div class="footer-copy">© 2025 Optima Trade Solutions. Todos os direitos reservados.</div>
+    <div class="footer-partner">Parceiro oficial <span>APtissen</span></div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/55XXXXXXXXXXX" class="whatsapp-float" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+</body>
+</html>
