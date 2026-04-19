@@ -508,20 +508,28 @@
             <div class="channel-icon email">✉</div>
             <div><div class="channel-label">E-mail</div><div class="channel-value">arnoldo.muller@outlook.com</div></div>
           </a>
+          <a href="https://www.instagram.com/optimasolutionsltda/" class="channel" target="_blank">
+            <div class="channel-icon" style="background:rgba(196,42,100,0.1);">📸</div>
+            <div><div class="channel-label">Instagram</div><div class="channel-value">@optimasolutionsltda</div></div>
+          </a>
+          <a href="https://open.spotify.com/show/3gkIdEhN6zuhBLGgPiHcgE" class="channel" target="_blank">
+            <div class="channel-icon" style="background:rgba(30,215,96,0.1);">🎙</div>
+            <div><div class="channel-label">Podcast — Spotify</div><div class="channel-value">Optima Solutions</div></div>
+          </a>
         </div>
       </div>
-      <form class="contato-form" onsubmit="return false;">
+      <form class="contato-form" action="https://formspree.io/f/xzdygjwj" method="POST">
         <div class="form-row">
-          <div class="form-group"><label>Nome</label><input type="text" placeholder="Dr. João Silva"></div>
-          <div class="form-group"><label>Especialidade</label><input type="text" placeholder="Ortopedista"></div>
+          <div class="form-group"><label>Nome</label><input type="text" name="nome" placeholder="Dr. João Silva"></div>
+          <div class="form-group"><label>Especialidade</label><input type="text" name="especialidade" placeholder="Ortopedista"></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>WhatsApp</label><input type="tel" placeholder="(85) 9 9999-9999"></div>
-          <div class="form-group"><label>Cidade / Estado</label><input type="text" placeholder="Fortaleza, CE"></div>
+          <div class="form-group"><label>WhatsApp</label><input type="tel" name="whatsapp" placeholder="(85) 9 9999-9999"></div>
+          <div class="form-group"><label>Cidade / Estado</label><input type="text" name="cidade" placeholder="Fortaleza, CE"></div>
         </div>
         <div class="form-group">
           <label>Interesse</label>
-          <select>
+          <select name="interesse">
             <option value="">Selecione...</option>
             <option>Synolis VA — Viscossuplementação</option>
             <option>Tropocells PRP</option>
@@ -530,7 +538,7 @@
             <option>Quero conhecer todos os produtos</option>
           </select>
         </div>
-        <div class="form-group"><label>Mensagem</label><textarea placeholder="Como posso ajudar você?"></textarea></div>
+        <div class="form-group"><label>Mensagem</label><textarea name="mensagem" placeholder="Como posso ajudar você?"></textarea></div>
         <button type="submit" class="form-submit">Enviar Mensagem</button>
       </form>
     </div>
