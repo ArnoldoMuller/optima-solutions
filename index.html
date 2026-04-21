@@ -282,20 +282,96 @@ footer img{height:34px;width:auto;object-fit:contain;filter:brightness(0) invert
 .rv{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease;}
 .rv.on{opacity:1;transform:translateY(0);}
 
-/* RESPONSIVE */
+/* HAMBURGER */
+.nav-toggle{
+  display:none;flex-direction:column;gap:5px;
+  cursor:pointer;padding:6px;background:none;border:none;
+}
+.nav-toggle span{
+  display:block;width:24px;height:2px;
+  background:rgba(255,255,255,.7);border-radius:2px;
+  transition:transform .3s,opacity .3s;
+}
+.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-toggle.open span:nth-child(2){opacity:0;}
+.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* RESPONSIVE — tablet */
 @media(max-width:960px){
-  nav{padding:0 20px;}
-  .nav-links{display:none;}
+  nav{padding:0 20px;height:64px;}
+  .nav-toggle{display:flex;}
+  .nav-links{
+    display:none;position:fixed;top:64px;left:0;right:0;
+    background:rgba(18,32,64,.98);backdrop-filter:blur(16px);
+    flex-direction:column;padding:20px 28px 28px;gap:0;
+    border-bottom:1px solid rgba(200,168,75,.15);z-index:99;
+  }
+  .nav-links.open{display:flex;}
+  .nav-links a{
+    padding:14px 0;font-size:.82rem;
+    border-bottom:1px solid rgba(255,255,255,.06);
+    letter-spacing:.08em;
+  }
+  .nav-links a:last-child{border-bottom:none;margin-top:14px;text-align:center;padding:12px 0!important;border-radius:3px;}
+
   .hero{grid-template-columns:1fr;}
-  .hero-left{padding:112px 22px 60px;}
+  .hero-left{padding:100px 22px 60px;}
   .hero-right{display:none;}
+  .hero h1{font-size:clamp(2rem,8vw,3rem);}
+  .hero-sub{font-size:.9rem;}
+  .pill-row{gap:8px;}
+  .pill{font-size:.72rem;padding:6px 12px;}
+  .cta-row{flex-direction:column;gap:12px;}
+  .btn-p,.btn-s{justify-content:center;text-align:center;}
+
   .container{padding:0 20px;}
+  .section-pad{padding:72px 0;}
+
   .clinical-wrap,.auth-grid,.territory-wrap{grid-template-columns:1fr;gap:36px;}
-  .prod-grid,.diff-grid,.territory-cards{grid-template-columns:1fr;}
+  .numbers-box{padding:32px 28px;}
+  .stat-n{font-size:2.4rem;}
+
+  .prod-grid{grid-template-columns:1fr;}
+  .diff-grid{grid-template-columns:1fr 1fr;}
+  .territory-cards{grid-template-columns:1fr 1fr;}
   .prod-body{grid-template-columns:1fr;}
   .prod-img{display:none;}
+
+  .cta-wrap{padding:72px 20px;}
   .contact-channels{grid-template-columns:1fr 1fr;}
-  footer{flex-direction:column;gap:14px;text-align:center;}
+
+  footer{flex-direction:column;gap:14px;text-align:center;padding:28px 20px;}
+}
+
+/* RESPONSIVE — mobile */
+@media(max-width:480px){
+  .hero-left{padding:88px 18px 52px;}
+  .hero h1{font-size:1.9rem;line-height:1.12;}
+  .hero-sub{font-size:.85rem;}
+  .kicker{font-size:.65rem;}
+  .cta-row .btn-p,.cta-row .btn-s{font-size:.82rem;padding:13px 20px;}
+
+  .section-pad{padding:56px 0;}
+  .container{padding:0 16px;}
+
+  .diff-grid{grid-template-columns:1fr;}
+  .territory-cards{grid-template-columns:1fr;}
+  .contact-channels{grid-template-columns:1fr;}
+
+  .numbers-box{padding:24px 18px;}
+  .stat-n{font-size:2.1rem;}
+
+  .s-title{font-size:1.6rem;}
+  .prod-head{padding:24px 22px 20px;}
+  .prod-body{padding:24px 22px;}
+  .prod-name{font-size:1.8rem;}
+
+  .territory-cta{padding:24px 18px;}
+  .cta-wrap{padding:56px 16px;}
+  .cta-wrap .s-title{font-size:1.5rem;}
+
+  footer{padding:24px 16px;}
+  .f-copy{font-size:.68rem;}
 }
 </style>
 </head>
@@ -313,6 +389,9 @@ footer img{height:34px;width:auto;object-fit:contain;filter:brightness(0) invert
     <a href="#contato">Contato</a>
     <a class="nav-cta" href="https://wa.me/5585933008206?text=Olá%2C+sou+médico+e+gostaria+de+entender+melhor+as+opções+terapêuticas+com+Synolis+e+Tropocells.">Falar com especialista</a>
   </div>
+  <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -538,10 +617,6 @@ footer img{height:34px;width:auto;object-fit:contain;filter:brightness(0) invert
           <div class="quote-t">"Os meus pacientes com artrose têm respondido muito bem à viscosuplementação com Synolis. O suporte técnico da equipe faz toda a diferença na hora de indicar o produto."</div>
           <div class="quote-src">— Dr. Roberto Welton · CRM/CE 5267 · Ortopedista, Fortaleza-CE</div>
         </div>
-        <div class="ph-box rv">
-          <strong>📹 Espaço para depoimentos em vídeo</strong>
-          Adicione relatos reais de médicos, casos clínicos documentados e especialidades atendidas.
-        </div>
       </div>
     </div>
   </div>
@@ -670,6 +745,21 @@ footer img{height:34px;width:auto;object-fit:contain;filter:brightness(0) invert
 <script>
   const io = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:0.1});
   document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  const toggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  toggle.addEventListener('click', () => {
+    const open = toggle.classList.toggle('open');
+    navLinks.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      toggle.classList.remove('open');
+      navLinks.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
 </script>
 </body>
 </html>
