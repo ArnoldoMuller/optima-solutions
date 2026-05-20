@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Área Restrita — Optima Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --navy:   #1C3461;
+  --navy-d: #122040;
+  --navy-m: #24416E;
+  --gold:   #C8A84B;
+  --gold-l: #D9BC72;
+  --cream:  #F5F0E6;
+  --text:   #1A2B3C;
+  --muted:  #5C6E80;
+  --line:   #D8D0C4;
+  --serif:  'Cormorant Garamond', Georgia, serif;
+  --sans:   'Inter', system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--cream);color:var(--text);min-height:100vh;}
+
+nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:64px;
+  background:rgba(18,32,64,.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(200,168,75,.15);
+}
+.nav-brand{
+  font-family:var(--serif);font-size:1.1rem;font-weight:600;
+  color:#fff;letter-spacing:.02em;
+}
+.nav-right{display:flex;align-items:center;gap:24px;}
+.nav-user{font-size:.76rem;color:rgba(255,255,255,.5);letter-spacing:.04em;}
+.btn-logout{
+  background:transparent;border:1px solid rgba(200,168,75,.4);color:var(--gold-l);
+  border-radius:3px;padding:7px 16px;font-size:.72rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);
+  transition:all .2s;
+}
+.btn-logout:hover{background:rgba(200,168,75,.1);}
+
+main{max-width:960px;margin:0 auto;padding:56px 24px;}
+.page-title{
+  font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--navy-d);
+  margin-bottom:6px;
+}
+.page-sub{font-size:.82rem;color:var(--muted);margin-bottom:40px;letter-spacing:.04em;}
+.kicker{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.68rem;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:14px;
+}
+.kicker::before{content:'';width:22px;height:1px;background:var(--gold);}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+.tool-card{
+  background:#fff;border:1px solid var(--line);border-radius:5px;
+  padding:28px;text-decoration:none;color:var(--text);
+  transition:box-shadow .2s,border-color .2s,transform .15s;
+  display:flex;flex-direction:column;gap:10px;
+}
+.tool-card:hover{
+  box-shadow:0 8px 32px rgba(28,52,97,.12);
+  border-color:rgba(200,168,75,.4);transform:translateY(-2px);
+}
+.tool-icon{
+  width:42px;height:42px;border-radius:4px;
+  background:rgba(28,52,97,.07);display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;margin-bottom:4px;
+}
+.tool-name{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--navy-d);}
+.tool-desc{font-size:.78rem;color:var(--muted);line-height:1.5;}
+.tool-arrow{
+  font-size:.8rem;color:var(--gold);font-weight:600;letter-spacing:.06em;
+  margin-top:auto;padding-top:12px;
+}
+</style>
+</head>
+<body>
+<nav>
+  <span class="nav-brand">Optima Solutions</span>
+  <div class="nav-right">
+    <span class="nav-user" id="userEmail"></span>
+    <button class="btn-logout" id="btnLogout">Sair</button>
+  </div>
+</nav>
+
+<main>
+  <div class="kicker">Área Restrita</div>
+  <h1 class="page-title">Ferramentas Clínicas</h1>
+  <p class="page-sub">Acesso exclusivo para médicos credenciados pela Optima Solutions.</p>
+
+  <div class="grid">
+    <a class="tool-card" href="protocolo.html">
+      <div class="tool-icon">🧬</div>
+      <div class="tool-name">Calculadora de Protocolo PRP</div>
+      <div class="tool-desc">Defina volumes, concentrações e parâmetros do protocolo Tropocells PRP para cada paciente.</div>
+      <div class="tool-arrow">Acessar →</div>
+    </a>
+    <a class="tool-card" href="precificacao.html">
+      <div class="tool-icon">💰</div>
+      <div class="tool-name">Precificação PRP</div>
+      <div class="tool-desc">Calcule o custo por sessão, margem e preço sugerido para os procedimentos PRP.</div>
+      <div class="tool-arrow">Acessar →</div>
+    </a>
+    <a class="tool-card" href="lipocube.html">
+      <div class="tool-icon">⚗️</div>
+      <div class="tool-name">Simulador Lipocube</div>
+      <div class="tool-desc">Simule resultados e dosagens para procedimentos com o Lipocube.</div>
+      <div class="tool-arrow">Acessar →</div>
+    </a>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL = 'https://gbgfqjuazcwqjgwgqjaw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_F5NWBNz5bKyfeJr7RaOWAA_PCI6qmAb';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.replace('login.html'); return; }
+  document.getElementById('userEmail').textContent = session.user.email;
+})();
+
+document.getElementById('btnLogout').addEventListener('click', async () => {
+  await sb.auth.signOut();
+  window.location.replace('login.html');
+});
+</script>
+</body>
+</html>

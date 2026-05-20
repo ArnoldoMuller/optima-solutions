@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administração — Optima Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --navy:   #1C3461;
+  --navy-d: #122040;
+  --navy-m: #24416E;
+  --gold:   #C8A84B;
+  --gold-l: #D9BC72;
+  --cream:  #F5F0E6;
+  --text:   #1A2B3C;
+  --muted:  #5C6E80;
+  --line:   #D8D0C4;
+  --red:    #c0392b;
+  --green:  #1a7a54;
+  --serif:  'Cormorant Garamond', Georgia, serif;
+  --sans:   'Inter', system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:#f0f2f5;color:var(--text);min-height:100vh;}
+
+nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:64px;
+  background:rgba(18,32,64,.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(200,168,75,.15);
+}
+.nav-brand{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:#fff;letter-spacing:.02em;}
+.nav-badge{
+  font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  background:var(--gold);color:var(--navy-d);border-radius:2px;padding:2px 7px;margin-left:10px;
+}
+.nav-right{display:flex;align-items:center;gap:24px;}
+.nav-user{font-size:.76rem;color:rgba(255,255,255,.5);letter-spacing:.04em;}
+.btn-logout{
+  background:transparent;border:1px solid rgba(200,168,75,.4);color:var(--gold-l);
+  border-radius:3px;padding:7px 16px;font-size:.72rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);
+  transition:all .2s;
+}
+.btn-logout:hover{background:rgba(200,168,75,.1);}
+
+main{max-width:1080px;margin:0 auto;padding:48px 24px;}
+.page-header{margin-bottom:36px;}
+.kicker{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.68rem;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:12px;
+}
+.kicker::before{content:'';width:22px;height:1px;background:var(--gold);}
+.page-title{font-family:var(--serif);font-size:1.9rem;font-weight:700;color:var(--navy-d);}
+
+.section-title{
+  font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;padding-bottom:8px;
+  border-bottom:1px solid var(--line);
+}
+
+/* Invite form */
+.invite-card{background:#fff;border:1px solid var(--line);border-radius:5px;padding:28px;margin-bottom:32px;}
+.invite-row{display:flex;gap:12px;align-items:flex-end;}
+.field{flex:1;}
+label{
+  display:block;font-size:.7rem;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:6px;
+}
+input[type=email]{
+  width:100%;border:1px solid var(--line);border-radius:4px;
+  padding:10px 13px;font-size:.86rem;color:var(--text);font-family:var(--sans);
+  outline:none;transition:border-color .2s;background:#fafafa;
+}
+input[type=email]:focus{border-color:var(--gold);background:#fff;}
+.btn-invite{
+  background:var(--navy);color:#fff;border:none;border-radius:4px;
+  padding:10px 22px;font-size:.78rem;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;cursor:pointer;font-family:var(--sans);
+  white-space:nowrap;transition:background .2s;
+}
+.btn-invite:hover{background:var(--navy-m);}
+.btn-invite:disabled{opacity:.55;cursor:not-allowed;}
+.msg{
+  margin-top:12px;padding:9px 13px;border-radius:4px;
+  font-size:.78rem;display:none;
+}
+.msg.error{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.25);color:var(--red);}
+.msg.success{background:rgba(26,122,84,.1);border:1px solid rgba(26,122,84,.25);color:var(--green);}
+
+/* Users table */
+.users-card{background:#fff;border:1px solid var(--line);border-radius:5px;padding:28px;}
+table{width:100%;border-collapse:collapse;}
+th{
+  font-size:.67rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);text-align:left;padding:0 0 12px;border-bottom:1px solid var(--line);
+}
+td{padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:.82rem;color:var(--text);}
+tr:last-child td{border-bottom:none;}
+.badge{
+  display:inline-block;font-size:.62rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;padding:2px 8px;border-radius:2px;
+}
+.badge-active{background:rgba(26,122,84,.12);color:var(--green);}
+.badge-pending{background:rgba(184,122,0,.12);color:#8a5800;}
+.empty{font-size:.82rem;color:var(--muted);padding:24px 0;text-align:center;}
+.loading{font-size:.82rem;color:var(--muted);padding:24px 0;text-align:center;}
+</style>
+</head>
+<body>
+<nav>
+  <span class="nav-brand">Optima Solutions <span class="nav-badge">Admin</span></span>
+  <div class="nav-right">
+    <span class="nav-user" id="userEmail"></span>
+    <button class="btn-logout" id="btnLogout">Sair</button>
+  </div>
+</nav>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">Painel de Administração</div>
+    <h1 class="page-title">Gestão de Acesso</h1>
+  </div>
+
+  <div class="invite-card">
+    <div class="section-title">Convidar novo médico</div>
+    <div class="invite-row">
+      <div class="field">
+        <label for="inviteEmail">E-mail do médico</label>
+        <input type="email" id="inviteEmail" placeholder="medico@clinica.com">
+      </div>
+      <button class="btn-invite" id="btnInvite">Enviar convite</button>
+    </div>
+    <div class="msg" id="inviteMsg"></div>
+  </div>
+
+  <div class="users-card">
+    <div class="section-title">Usuários cadastrados</div>
+    <div class="loading" id="loadingUsers">Carregando…</div>
+    <table id="usersTable" style="display:none">
+      <thead>
+        <tr>
+          <th>E-mail</th>
+          <th>Cadastro</th>
+          <th>Último acesso</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="usersBody"></tbody>
+    </table>
+    <div class="empty" id="emptyUsers" style="display:none">Nenhum usuário encontrado.</div>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL = 'https://gbgfqjuazcwqjgwgqjaw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_F5NWBNz5bKyfeJr7RaOWAA_PCI6qmAb';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.replace('login.html'); return; }
+  document.getElementById('userEmail').textContent = session.user.email;
+  loadUsers();
+})();
+
+async function loadUsers() {
+  const { data, error } = await sb.auth.admin?.listUsers?.() ?? {};
+  const loading = document.getElementById('loadingUsers');
+  const table = document.getElementById('usersTable');
+  const empty = document.getElementById('emptyUsers');
+  const tbody = document.getElementById('usersBody');
+
+  loading.style.display = 'none';
+
+  if (error || !data || !data.users || data.users.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+
+  data.users.forEach(u => {
+    const confirmed = !!u.email_confirmed_at;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${u.email}</td>
+      <td>${fmtDate(u.created_at)}</td>
+      <td>${fmtDate(u.last_sign_in_at)}</td>
+      <td><span class="badge ${confirmed ? 'badge-active' : 'badge-pending'}">${confirmed ? 'Ativo' : 'Pendente'}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  table.style.display = 'table';
+}
+
+const btnInvite = document.getElementById('btnInvite');
+const msgEl = document.getElementById('inviteMsg');
+
+function showMsg(text, type) {
+  msgEl.textContent = text;
+  msgEl.className = 'msg ' + type;
+  msgEl.style.display = 'block';
+}
+
+btnInvite.addEventListener('click', async () => {
+  const email = document.getElementById('inviteEmail').value.trim();
+  if (!email) { showMsg('Informe o e-mail do médico.', 'error'); return; }
+  btnInvite.disabled = true;
+  btnInvite.textContent = 'Enviando…';
+  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+  if (error) {
+    showMsg('Erro ao enviar convite: ' + error.message, 'error');
+  } else {
+    showMsg(`Convite enviado para ${email} com sucesso.`, 'success');
+    document.getElementById('inviteEmail').value = '';
+  }
+  btnInvite.disabled = false;
+  btnInvite.textContent = 'Enviar convite';
+});
+
+document.getElementById('btnLogout').addEventListener('click', async () => {
+  await sb.auth.signOut();
+  window.location.replace('login.html');
+});
+</script>
+</body>
+</html>
