@@ -18,7 +18,7 @@
 }
 /* light mode only */
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg3);color:var(--text);min-height:100vh;line-height:1.5;}
-.app{max-width:1060px;margin:0 auto;padding:28px 20px 64px;}
+.app{max-width:1440px;margin:0 auto;padding:28px 32px 64px;}
 
 .hdr{display:flex;align-items:center;gap:16px;margin-bottom:28px;padding:16px 20px;background:#ffffff;border-radius:12px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 1px 4px rgba(0,0,0,0.06);}
 .logo{width:38px;height:38px;background:var(--info-text);border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;flex-shrink:0;}
@@ -103,17 +103,54 @@ input[type=text]:focus{outline:none;border-color:var(--info-text);}
 .btn{cursor:pointer;font-family:inherit;font-size:12px;padding:5px 13px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius-md);color:var(--text);}
 .btn:hover{background:var(--bg2);}
 .btn.active{background:var(--info-bg);color:var(--info-text);border-color:var(--info-border);}
-.bp-cell{width:26px;height:22px;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);}
-.bp-cell:hover{opacity:.7;}
-.bp-tc{width:26px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
-.sec-div{height:1px;background:var(--border);margin:4px 0;}
-.bp-legend{font-size:10px;color:var(--text2);margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;}
+.bp-cell{
+  width:46px;height:44px;border-radius:5px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  border:1.5px solid var(--border);transition:all .15s;
+  position:relative;flex-direction:column;gap:2px;
+}
+.bp-cell:hover{border-color:#aaa;background:rgba(0,0,0,.03);}
+.bp-cell.active{border-width:2px;}
+.bp-day{
+  font-size:11px;font-weight:700;line-height:1;
+  color:inherit;
+}
+.bp-dot{width:7px;height:7px;border-radius:50%;display:block;}
+.bp-tc{
+  width:48px;height:36px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;
+}
+.sec-div{height:1px;background:var(--border);margin:6px 0;}
+.bp-legend{font-size:10px;color:var(--text2);margin-top:14px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
 .bp-sw{display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:middle;margin-right:3px;}
 footer{margin-top:48px;text-align:center;font-size:11px;color:var(--text3);border-top:1px solid var(--border);padding-top:20px;}
+.print-bar{display:flex;gap:10px;justify-content:flex-end;margin-bottom:20px;flex-wrap:wrap;}
+.btn-print{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;border:1.5px solid var(--border2);border-radius:var(--radius-md);
+  font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;
+  background:#fff;color:var(--text);transition:.15s;
+}
+.btn-print:hover{background:var(--info-bg);color:var(--info-text);border-color:var(--info-border);}
+.bp-area-label{
+  font-size:11px;font-weight:700;letter-spacing:.04em;
+  white-space:nowrap;overflow:hidden;padding:2px 0;
+}
+.bp-act-label{
+  font-size:12px;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;padding:2px 0;
+}
+.bp-freq-label{font-size:11px;color:var(--text2);padding:2px 0;}
+@media print{
+  .tabs,.print-bar{display:none!important;}
+  .panel{display:block!important;}
+  body{background:#fff;}
+  .app{padding:16px;}
+  .card{box-shadow:none;border:1px solid #ddd;}
+}
 </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="auth-check.js"></script>
 <body>
 <div class="app">
   <div class="hdr">
@@ -129,7 +166,9 @@ footer{margin-top:48px;text-align:center;font-size:11px;color:var(--text3);borde
   </div>
 
   <div id="panel-sim" class="panel active">
-
+    <div class="print-bar">
+      <button class="btn-print" onclick="printPanel('sim')">🖨️ Imprimir Projeção de Retorno (PDF)</button>
+    </div>
     <div class="g2">
       <div class="card">
         <div class="card-title">Cliente</div>
@@ -242,6 +281,9 @@ footer{margin-top:48px;text-align:center;font-size:11px;color:var(--text3);borde
   </div>
 
   <div id="panel-bp" class="panel">
+    <div class="print-bar">
+      <button class="btn-print" onclick="printPanel('bp')">🖨️ Imprimir Business Plan (PDF)</button>
+    </div>
     <div style="display:flex;align-items:flex-end;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
       <div style="flex:1;min-width:160px;">
         <div style="font-size:12px;color:var(--text2);margin-bottom:5px;">Cliente</div>
@@ -257,7 +299,7 @@ footer{margin-top:48px;text-align:center;font-size:11px;color:var(--text3);borde
       </div>
     </div>
     <div class="card" style="margin-bottom:16px;">
-      <div style="overflow-x:auto;"><div id="bp-grid" style="min-width:600px;"></div></div>
+      <div id="bp-grid"></div>
       <div class="bp-legend">
         Intensidade:
         <span><span class="bp-sw" style="background:rgba(136,135,128,.25);"></span>1–2 ativ.</span>
@@ -553,24 +595,68 @@ const BPACT=[{area:'VENDAS',name:'Reunião de Vendas',freq:'1×/mês'},{area:'VE
 const BPMOS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const BPPR={single:[[false,true,true,true,true,true,true,true,true,true,true,true],[false,true,true,true,true,true,true,true,true,true,true,true],[true,true,true,true,false,false,true,true,true,true,true,true],[false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false],[false,true,false,true,true,false,false,false,false,false,false,false],[true,true,true,true,true,true,true,true,true,true,true,true],[false,false,false,false,true,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false]],network:[[true,true,true,true,true,true,true,true,true,true,true,true],[false,true,true,true,true,true,true,true,true,true,true,true],[true,true,true,true,true,true,true,true,true,true,true,true],[false,false,false,false,true,false,false,false,false,false,false,false],[true,false,false,false,false,false,false,false,false,false,false,false],[false,true,true,true,true,false,true,true,true,true,true,true],[true,true,true,true,true,true,true,true,true,true,true,true],[false,false,false,false,false,true,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false]]};
 let bpData=BPACT.map(()=>new Array(12).fill(false));
-function toggleBP(i,m){bpData[i][m]=!bpData[i][m];renderBPGrid();renderBPSummary();}
-function applyBPPreset(n){['single','network'].forEach(x=>document.getElementById('bpbtn-'+x).classList.remove('active'));if(n==='clear')bpData=BPACT.map(()=>new Array(12).fill(false));else{bpData=BPPR[n].map(r=>[...r]);document.getElementById('bpbtn-'+n).classList.add('active');}renderBPGrid();renderBPSummary();}
+// bpDays stores optional day numbers per cell
+let bpDays=BPACT.map(()=>new Array(12).fill(''));
+function toggleBP(i,m){
+  if(bpData[i][m]){
+    // already on — toggle off
+    bpData[i][m]=false;bpDays[i][m]='';
+  } else {
+    bpData[i][m]=true;
+    const d=prompt('Dia do mês (opcional — deixe em branco para apenas marcar):','');
+    if(d!==null&&d.trim()!==''){
+      const n=parseInt(d);
+      if(!isNaN(n)&&n>=1&&n<=31) bpDays[i][m]=String(n);
+    }
+  }
+  renderBPGrid();renderBPSummary();
+}
+function applyBPPreset(n){['single','network'].forEach(x=>document.getElementById('bpbtn-'+x).classList.remove('active'));if(n==='clear'){bpData=BPACT.map(()=>new Array(12).fill(false));bpDays=BPACT.map(()=>new Array(12).fill(''));}else{bpData=BPPR[n].map(r=>[...r]);bpDays=BPACT.map(()=>new Array(12).fill(''));document.getElementById('bpbtn-'+n).classList.add('active');}renderBPGrid();renderBPSummary();}
 function renderBPGrid(){
-  const COLS='56px 160px 44px '+Array(12).fill('28px').join(' ');
-  let prev=null,html=`<div style="display:grid;grid-template-columns:${COLS};gap:3px;align-items:center;">`;
-  html+=`<div style="font-size:10px;color:var(--text2);font-weight:500;padding-bottom:6px;">Área</div><div style="font-size:10px;color:var(--text2);font-weight:500;padding-bottom:6px;">Atividade</div><div style="font-size:10px;color:var(--text2);padding-bottom:6px;">Freq.</div>`;
-  BPMOS.forEach(m=>html+=`<div style="font-size:10px;color:var(--text2);text-align:center;padding-bottom:6px;">${m.slice(0,1)}</div>`);
+  const COLS='70px 175px 50px '+Array(12).fill('54px').join(' ');
+  let prev=null,html=`<div style="display:grid;grid-template-columns:${COLS};gap:5px;align-items:center;">`;
+  // Header row
+  html+=`<div style="font-size:10px;color:var(--text2);font-weight:600;padding:6px 4px;">Área</div>`;
+  html+=`<div style="font-size:10px;color:var(--text2);font-weight:600;padding:6px 4px;">Atividade</div>`;
+  html+=`<div style="font-size:10px;color:var(--text2);padding:6px 4px;">Freq.</div>`;
+  BPMOS.forEach(m=>html+=`<div style="font-size:11px;color:var(--text2);text-align:center;font-weight:600;padding:6px 2px;">${m}</div>`);
   html+=`<div style="grid-column:1/-1;" class="sec-div"></div>`;
-  BPACT.forEach((act,i)=>{const a=BPA[act.area],show=act.area!==prev;if(show&&prev!==null)html+=`<div style="grid-column:1/-1;" class="sec-div"></div>`;prev=act.area;
-    html+=`<div style="font-size:10px;font-weight:700;color:${a.color};white-space:nowrap;overflow:hidden;">${show?act.area:''}</div>`;
-    html+=`<div style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${act.name}">${act.name}</div>`;
-    html+=`<div style="font-size:10px;color:var(--text2);">${act.freq}</div>`;
-    for(let m=0;m<12;m++){const on=bpData[i][m];html+=`<div style="display:flex;justify-content:center;"><div onclick="toggleBP(${i},${m})" class="bp-cell" style="background:${on?`rgba(${a.rgb},.12)`:'transparent'};border-color:${on?a.color:'var(--border)'};">${on?`<span style="width:8px;height:8px;border-radius:50%;background:${a.color};display:block;"></span>`:''}</div></div>`;}
+  BPACT.forEach((act,i)=>{
+    const a=BPA[act.area],show=act.area!==prev;
+    if(show&&prev!==null)html+=`<div style="grid-column:1/-1;" class="sec-div"></div>`;
+    prev=act.area;
+    // Area label — only on first row of area
+    html+=`<div class="bp-area-label" style="color:${a.color};">${show?act.area:''}</div>`;
+    // Activity label with full name visible
+    html+=`<div class="bp-act-label" title="${act.name}">${act.name}</div>`;
+    html+=`<div class="bp-freq-label">${act.freq}</div>`;
+    for(let m=0;m<12;m++){
+      const on=bpData[i][m];
+      const day=bpDays[i][m];
+      html+=`<div style="display:flex;justify-content:center;">
+        <div onclick="toggleBP(${i},${m})" class="bp-cell${on?' active':''}"
+          style="background:${on?`rgba(${a.rgb},.13)`:'transparent'};border-color:${on?a.color:'var(--border)'};">
+          ${on?`
+            <span class="bp-day" style="color:${a.color};">${day||'✓'}</span>
+            <span class="bp-dot" style="background:${a.color};"></span>
+          `:`<span style="font-size:10px;color:var(--text3);">+</span>`}
+        </div>
+      </div>`;
+    }
   });
   html+=`<div style="grid-column:1/-1;" class="sec-div"></div>`;
-  html+=`<div style="font-size:10px;font-weight:700;">Total</div><div style="font-size:10px;color:var(--text2);">ativ./mês</div><div></div>`;
-  for(let m=0;m<12;m++){const t=bpData.reduce((s,r)=>s+(r[m]?1:0),0);const bg=t===0?'transparent':t<=2?'rgba(136,135,128,.18)':t<=4?'rgba(186,117,23,.18)':'rgba(24,95,165,.18)';const tc=t===0?'var(--text3)':t<=2?'#888780':t<=4?'#BA7517':'#185FA5';html+=`<div style="display:flex;justify-content:center;"><div class="bp-tc" style="background:${bg};color:${tc};">${t||'—'}</div></div>`;}
-  html+='</div>';document.getElementById('bp-grid').innerHTML=html;
+  html+=`<div style="font-size:11px;font-weight:700;padding:4px;">Total</div>`;
+  html+=`<div style="font-size:10px;color:var(--text2);">ativ./mês</div><div></div>`;
+  for(let m=0;m<12;m++){
+    const t=bpData.reduce((s,r)=>s+(r[m]?1:0),0);
+    const bg=t===0?'transparent':t<=2?'rgba(136,135,128,.18)':t<=4?'rgba(186,117,23,.18)':'rgba(24,95,165,.18)';
+    const tc=t===0?'var(--text3)':t<=2?'#888780':t<=4?'#BA7517':'#185FA5';
+    html+=`<div style="display:flex;justify-content:center;">
+      <div class="bp-tc" style="background:${bg};color:${tc};">${t||'—'}</div>
+    </div>`;
+  }
+  html+='</div>';
+  document.getElementById('bp-grid').innerHTML=html;
 }
 function renderBPSummary(){
   const aIdx={VENDAS:[0,1],MARKETING:[2,3,4],'CLÍNICO':[5,6,7,8]};
@@ -584,6 +670,14 @@ function renderBPSummary(){
   }).join('');
 }
 
+function printPanel(tab){
+  // Switch to the right panel then print
+  switchTab(tab);
+  setTimeout(()=>{
+    window.print();
+    // Restore correct tab if needed
+  },300);
+}
 initState();
 setPayment('prazo');
 renderMgrid();
