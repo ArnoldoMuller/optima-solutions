@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Protocolo PRP — Tropocells</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:      #f5f7fa;
+  --bg2:     #ffffff;
+  --bg3:     #eef1f6;
+  --border:  #dce3ed;
+  --border2: #c8d3e3;
+  --teal:    #007f72;
+  --teal-l:  #00c9b1;
+  --teal-dim:rgba(0,127,114,.09);
+  --teal-lim:rgba(0,201,177,.12);
+  --gold:    #b87a00;
+  --gold-l:  #e8a820;
+  --gold-dim:rgba(184,122,0,.10);
+  --red:     #c0392b;
+  --green:   #1a7a54;
+  --green-l: #1fad73;
+  --indigo:  #4148b0;
+  --indigo-l:#7b82e8;
+  --navy:    #1e3a5f;
+  --text:    #1e2d40;
+  --text2:   #334155;
+  --muted:   #64748b;
+  --muted2:  #94a3b8;
+  --r:       12px;
+  --mono:    "IBM Plex Mono",monospace;
+  --shadow:  0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+  --shadow2: 0 2px 8px rgba(0,0,0,.10),0 8px 28px rgba(0,0,0,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",sans-serif;font-size:13.5px;line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px 64px}
+
+/* ─── HEADER ─── */
+.hdr{
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 0 var(--border);
+  padding:0 22px;
+  margin-bottom:36px;
+  position:sticky;top:0;z-index:100;
+}
+.hdr-inner{
+  max-width:1120px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:16px 0;flex-wrap:wrap;
+}
+.hdr-left{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo-wrap{
+  background:#fff;border:1px solid var(--border);border-radius:8px;
+  padding:6px 10px;display:flex;align-items:center;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);flex-shrink:0;
+}
+.logo-wrap img{height:38px;width:auto;display:block}
+.hdr-divider{width:1px;height:36px;background:var(--border2);flex-shrink:0}
+.hdr-titles h1{
+  font-family:"Syne",sans-serif;font-size:clamp(16px,3vw,22px);
+  font-weight:800;letter-spacing:-.4px;color:var(--navy);line-height:1.15;
+}
+.hdr-titles p{color:var(--muted);font-size:11px;margin-top:3px;line-height:1.5}
+.hdr-badge{
+  flex-shrink:0;background:linear-gradient(135deg,#e8f5f3,#d4ede9);
+  border:1px solid var(--teal-l);color:var(--teal);
+  font-family:var(--mono);font-size:9.5px;padding:5px 13px;
+  border-radius:99px;letter-spacing:.8px;white-space:nowrap;font-weight:500;
+}
+.ev-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#f0faf8;border:1px solid rgba(0,127,114,.25);
+  color:var(--teal);font-size:10px;font-family:var(--mono);
+  padding:3px 10px;border-radius:99px;letter-spacing:.4px;white-space:nowrap;
+}
+.ev-chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal-l);flex-shrink:0}
+
+/* ─── STEP ─── */
+.step{margin-bottom:16px;display:flex;align-items:flex-start;gap:11px}
+.step-num{
+  flex-shrink:0;width:26px;height:26px;border-radius:50%;
+  background:var(--navy);color:#fff;
+  font-family:"Syne",sans-serif;font-weight:700;font-size:11px;
+  display:flex;align-items:center;justify-content:center;margin-top:1px;
+}
+.step-title{font-family:"Syne",sans-serif;font-weight:700;font-size:15px;color:var(--navy)}
+.step-sub{color:var(--muted);font-size:11px;margin-top:2px}
+.section{margin-bottom:32px}
+
+/* ─── PATHOLOGY GRID ─── */
+.patho-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px}
+.p-card{
+  background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:16px;cursor:pointer;
+  transition:all .18s ease;box-shadow:var(--shadow);
+}
+.p-card:hover{border-color:var(--teal-l);box-shadow:var(--shadow2);transform:translateY(-1px)}
+.p-card.active{
+  border-color:var(--teal);
+  background:linear-gradient(135deg,#e8f5f3,#fff);
+  box-shadow:0 0 0 2px rgba(0,127,114,.18),var(--shadow2);
+}
+.p-abbr{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--muted2);margin-bottom:8px;text-transform:uppercase}
+.p-card.active .p-abbr{color:var(--teal)}
+.p-name{font-family:"Syne",sans-serif;font-weight:700;font-size:13px;line-height:1.3;color:var(--navy)}
+.p-sub{color:var(--muted);font-size:10.5px;margin-top:4px;line-height:1.4}
+.p-chip{display:inline-block;margin-top:9px;font-family:var(--mono);font-size:9px;letter-spacing:.5px;padding:2px 8px;border-radius:99px}
+.chip-lp{background:rgba(65,72,176,.10);color:var(--indigo);border:1px solid rgba(65,72,176,.22)}
+.chip-lr{background:rgba(184,122,0,.10);color:var(--gold);border:1px solid rgba(184,122,0,.22)}
+
+/* ─── PROTOCOL PANEL ─── */
+.proto-panel{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  overflow:hidden;animation:fd .25s ease;box-shadow:var(--shadow);
+}
+@keyframes fd{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.proto-head{
+  padding:18px 22px 15px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,#eaf5f3 0%,#fff 60%);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.proto-head-name{font-family:"Syne",sans-serif;font-weight:700;font-size:16px;color:var(--navy)}
+.proto-head-note{color:var(--muted);font-size:11px;margin-top:4px;line-height:1.5}
+.proto-badge{
+  flex-shrink:0;align-self:flex-start;
+  font-family:var(--mono);font-size:10px;letter-spacing:.5px;
+  padding:5px 12px;border-radius:8px;border:1px solid;white-space:nowrap;font-weight:500;
+}
+.proto-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));border-bottom:1px solid var(--border)}
+.pm{padding:15px 20px;border-right:1px solid var(--border)}
+.pm:last-child{border-right:none}
+.pm-lbl{font-size:9.5px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;font-weight:600;margin-bottom:6px}
+.pm-val{font-family:"Syne",sans-serif;font-weight:800;font-size:22px;line-height:1}
+.pm-note{color:var(--muted);font-size:10px;margin-top:5px;line-height:1.4}
+
+/* ─── EVIDENCE ─── */
+.ev-section{padding:18px 22px}
+.ev-lbl-title{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:13px}
+.ev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:9px}
+.ev-card{background:var(--bg3);border-radius:9px;padding:13px 15px;border-left:3px solid}
+.ev-level{font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px;font-family:var(--mono)}
+.ev-val{font-family:var(--mono);font-size:13px;font-weight:500;margin-bottom:5px}
+.ev-desc{font-size:11px;color:var(--text2);line-height:1.55}
+.ev-ref{
+  margin-top:8px;font-size:9px;font-family:var(--mono);
+  background:rgba(0,0,0,.05);padding:3px 8px;border-radius:4px;
+  color:var(--muted);letter-spacing:.2px;
+}
+
+/* ─── INPUT ─── */
+.input-section{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r);padding:22px;box-shadow:var(--shadow);
+}
+.input-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+@media(max-width:680px){.input-grid{grid-template-columns:1fr}}
+.ig-lbl{
+  display:block;font-size:9.5px;font-weight:600;letter-spacing:.7px;
+  text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+}
+.plt-row{display:flex;gap:11px;align-items:center}
+input[type="range"]{
+  flex:1;-webkit-appearance:none;appearance:none;
+  background:var(--border2);height:4px;border-radius:99px;cursor:pointer;outline:none;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+  background:var(--navy);cursor:pointer;
+  box-shadow:0 0 0 3px rgba(30,58,95,.15);
+}
+.plt-num{
+  background:var(--bg3);border:1.5px solid var(--border2);color:var(--text);
+  border-radius:8px;padding:7px 10px;font-family:var(--mono);font-size:13px;
+  width:84px;text-align:center;outline:none;transition:border-color .15s;
+}
+.plt-num:focus{border-color:var(--teal)}
+.plt-hints{display:flex;justify-content:space-between;font-size:10px;color:var(--muted2);margin-top:5px}
+.btn-group{display:flex;gap:6px;flex-wrap:wrap}
+.btn-opt{
+  background:var(--bg3);border:1.5px solid var(--border2);color:var(--muted);
+  border-radius:8px;padding:7px 13px;font-family:"Syne",sans-serif;
+  font-size:12px;font-weight:600;cursor:pointer;transition:all .14s;line-height:1.1;
+}
+.btn-opt sub{display:block;font-size:9px;font-weight:400;opacity:.7;margin-top:2px}
+.btn-opt:hover{border-color:var(--border2);color:var(--text);background:#fff}
+.btn-opt.sel{background:var(--navy);border-color:var(--navy);color:#fff}
+.ig-note{font-size:10px;color:var(--muted);margin-top:6px;font-style:italic}
+.plt-alert{display:none;margin-top:8px;padding:5px 10px;border-radius:7px;font-size:11px;font-weight:500}
+
+/* ─── SUM BAR ─── */
+.sum-bar{
+  margin-top:20px;padding:13px 17px;
+  background:linear-gradient(135deg,#e8f5f3,#f0faf8);
+  border:1px solid rgba(0,127,114,.3);
+  border-radius:9px;display:flex;align-items:center;gap:9px;
+}
+.sum-bar.hidden{display:none}
+.sum-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0}
+.sum-text{font-size:12.5px;color:var(--text2)}
+.sum-text strong{color:var(--teal)}
+
+/* ─── TABLE ─── */
+.tbl-section{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);
+}
+.tbl-head{
+  padding:18px 22px 15px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,#f0faf8,#fff);
+  display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.tbl-head h2{font-family:"Syne",sans-serif;font-weight:700;font-size:15px;color:var(--navy)}
+.tbl-head p{color:var(--muted);font-size:11px;margin-top:3px}
+.filter-row{display:flex;gap:7px;flex-wrap:wrap}
+.ftag{
+  font-size:9.5px;font-family:var(--mono);letter-spacing:.5px;
+  padding:4px 12px;border-radius:99px;cursor:pointer;border:1px solid;
+  transition:all .14s;background:transparent;
+}
+.ftag-all{border-color:var(--border2);color:var(--muted)}
+.ftag-all.sel{border-color:var(--navy);color:var(--navy);background:rgba(30,58,95,.07)}
+.ftag-lp{border-color:rgba(65,72,176,.3);color:var(--indigo)}
+.ftag-lp.sel{background:rgba(65,72,176,.09);border-color:var(--indigo)}
+.ftag-lr{border-color:rgba(184,122,0,.3);color:var(--gold)}
+.ftag-lr.sel{background:var(--gold-dim);border-color:var(--gold)}
+
+.t-scroll{overflow-x:auto}
+table.dev{width:100%;border-collapse:collapse;font-size:12.5px}
+table.dev thead th{
+  padding:10px 13px;text-align:left;
+  font-size:9px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;
+  color:var(--muted);background:var(--bg3);
+  border-bottom:2px solid var(--border2);white-space:nowrap;
+}
+table.dev tbody tr{border-bottom:1px solid var(--border);transition:background .12s}
+table.dev tbody tr:last-child{border-bottom:none}
+table.dev tbody tr:hover{background:#fafbfc}
+table.dev tbody tr.tc-row{background:linear-gradient(90deg,rgba(184,122,0,.06),transparent)}
+table.dev tbody tr.tc-row:hover{background:linear-gradient(90deg,rgba(184,122,0,.1),transparent)}
+table.dev tbody tr.dim{opacity:.3}
+table.dev td{padding:12px 13px;vertical-align:middle}
+
+.dev-wrap{display:flex;align-items:flex-start;gap:7px}
+.tc-badge{
+  flex-shrink:0;margin-top:3px;
+  background:linear-gradient(135deg,#fef3cd,#fde8a0);
+  border:1px solid rgba(184,122,0,.4);color:#7a5200;
+  font-family:var(--mono);font-size:8.5px;letter-spacing:.5px;
+  padding:2px 7px;border-radius:4px;font-weight:600;
+}
+.dev-name{font-weight:600;font-size:13px;line-height:1.3;color:var(--navy)}
+.dev-brand{color:var(--muted);font-size:10px;margin-top:1px}
+.type-pill{font-size:9px;font-family:var(--mono);letter-spacing:.4px;padding:2px 8px;border-radius:99px;display:inline-block}
+.mono{font-family:var(--mono);font-weight:500;font-size:12.5px;color:var(--text2)}
+.mono-m{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+.kbadge{
+  display:inline-flex;align-items:center;padding:3px 11px;border-radius:99px;
+  font-family:var(--mono);font-size:11px;font-weight:600;border:1px solid;
+}
+.k1{background:rgba(26,122,84,.10);color:#145c3d;border-color:rgba(26,122,84,.25)}
+.k2{background:rgba(184,122,0,.10);color:var(--gold);border-color:rgba(184,122,0,.25)}
+.k3{background:rgba(192,57,43,.09);color:#8b1a0d;border-color:rgba(192,57,43,.22)}
+.k4{background:rgba(192,57,43,.13);color:#7a0d02;border-color:rgba(192,57,43,.28)}
+
+.c-ok{color:#145c3d;font-family:var(--mono);font-size:12px;font-weight:600}
+.c-warn{color:var(--gold);font-family:var(--mono);font-size:12px;font-weight:600}
+.c-bad{color:#8b1a0d;font-family:var(--mono);font-size:12px;font-weight:600}
+.ctag{
+  display:inline-block;margin-left:5px;font-size:8.5px;letter-spacing:.4px;
+  font-family:var(--mono);padding:1px 6px;border-radius:4px;vertical-align:middle;
+}
+.ct-ok{background:rgba(26,122,84,.10);color:#145c3d}
+.ct-warn{background:rgba(184,122,0,.10);color:var(--gold)}
+.ct-bad{background:rgba(192,57,43,.09);color:#8b1a0d}
+.rec-tag{
+  font-size:9px;font-family:var(--mono);letter-spacing:.3px;
+  padding:2px 7px;border-radius:4px;
+  background:#e8f5f3;color:var(--teal);border:1px solid rgba(0,127,114,.25);
+}
+
+/* ─── LEGEND & FOOTER ─── */
+.legend{
+  padding:13px 22px;border-top:1px solid var(--border);
+  display:flex;gap:20px;flex-wrap:wrap;align-items:center;
+  background:var(--bg3);
+}
+.li{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--muted)}
+.ld{width:9px;height:9px;border-radius:50%}
+.empty{display:none;text-align:center;padding:50px 22px;color:var(--muted)}
+.empty.show{display:block}
+.footer{
+  margin-top:36px;padding:20px 24px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  color:var(--muted);font-size:10.5px;line-height:1.8;
+  box-shadow:var(--shadow);
+}
+.footer strong{font-style:normal;color:var(--text2)}
+@media(max-width:600px){
+  .proto-metrics{grid-template-columns:1fr 1fr}
+  .pm{border-right:none;border-bottom:1px solid var(--border)}
+  .pm:last-child{border-bottom:none}
+}
+</style>
+</head>
+<body>
+<div style="background:var(--bg2);border-bottom:2px solid var(--teal-l);">
+  <div class="hdr">
+    <div class="hdr-inner">
+      <div class="hdr-left">
+        <div class="logo-wrap">
+          <img src="data:image/png;base64,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" alt="Optima Solutions">
+        </div>
+        <div class="hdr-divider"></div>
+        <div class="hdr-titles">
+          <h1>Calculadora de Protocolo PRP</h1>
+          <p>Dose plaquetária por patologia &nbsp;·&nbsp; 10 dispositivos &nbsp;·&nbsp; Corsini et al., J Clin Med 2025, Tab. 1</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="ev-chip">Evidência Nível 1A</span>
+        <div class="hdr-badge">TROPOCELLS · APTISSEN</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:30px">
+
+<!-- STEP 1 -->
+<div class="section">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div>
+      <div class="step-title">Selecione a Patologia</div>
+      <div class="step-sub">O protocolo e a meta de dose são definidos automaticamente com base na melhor evidência disponível</div>
+    </div>
+  </div>
+  <div class="patho-grid" id="patho-grid"></div>
+</div>
+
+<!-- STEP 2 -->
+<div class="section" id="proto-wrap" style="display:none">
+  <div class="step">
+    <div class="step-num">2</div>
+    <div>
+      <div class="step-title">Protocolo Baseado em Evidência</div>
+      <div class="step-sub">Meta de dose, número de sessões e referências científicas que sustentam o protocolo selecionado</div>
+    </div>
+  </div>
+  <div class="proto-panel" id="proto-panel"></div>
+</div>
+
+<!-- STEP 3 -->
+<div class="section">
+  <div class="step">
+    <div class="step-num">3</div>
+    <div>
+      <div class="step-title">Dados do Paciente</div>
+      <div class="step-sub">Contagem de plaquetas do hemograma e configuração do protocolo de tratamento</div>
+    </div>
+  </div>
+  <div class="input-section">
+    <div class="input-grid">
+      <div>
+        <label class="ig-lbl">Plaquetas — hemograma (×10³/µL)</label>
+        <div class="plt-row">
+          <input type="range" id="sl" min="100" max="500" step="5" value="250">
+          <input type="number" id="ni" class="plt-num" min="100" max="500" value="250">
+        </div>
+        <div class="plt-hints"><span>100k</span><span id="plt-disp" style="color:var(--teal);font-weight:700">250k/µL</span><span>500k</span></div>
+        <div class="plt-alert" id="plt-alert"></div>
+      </div>
+      <div>
+        <label class="ig-lbl">Sessões no Protocolo</label>
+        <div class="btn-group" id="sg">
+          <button class="btn-opt" data-v="1" onclick="setSess(1)">1×<sub>Sessão</sub></button>
+          <button class="btn-opt" data-v="2" onclick="setSess(2)">2×<sub>Sessões</sub></button>
+          <button class="btn-opt sel" data-v="3" onclick="setSess(3)">3×<sub>Sessões</sub></button>
+        </div>
+        <div class="ig-note">Padrão: 3× — De Matthaeis et al., 2024</div>
+      </div>
+      <div>
+        <label class="ig-lbl">Meta por Sessão (bilhões de plaquetas)</label>
+        <div class="btn-group" id="tg">
+          <button class="btn-opt sel" data-v="4" onclick="setTgt(4)">4B<sub>Mínimo</sub></button>
+          <button class="btn-opt" data-v="5" onclick="setTgt(5)">5B<sub>Bom</sub></button>
+          <button class="btn-opt" data-v="8" onclick="setTgt(8)">8B<sub>Ótimo</sub></button>
+          <button class="btn-opt" data-v="10" onclick="setTgt(10)">10B<sub>Máx.</sub></button>
+        </div>
+        <div class="ig-note">Limiar mínimo eficaz: 4B · Corsini et al., J Clin Med 2025</div>
+      </div>
+    </div>
+    <div class="sum-bar hidden" id="sum-bar">
+      <div class="sum-dot"></div>
+      <div class="sum-text" id="sum-text"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div>
+      <div class="step-title">Comparativo de Dispositivos</div>
+      <div class="step-sub">Kits e volume de sangue necessários para atingir a meta do protocolo — atualizado em tempo real</div>
+    </div>
+  </div>
+  <div class="tbl-section">
+    <div class="tbl-head">
+      <div>
+        <h2>Dispositivos PRP</h2>
+        <p>Dados da Tabela 1 · Corsini et al. J Clin Med 2025;14:2714 &nbsp;·&nbsp; Fórmula: dose (B) = PLT × sangue/kit × recuperação ÷ 1.000</p>
+      </div>
+      <div class="filter-row">
+        <span class="ftag ftag-all sel" onclick="setFilter('all')">Todos</span>
+        <span class="ftag ftag-lp"     onclick="setFilter('LP')">LP-PRP</span>
+        <span class="ftag ftag-lr"     onclick="setFilter('LR')">LR-PRP</span>
+      </div>
+    </div>
+    <div class="t-scroll">
+      <table class="dev">
+        <thead><tr>
+          <th>Dispositivo</th><th>Tipo</th><th>Sangue / Kit</th>
+          <th>Recuperação</th><th>Dose / Kit</th><th>Kits / Sessão</th>
+          <th>Total Kits <span id="th-sess" style="font-weight:400;color:var(--muted2)">(3 sess.)</span></th>
+          <th>Sangue Total</th><th>Dose Acumulada</th>
+        </tr></thead>
+        <tbody id="dev-body"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="empty-st"><p>Nenhum dispositivo encontrado para este filtro.</p></div>
+    <div class="legend">
+      <div class="li"><div class="ld" style="background:#145c3d"></div>1 kit / sessão — ideal</div>
+      <div class="li"><div class="ld" style="background:var(--gold)"></div>2 kits / sessão</div>
+      <div class="li"><div class="ld" style="background:#8b1a0d"></div>3+ kits / sessão</div>
+      <div class="li"><div class="ld" style="background:var(--teal)"></div>Tipo recomendado para a patologia</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>Fonte dos parâmetros de dispositivos:</strong>
+  Corsini A et al. J Clin Med. 2025;14(8):2714 — <em>Tabela 1, pág. 10</em>.
+  Volumes de sangue, taxas de recuperação e classificação LP/LR de todos os dispositivos extraídos diretamente desta tabela.
+  Tropocells 11 mL: mesmo sistema, metade do volume. Magellan: volume de referência 33 mL (range 25–60 mL).
+  <br>
+  <strong>Fonte dos protocolos clínicos:</strong>
+  Berrigan WA et al. Arthroscopy 2024;41(3):809 · Patel S et al. BMJ Open 2021 ·
+  De Matthaeis A et al. J Clin Med 2024;13:4816 · Li et al. J Orthop Surg Res 2025;20:1019 ·
+  Vale D et al. Cureus 2024;16(5):e60585.
+  <br><br>
+  Este instrumento tem finalidade <strong>educacional e de apoio à decisão clínica</strong>. Não substitui o julgamento médico individualizado.
+</div>
+</div>
+
+<script>
+const DEV=[
+  {id:"tc22",  name:"Tropocells 22 mL",  brand:"Aptissen / Estar",  type:"LP", bloodVol:20, rec:0.850, star:true },
+  {id:"tc11",  name:"Tropocells 11 mL",  brand:"Aptissen / Estar",  type:"LP", bloodVol:10, rec:0.850, star:true },
+  {id:"hy",    name:"Hy Tissue",         brand:"Fidia",              type:"LP", bloodVol:18, rec:0.835, star:false},
+  {id:"regen", name:"Regen BCT",         brand:"RegenLab",           type:"LP", bloodVol:8,  rec:0.820, star:false},
+  {id:"endr",  name:"Endoret (PRGF)",    brand:"BTI",                type:"LP", bloodVol:9,  rec:0.480, star:false},
+  {id:"arthr", name:"ACP Double Syringe",brand:"Arthrex",            type:"LP", bloodVol:13, rec:0.295, star:false},
+  {id:"smart", name:"SmartPrep Terumo",  brand:"Harvest / Terumo",  type:"LR", bloodVol:60, rec:0.650, star:false},
+  {id:"mag",   name:"Magellan",          brand:"Arteriocyte",        type:"LR", bloodVol:33, rec:0.650, star:false},
+  {id:"minigps",name:"Mini GPS III",     brand:"Zimmer Biomet",      type:"LR", bloodVol:27, rec:0.492, star:false},
+  {id:"gps2",  name:"GPS II",            brand:"Zimmer Biomet",      type:"LR", bloodVol:55, rec:0.229, star:false},
+];
+function doseKit(d,plt){return(plt*d.bloodVol*d.rec)/1000;}
+
+const PATHOS=[
+  {id:"oa_jo",name:"OA de Joelho",abbr:"OA \u00b7 JOELHO",sub:"Osteoartrite \u00b7 KL I\u2013III",
+   preferredType:"LP",doseTarget:10,sessions:3,totalMin:10,interval:"Semanal",
+   typeNote:"LP-PRP obrigat\u00f3rio \u2014 leucopobre superior em aplica\u00e7\u00f5es intra-articulares",
+   evidence:[
+    {color:"#c0392b",level:"LIMIAR CR\u00cdTICO",      val:"< 4B / sess\u00e3o \u2014 ineficaz",
+     desc:"Doses abaixo de 4B n\u00e3o diferem de placebo em ECR com 288 pacientes (LP-PRP vs. soro fisiol\u00f3gico).",ref:"RESTORE RCT \u00b7 JAMA 2021"},
+    {color:"#b87a00",level:"DOSE \u00d3TIMA",          val:"5\u201310B / sess\u00e3o",
+     desc:"Revis\u00e3o de 29 ECRs: 90% dos bra\u00e7os com >5,5B demonstraram melhora significativa em dor e fun\u00e7\u00e3o.",ref:"Berrigan WA et al. \u00b7 Arthroscopy 2024;41(3):809"},
+    {color:"#1a7a54",level:"META CUMULATIVA",     val:"10B total ou mais",
+     desc:"Protocolo com 10B por inje\u00e7\u00e3o (8 mL) manteve efeito condroprotegente por 12 meses vs. \u00e1cido hialur\u00f4nico.",ref:"Patel S et al. \u00b7 BMJ Open 2021"},
+    {color:"#4148b0",level:"REVIS\u00c3O SISTEM\u00c1TICA", val:"LP-PRP superior",
+     desc:"LP-PRP superior a AH e corticoide em 12 meses \u2014 meta-an\u00e1lise de 15 ECRs duplo-cegos, 1.632 pacientes.",ref:"Corsini A et al. \u00b7 J Clin Med 2025;14:2714"},
+  ]},
+  {id:"oa_qu",name:"OA de Quadril",abbr:"OA \u00b7 QUADRIL",sub:"Osteoartrite \u00b7 intra-articular",
+   preferredType:"LP",doseTarget:8,sessions:3,totalMin:10,interval:"Semanal",
+   typeNote:"LP-PRP preferido \u2014 protocolo an\u00e1logo ao joelho",
+   evidence:[
+    {color:"#1a7a54",level:"TODOS OS ECRs POSITIVOS",val:"Redu\u00e7\u00e3o de dor significativa",
+     desc:"Revis\u00e3o sistem\u00e1tica de 5 ECRs: todos demonstraram redu\u00e7\u00e3o de dor e melhora funcional; nenhum evento adverso maior.",ref:"Ortega-Castillo M et al. \u00b7 Applied Sci. 2024;14(22):10442"},
+    {color:"#b87a00",level:"DOSE SUGERIDA",       val:"5\u201310B / sess\u00e3o",
+     desc:"Extrapola\u00e7\u00e3o dos protocolos do joelho aplicada ao quadril; mesma l\u00f3gica de LP-PRP intra-articular.",ref:"Corsini A et al. \u00b7 J Clin Med 2025;14:2714"},
+    {color:"#4148b0",level:"PROTOCOLO",           val:"2\u20133 sess\u00f5es semanais",
+     desc:"Meta cumulativa de 10B+ para efic\u00e1cia sustentada; perfil de seguran\u00e7a favor\u00e1vel em todos os estudos.",ref:"De Matthaeis A et al. \u00b7 2024"},
+  ]},
+  {id:"epic",name:"Epicondilite Lateral",abbr:"EPICONDILITE LAT.",sub:"Cotovelo \u2014 inser\u00e7\u00e3o extensor",
+   preferredType:"LR",doseTarget:5,sessions:2,totalMin:5,interval:"4\u20136 semanas",
+   typeNote:"LR-PRP preferido \u2014 favorece fibroplasia e remodelar\u00e7\u00e3o tendinosa",
+   evidence:[
+    {color:"#1a7a54",level:"EFIC\u00c1CIA A LONGO PRAZO",val:"Superior ao corticoide",
+     desc:"PRP superior ao corticoide no longo prazo (>6 meses) para dor e fun\u00e7\u00e3o; corticoide com vantagem apenas no curto prazo.",ref:"Meta-an\u00e1lise \u00b7 Am J Sports Med 2024;52:2646"},
+    {color:"#b87a00",level:"DOSE EFICAZ",         val:"5\u201310B total",
+     desc:"Estudos com 5\u201310B de plaquetas demonstraram redu\u00e7\u00e3o de dor significativa de forma consistente.",ref:"Corsini A et al. \u00b7 J Clin Med 2025;14:2714"},
+    {color:"#4148b0",level:"N\u00daMERO DE SESS\u00d5ES",   val:"1\u20132 inje\u00e7\u00f5es",
+     desc:"ECR de 24 meses (Lhee et al., 2025): 1\u20132 sess\u00f5es como protocolo eficaz para casos cr\u00f4nicos refrat\u00e1rios.",ref:"Lhee et al. \u00b7 RCT 2025"},
+  ]},
+  {id:"mang",name:"Manguito Rotador",abbr:"MANGUITO",sub:"Tendinopatia / Ruptura parcial",
+   preferredType:"LR",doseTarget:5,sessions:2,totalMin:5,interval:"4\u20136 semanas",
+   typeNote:"LR-PRP para tendinopatia cr\u00f4nica; LP-PRP para adjuv\u00e2ncia p\u00f3s-cir\u00fargica",
+   evidence:[
+    {color:"#1a7a54",level:"REVIS\u00c3O SISTEM\u00c1TICA",  val:"\u22485B / sess\u00e3o eficaz",
+     desc:"Estudo prospectivo (50 pacientes, manguito cr\u00f4nico refrat\u00e1rio): LR-PRP a 5.020\u00d710\u2076/inje\u00e7\u00e3o melhorou VAS e Constant-Murley.",ref:"PMC 2025 \u00b7 36 estudos, \u22482.000 pacientes"},
+    {color:"#b87a00",level:"DOSE M\u00cdNIMA",          val:"3,5B / sess\u00e3o",
+     desc:"Redu\u00e7\u00e3o de dor significativa a 6s, 3m, 6m e 12m p\u00f3s-inje\u00e7\u00e3o vs. controle (todos p<0,05).",ref:"Meta-an\u00e1lise PMC 2025 \u00b7 36 ECRs"},
+    {color:"#c0392b",level:"LIMITA\u00c7\u00c3O CL\u00cdNICA",    val:"Benef\u00edcio at\u00e9 12 meses",
+     desc:"Ap\u00f3s 12 meses, o efeito tende a igualar controles. Sess\u00f5es de refor\u00e7o podem ser consideradas.",ref:"Dai et al. 2023 \u00b7 Giovannetti et al. 2024"},
+  ]},
+  {id:"fasc",name:"Fasciite Plantar",abbr:"FASCIITE PLANTAR",sub:"Dor plantar cr\u00f4nica",
+   preferredType:"LP",doseTarget:5,sessions:1,totalMin:5,interval:"4 sem. (2\u00aa se necess\u00e1rio)",
+   typeNote:"LP-PRP ou LR-PRP \u2014 ambos demonstram efic\u00e1cia nos ensaios cl\u00ednicos",
+   evidence:[
+    {color:"#1a7a54",level:"SUPERIOR A 6 MESES",  val:"Melhor que corticoide",
+     desc:"Meta-an\u00e1lise de 27 ECRs (1.779 pacientes): PRP superior a corticoide na dor aos 6 meses para fasciite plantar.",ref:"BMC Musculoskelet Disord 2025 \u00b7 27 ECRs, 1.779 pacientes"},
+    {color:"#b87a00",level:"PROTOCOLO",           val:"1\u20132 sess\u00f5es",
+     desc:"1 sess\u00e3o eficaz em casos moderados; 2\u00aa sess\u00e3o em 4 semanas para casos refrat\u00e1rios.",ref:"Corsini A et al. \u00b7 J Clin Med 2025;14:2714"},
+    {color:"#4148b0",level:"DOSE SUGERIDA",       val:"3,5\u20135B / sess\u00e3o",
+     desc:"Concentra\u00e7\u00e3o alvo de 4,8\u20135,9\u00d7 o basal do paciente. Limiar m\u00ednimo de 3,5B por inje\u00e7\u00e3o.",ref:"Corsini A et al. \u00b7 J Clin Med 2025"},
+  ]},
+  {id:"aqui",name:"Tend\u00e3o de Aquiles",abbr:"T. AQUILES",sub:"Tendinopatia / Tendinose",
+   preferredType:"LR",doseTarget:5,sessions:2,totalMin:7,interval:"4\u20136 semanas",
+   typeNote:"LR-PRP preferido para estimula\u00e7\u00e3o do reparo tendinoso",
+   evidence:[
+    {color:"#1a7a54",level:"EFIC\u00c1CIA CONSOLIDADA",val:"88% dos estudos positivos",
+     desc:"Revis\u00e3o de ECRs para tendinopatias (fasciite, Aquiles, Osgood-Schlatter): PRP eficaz em 88% dos estudos analisados.",ref:"Capotosto S et al. \u00b7 Sports Med 2024"},
+    {color:"#b87a00",level:"DOSE",                val:"3,5\u20135B / sess\u00e3o",
+     desc:"Faixa de dose equivalente \u00e0s demais tendinopatias; 2\u20133 sess\u00f5es para casos cr\u00f4nicos instalados.",ref:"Corsini A et al. \u00b7 J Clin Med 2025;14:2714"},
+    {color:"#4148b0",level:"N\u00daMERO DE SESS\u00d5ES",   val:"2\u20133 inje\u00e7\u00f5es",
+     desc:"Casos cr\u00f4nicos respondem melhor a 2\u20133 sess\u00f5es com intervalo de 4\u20136 semanas entre aplica\u00e7\u00f5es.",ref:"Capotosto S et al. 2024 \u00b7 Corsini 2025"},
+  ]},
+  {id:"glut",name:"Tendinopatia Gl\u00fatea",abbr:"T. GL\u00daTEA",sub:"Tend\u00e3o gl\u00fateo m\u00e9dio / m\u00ednimo",
+   preferredType:"LR",doseTarget:5,sessions:2,totalMin:7,interval:"4\u20136 semanas",
+   typeNote:"LR-PRP recomendado \u2014 evid\u00eancia crescente",
+   evidence:[
+    {color:"#1a7a54",level:"LONGO PRAZO",         val:"Superior ao corticoide",
+     desc:"Revis\u00e3o sistem\u00e1tica: efetividade superior do PRP ao corticoide no longo prazo para tendinopatia gl\u00fateo.",ref:"Georgetown Med Rev \u00b7 Revis\u00e3o sistem\u00e1tica 2025"},
+    {color:"#b87a00",level:"DOSE",                val:"5\u201310B total",
+     desc:"Estudos com 5\u201310B de plaquetas associados a melhores desfechos relatados pelo paciente (PROs).",ref:"Corsini A et al. \u00b7 J Clin Med 2025;14:2714"},
+  ]},
+  {id:"lca", name:"LCA \u2014 P\u00f3s-Reconstru\u00e7\u00e3o",abbr:"LCA",sub:"Augmenta\u00e7\u00e3o biol\u00f3gica p\u00f3s-cir\u00fargica",
+   preferredType:"LP",doseTarget:5,sessions:2,totalMin:5,interval:"Intraop + 7 dias p\u00f3s-op",
+   typeNote:"LP-PRP para ambiente intra-articular \u2014 aplica\u00e7\u00e3o intraoperat\u00f3ria ou p\u00f3s-op precoce",
+   evidence:[
+    {color:"#1a7a54",level:"ESTABILIDADE",        val:"Melhora a 6 meses",
+     desc:"PRP melhora estabilidade do joelho (KT-1000: MD \u22120,57 mm; p=0,002) e reduz dor nos primeiros 3\u20136 meses.",ref:"Meta-an\u00e1lise 18 ECRs, 1.082 pacientes \u00b7 ScienceDirect 2025"},
+    {color:"#c0392b",level:"LIMITA\u00c7\u00c3O",           val:"Sem diferen\u00e7a > 12 meses",
+     desc:"Benef\u00edcio em dor e fun\u00e7\u00e3o n\u00e3o persiste al\u00e9m dos 12 meses \u2014 PRP deve ser entendido como adjuvante biol\u00f3gico.",ref:"Li et al. \u00b7 J Orthop Surg Res 2025;20:1019"},
+    {color:"#4148b0",level:"PROTOCOLO",           val:"1\u20132 sess\u00f5es",
+     desc:"Aplica\u00e7\u00e3o intraoperat\u00f3ria no s\u00edtio do enxerto mais 1 inje\u00e7\u00e3o p\u00f3s-operat\u00f3ria na primeira semana.",ref:"Cureus 17(5) \u00b7 e84556 \u00b7 2025"},
+  ]},
+  {id:"musc",name:"Les\u00e3o Muscular",abbr:"LES\u00c3O MUSCULAR",sub:"Estiramento / Ruptura parcial",
+   preferredType:"LP",doseTarget:5,sessions:2,totalMin:5,interval:"5\u20137 dias (fase aguda)",
+   typeNote:"LP-PRP preferido \u2014 perfil anti-inflamat\u00f3rio favorece regenera\u00e7\u00e3o muscular",
+   evidence:[
+    {color:"#1a7a54",level:"ALTA CERTEZA",        val:"Redu\u00e7\u00e3o de 16% na reles\u00e3o",
+     desc:"Umbrella review 2025\u20132026 (8 revis\u00f5es sistem\u00e1ticas): RR 0,84 (IC 95%: 0,76\u20130,92; I\u00b2=0%) para reles\u00e3o.",ref:"Meta-an\u00e1lise PMC 2026 \u00b7 8 revis\u00f5es sistem\u00e1ticas"},
+    {color:"#b87a00",level:"RETORNO AO ESPORTE",  val:"\u22125,7 dias",
+     desc:"Retorno ao esporte significativamente mais precoce no grupo PRP vs. plasma pobre em plaquetas (PPP).",ref:"Vale D et al. \u00b7 Cureus 2024;16(5):e60585"},
+    {color:"#4148b0",level:"PROTOCOLO",           val:"1\u20132 sess\u00f5es",
+     desc:"1\u00aa inje\u00e7\u00e3o em at\u00e9 5 dias do trauma; 2\u00aa sess\u00e3o em 5\u20137 dias. Aplica\u00e7\u00e3o guiada por ultrassom recomendada.",ref:"Corsini A et al. \u00b7 J Clin Med 2025"},
+  ]},
+];
+
+let plt=250,sess=3,tgt=4,filt="all",selId=null;
+
+function renderCards(){
+  const g=document.getElementById("patho-grid");g.innerHTML="";
+  PATHOS.forEach(p=>{
+    const d=document.createElement("div");
+    d.className="p-card"+(selId===p.id?" active":"");
+    d.onclick=()=>selectPatho(p.id);
+    d.innerHTML=`<div class="p-abbr">${p.abbr}</div><div class="p-name">${p.name}</div><div class="p-sub">${p.sub}</div><span class="p-chip ${p.preferredType==="LP"?"chip-lp":"chip-lr"}">${p.preferredType}-PRP</span>`;
+    g.appendChild(d);
+  });
+}
+
+function selectPatho(id){
+  selId=id;const p=PATHOS.find(x=>x.id===id);if(!p)return;
+  sess=p.sessions;tgt=p.doseTarget;
+  renderCards();renderProto(p);
+  document.getElementById("proto-wrap").style.display="";
+  syncBtns();render();
+  document.getElementById("proto-wrap").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+function renderProto(p){
+  const isLP=p.preferredType==="LP";
+  const bd=isLP
+    ?"color:var(--indigo);border-color:rgba(65,72,176,.3);background:rgba(65,72,176,.08);"
+    :"color:var(--gold);border-color:rgba(184,122,0,.3);background:rgba(184,122,0,.08);";
+  const ev=p.evidence.map(e=>`
+    <div class="ev-card" style="border-left-color:${e.color}">
+      <div class="ev-level" style="color:${e.color}">${e.level}</div>
+      <div class="ev-val"   style="color:${e.color}">${e.val}</div>
+      <div class="ev-desc">${e.desc}</div>
+      <div class="ev-ref">${e.ref}</div>
+    </div>`).join("");
+  document.getElementById("proto-panel").innerHTML=`
+    <div class="proto-head">
+      <div>
+        <div class="proto-head-name">${p.name}</div>
+        <div class="proto-head-note">${p.typeNote} &nbsp;&middot;&nbsp; Intervalo: ${p.interval}</div>
+      </div>
+      <span class="proto-badge" style="${bd}">${p.preferredType}-PRP</span>
+    </div>
+    <div class="proto-metrics">
+      <div class="pm"><div class="pm-lbl">Dose por Sess&atilde;o</div><div class="pm-val" style="color:var(--teal)">${p.doseTarget}B</div><div class="pm-note">&ge; ${p.doseTarget} &times; 10&sup9; plaquetas/inje&ccedil;&atilde;o</div></div>
+      <div class="pm"><div class="pm-lbl">N&uacute;mero de Sess&otilde;es</div><div class="pm-val" style="color:var(--indigo)">${p.sessions}&times;</div><div class="pm-note">Intervalo: ${p.interval}</div></div>
+      <div class="pm"><div class="pm-lbl">Meta Cumulativa</div><div class="pm-val" style="color:var(--gold)">${p.totalMin}B+</div><div class="pm-note">Para efic&aacute;cia sustentada (Corsini 2025)</div></div>
+      <div class="pm"><div class="pm-lbl">Tipo de PRP</div><div class="pm-val" style="font-size:17px;color:${isLP?"var(--indigo)":"var(--gold)"}">${p.preferredType}-PRP</div><div class="pm-note">${isLP?"Leucopobre &mdash; intra-articular":"Leucorrico &mdash; reparo tendinoso"}</div></div>
+    </div>
+    <div class="ev-section">
+      <div class="ev-lbl-title">Evid&ecirc;ncia cient&iacute;fica que define este protocolo</div>
+      <div class="ev-grid">${ev}</div>
+    </div>`;
+}
+
+function syncBtns(){
+  document.querySelectorAll("#sg .btn-opt").forEach(b=>b.className="btn-opt"+(+b.dataset.v===sess?" sel":""));
+  document.querySelectorAll("#tg .btn-opt").forEach(b=>b.className="btn-opt"+(+b.dataset.v===tgt?" sel":""));
+  document.getElementById("th-sess").textContent=`(${sess} sess.)`;
+}
+
+function render(){
+  document.getElementById("plt-disp").textContent=plt+"k/µL";
+  document.getElementById("sl").value=plt;
+  document.getElementById("ni").value=plt;
+
+  const a=document.getElementById("plt-alert");
+  if(plt<150){
+    a.style.cssText="display:block;background:rgba(192,57,43,.08);color:#8b1a0d;border:1px solid rgba(192,57,43,.2);border-radius:7px;padding:5px 10px;margin-top:8px";
+    a.textContent="Trombocitopenia — avaliar contraindicação ao procedimento";
+  } else if(plt<200){
+    a.style.cssText="display:block;background:rgba(184,122,0,.08);color:var(--gold);border:1px solid rgba(184,122,0,.2);border-radius:7px;padding:5px 10px;margin-top:8px";
+    a.textContent="Plaquetas abaixo do ideal — rendimento reduzido por kit";
+  } else { a.style.display="none"; }
+
+  const cum=tgt*sess;
+  const sb=document.getElementById("sum-bar");sb.classList.remove("hidden");
+  const cc=cum>=10?"var(--green)":cum>=6?"var(--gold)":"#8b1a0d";
+  const cl=cum>=10?"IDEAL":cum>=6?"SUBÓTIMO":"INSUFICIENTE";
+  document.getElementById("sum-text").innerHTML=`Meta: <strong>${tgt}B / sessão</strong> × <strong>${sess} sessões</strong> = <strong style="color:${cc}">${cum}B acumulados — ${cl}</strong>`;
+  document.getElementById("th-sess").textContent=`(${sess} sess.)`;
+
+  const selP=selId?PATHOS.find(p=>p.id===selId):null;
+  const recT=selP?selP.preferredType:null;
+
+  let devs=[...DEV];
+  if(filt!=="all")devs=devs.filter(d=>d.type===filt);
+  devs.sort((a,b)=>{
+    if(a.star&&!b.star)return -1;if(!a.star&&b.star)return 1;
+    return doseKit(b,plt)-doseKit(a,plt);
+  });
+
+  const tbody=document.getElementById("dev-body");
+  const empty=document.getElementById("empty-st");
+  tbody.innerHTML="";
+  if(!devs.length){empty.classList.add("show");return;}
+  empty.classList.remove("show");
+
+  devs.forEach(dev=>{
+    const dose=doseKit(dev,plt);
+    const kps=Math.ceil(tgt/dose);
+    const act=dose*kps;
+    const totK=kps*sess;
+    const cumD=act*sess;
+    const totBl=dev.bloodVol*totK;
+
+    const kCls=kps===1?"k1":kps===2?"k2":kps===3?"k3":"k4";
+    const cCls=cumD>=10?"c-ok":cumD>=6?"c-warn":"c-bad";
+    const ctCls=cumD>=10?"ct-ok":cumD>=6?"ct-warn":"ct-bad";
+    const cLbl=cumD>=10?"IDEAL":cumD>=6?"ATENÇÃO":"INSUF.";
+    const isRec=recT&&dev.type===recT;
+    const isDim=recT&&dev.type!==recT;
+
+    const tp=dev.type==="LP"
+      ?`<span class="type-pill chip-lp">LP-PRP</span>`
+      :`<span class="type-pill chip-lr">LR-PRP</span>`;
+
+    const tr=document.createElement("tr");
+    if(dev.star)tr.className="tc-row";
+    if(isDim)tr.classList.add("dim");
+    tr.innerHTML=`
+      <td><div class="dev-wrap">
+        ${dev.star?"<span class=\"tc-badge\">TROPOCELLS</span>":""}
+        <div>
+          <div class="dev-name">${dev.name}${isRec?" <span class=\"rec-tag\">recomendado</span>":""}</div>
+          <div class="dev-brand">${dev.brand}</div>
+        </div>
+      </div></td>
+      <td>${tp}</td>
+      <td><span class="mono">${dev.bloodVol} mL</span></td>
+      <td><span class="mono-m">${Math.round(dev.rec*100)}%</span></td>
+      <td><span class="mono">${dose.toFixed(2)}B</span></td>
+      <td><span class="kbadge ${kCls}">${kps} kit${kps>1?"s":""}</span></td>
+      <td><span class="mono">${totK}</span></td>
+      <td><span class="mono-m">${totBl} mL</span></td>
+      <td><span class="${cCls}">${cumD.toFixed(1)}B</span><span class="ctag ${ctCls}">${cLbl}</span></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function setPlt(v){plt=Math.min(500,Math.max(100,parseInt(v)||250));document.getElementById("sl").value=plt;document.getElementById("ni").value=plt;render();}
+function setSess(v){sess=v;syncBtns();render();}
+function setTgt(v){tgt=v;syncBtns();render();}
+function setFilter(t){
+  filt=t;
+  document.querySelectorAll(".ftag").forEach(el=>el.classList.remove("sel"));
+  document.querySelector({all:".ftag-all",LP:".ftag-lp",LR:".ftag-lr"}[t]).classList.add("sel");
+  render();
+}
+document.getElementById("sl").addEventListener("input",e=>setPlt(e.target.value));
+document.getElementById("ni").addEventListener("input",e=>setPlt(e.target.value));
+
+renderCards();
+selectPatho("oa_jo");
+</script>
+</body>
+</html>

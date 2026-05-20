@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Calculadora de Precificação PRP — Optima Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0C2D5E;--navy2:#1B4F8A;--gold:#C9973A;--gold-l:#F5D98A;
+  --green:#16A34A;--green-l:#DCFCE7;--red:#DC2626;--red-l:#FEE2E2;
+  --amber:#D97706;--amber-l:#FEF3C7;--purple:#7C3AED;--purple-l:#EDE9FE;
+  --teal:#0D9488;--teal-l:#CCFBF1;
+  --bg:#F4F6FA;--card:#FFFFFF;--border:#E2E8F0;
+  --text:#1E293B;--muted:#64748B;--light:#F8FAFC;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.header{background:linear-gradient(135deg,#061829 0%,var(--navy) 60%,#1B5C8A 100%);
+  padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+.logo-pill{background:#fff;border-radius:10px;padding:8px 16px;display:inline-flex;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.2);}
+.logo-pill img{height:34px;display:block;}
+.header-right{text-align:right;}
+.header-title{font-size:clamp(14px,3vw,20px);font-weight:700;color:#fff;}
+.header-sub{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;margin-top:2px;}
+.main{max-width:1160px;margin:0 auto;padding:22px 16px 60px;}
+.grid-main{display:grid;grid-template-columns:1fr 390px;gap:20px;align-items:start;}
+@media(max-width:900px){.grid-main{grid-template-columns:1fr;}}
+.card{background:var(--card);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px;}
+.card-head{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.card-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ci-navy{background:rgba(12,45,94,.1);} .ci-gold{background:rgba(201,151,58,.12);}
+.ci-green{background:rgba(22,163,74,.1);} .ci-purple{background:rgba(124,58,237,.1);} .ci-teal{background:rgba(13,148,136,.1);}
+.card-head-text h3{font-size:13px;font-weight:700;color:var(--navy);}
+.card-head-text p{font-size:11px;color:var(--muted);margin-top:1px;}
+.card-body{padding:16px 20px;}
+.inp-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #F5F5F5;}
+.inp-row:last-child{border-bottom:none;}
+.inp-label{font-size:12px;font-weight:500;color:var(--text);}
+.inp-sub{font-size:10px;color:var(--muted);margin-top:1px;line-height:1.4;}
+.inp-ctrl{display:flex;align-items:center;}
+.inp-prefix,.inp-suffix{padding:0 10px;height:38px;display:flex;align-items:center;
+  background:#F8FAFC;border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--muted);}
+.inp-prefix{border-radius:8px 0 0 8px;border-right:none;}
+.inp-suffix{border-radius:0 8px 8px 0;border-left:none;}
+input[type=number]{width:110px;height:38px;border:1px solid var(--border);
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--navy);
+  text-align:right;padding:0 10px;outline:none;transition:border-color .15s;background:#fff;}
+input[type=number]:focus{border-color:var(--navy);}
+input[type=number].pre{border-radius:0 8px 8px 0;border-left:none;}
+input[type=number].suf{border-radius:8px 0 0 8px;}
+input[type=number].lone{border-radius:8px;}
+.kits-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px;}
+.kit-btn{width:32px;height:32px;border-radius:8px;border:2px solid var(--border);background:#fff;
+  font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:all .15s;}
+.kit-btn:hover{border-color:var(--navy);color:var(--navy);}
+.kit-display{font-size:22px;font-weight:800;color:var(--navy);min-width:32px;text-align:center;}
+.subtotal{display:flex;justify-content:space-between;align-items:center;
+  padding:10px 14px;border-radius:8px;background:var(--light);margin-top:12px;border:1px solid var(--border);}
+.subtotal-l{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.subtotal-v{font-family:'DM Mono',monospace;font-size:16px;font-weight:600;color:var(--navy);}
+.toggle-row{display:flex;gap:8px;margin:10px 0;}
+.tgl-btn{flex:1;padding:8px;border-radius:8px;border:2px solid var(--border);background:#fff;
+  font-size:11px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .15s;text-align:center;}
+.tgl-btn.active{border-color:var(--purple);background:var(--purple);color:#fff;}
+.centri-box{background:var(--purple-l);border:1px solid #C4B5FD;border-radius:10px;padding:14px;margin-top:4px;}
+.centri-info{background:#EDE9FE;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:11px;color:#5B21B6;line-height:1.6;}
+.centri-amort{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 12px;background:#fff;border-radius:8px;margin-top:8px;border:1px solid #C4B5FD;}
+.ca-label{font-size:11px;color:#5B21B6;font-weight:600;}
+.ca-val{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--purple);}
+.comodato-box{background:var(--teal-l);border:1px solid #5EEAD4;border-radius:10px;padding:14px;margin-top:4px;font-size:12px;color:#0F766E;line-height:1.6;}
+.result-sticky{position:sticky;top:20px;}
+.result-hero{background:linear-gradient(150deg,#061829,var(--navy));border-radius:14px;padding:24px;color:#fff;margin-bottom:16px;}
+.result-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:6px;}
+.result-price{font-family:'DM Mono',monospace;font-size:clamp(28px,5vw,44px);font-weight:500;color:#fff;line-height:1;margin-bottom:4px;}
+.result-price span{font-size:16px;opacity:.6;}
+.margin-bar-bg{height:6px;background:rgba(255,255,255,.1);border-radius:99px;margin-bottom:5px;}
+.margin-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold-l));transition:width .4s;}
+.bk-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.bk-row:last-child{border-bottom:none;}
+.bk-label{color:var(--muted);display:flex;align-items:center;gap:6px;}
+.bk-dot{width:6px;height:6px;border-radius:99px;flex-shrink:0;}
+.bk-val{font-family:'DM Mono',monospace;font-weight:600;color:var(--text);}
+.bk-total{display:flex;justify-content:space-between;padding:12px 14px;background:var(--light);border-radius:8px;margin-top:10px;border:1px solid var(--border);}
+.bk-total-l{font-size:12px;font-weight:700;color:var(--navy);}
+.bk-total-v{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--navy);}
+.fat-hero{background:linear-gradient(135deg,#064E3B,var(--green));border-radius:14px;padding:22px;color:#fff;margin-bottom:16px;}
+.fat-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:4px;}
+.fat-val{font-family:'DM Mono',monospace;font-size:clamp(22px,4vw,34px);font-weight:500;color:#fff;line-height:1.1;}
+.fat-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:3px;}
+.fat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.fat-mini{background:rgba(255,255,255,.08);border-radius:8px;padding:12px;}
+.fat-mini-l{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.5px;margin-bottom:4px;}
+.fat-mini-v{font-family:'DM Mono',monospace;font-size:16px;font-weight:600;color:#fff;}
+.tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;}
+.tag-ok{background:var(--green-l);color:var(--green);}
+.tag-warn{background:var(--amber-l);color:var(--amber);}
+.tag-bad{background:var(--red-l);color:var(--red);}
+.sess-btns{display:flex;gap:6px;margin-top:8px;}
+.sess-btn{flex:1;padding:8px 4px;border-radius:8px;border:2px solid var(--border);
+  background:#fff;font-size:12px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .15s;line-height:1.3;}
+.sess-btn.active{border-color:var(--navy);background:var(--navy);color:#fff;}
+.share-btn{width:100%;padding:13px;border-radius:10px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;
+  background:linear-gradient(135deg,var(--gold),#E8B24A);color:#fff;margin-top:14px;
+  box-shadow:0 4px 14px rgba(201,151,58,.35);transition:transform .15s,box-shadow .15s;}
+.share-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,151,58,.45);}
+#print-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;
+  align-items:center;justify-content:center;padding:20px;}
+#print-overlay.show{display:flex;}
+.print-card{background:#fff;border-radius:16px;padding:28px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.print-card h3{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.print-card p{font-size:11px;color:var(--muted);margin-bottom:16px;}
+.ps-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;}
+.ps-sep{border-top:1px dashed var(--border);margin:8px 0;}
+.print-btns{display:flex;gap:10px;margin-top:16px;}
+.pb{flex:1;padding:11px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:none;}
+.pb-ok{background:var(--navy);color:#fff;} .pb-cancel{background:var(--light);color:var(--muted);border:1px solid var(--border);}
+.info-note{padding:10px 14px;border-radius:8px;font-size:11px;line-height:1.6;margin-top:10px;}
+.info-gold{background:var(--amber-l);border:1px solid #FDE68A;color:#92400E;}
+.info-blue{background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;}
+.footer{text-align:center;padding:20px;font-size:10px;color:var(--muted);border-top:1px solid var(--border);margin-top:10px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-pill"><img src="data:image/png;base64,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" alt="Optima Solutions"></div>
+  <div class="header-right">
+    <div class="header-title">Precificação de Procedimento PRP</div>
+    <div class="header-sub">Custo · Margem · Centrífuga · Faturamento · Nota Fiscal</div>
+  </div>
+</div>
+
+<div class="main">
+<div class="grid-main">
+<div>
+
+  <!-- KIT PRP -->
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-navy">💉</div>
+      <div class="card-head-text"><h3>Kit de PRP</h3><p>Sistema de preparo plaquetário (ex: Tropocells)</p></div></div>
+    <div class="card-body">
+      <div class="inp-row">
+        <div><div class="inp-label">Custo do kit</div><div class="inp-sub">Valor de aquisição por unidade</div></div>
+        <div class="inp-ctrl"><div class="inp-prefix">R$</div><input type="number" id="kit_price" class="pre" value="350" min="0" step="10" oninput="calc()"></div>
+      </div>
+      <div class="inp-row" style="border-bottom:none;">
+        <div><div class="inp-label">Kits por sessão</div><div class="inp-sub">Quantidade para atingir dose terapêutica (mín. 4B)</div>
+          <div class="kits-row">
+            <button class="kit-btn" onclick="changeKits(-1)">−</button>
+            <span class="kit-display" id="kits-display">1</span>
+            <span style="font-size:11px;color:var(--muted)">kit(s)</span>
+            <button class="kit-btn" onclick="changeKits(1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="subtotal"><span class="subtotal-l">Subtotal — Kit PRP</span><span class="subtotal-v" id="sub_kit">R$ 350,00</span></div>
+    </div>
+  </div>
+
+  <!-- CENTRIFUGA -->
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-purple">⚙️</div>
+      <div class="card-head-text"><h3>Centrífuga</h3><p>Aquisição própria com amortização ou comodato do fornecedor</p></div></div>
+    <div class="card-body">
+      <div class="inp-label" style="margin-bottom:6px;">Modalidade da centrífuga</div>
+      <div class="toggle-row">
+        <button class="tgl-btn active" id="tgl-compra" onclick="setCentri('compra')">🛒 Aquisição própria<br><span style="font-weight:400;font-size:10px;">Amortizar em procedimentos</span></button>
+        <button class="tgl-btn" id="tgl-comodato" onclick="setCentri('comodato')">🤝 Comodato<br><span style="font-weight:400;font-size:10px;">Cedida pelo fornecedor</span></button>
+      </div>
+      <div id="box-compra" class="centri-box">
+        <div class="inp-row" style="padding-top:0;">
+          <div><div class="inp-label">Valor de aquisição da centrífuga</div><div class="inp-sub">Custo total do equipamento</div></div>
+          <div class="inp-ctrl"><div class="inp-prefix">R$</div><input type="number" id="centri_val" class="pre" value="8000" min="0" step="100" oninput="calc()"></div>
+        </div>
+        <div class="inp-row" style="border-bottom:none;">
+          <div><div class="inp-label">Amortizar em quantos procedimentos</div><div class="inp-sub">Padrão: os primeiros 100 procedimentos cobrem o equipamento</div></div>
+          <div class="inp-ctrl"><input type="number" id="centri_proc" class="lone" value="100" min="1" step="10" oninput="calc()" style="width:90px;border-radius:8px;border:1px solid var(--border);"></div>
+        </div>
+        <div class="centri-amort">
+          <span class="ca-label">⚙️ Custo de amortização por procedimento</span>
+          <span class="ca-val" id="centri-amort-val">R$ 80,00</span>
+        </div>
+        <div class="centri-info">💡 <strong>Lógica de amortização:</strong> O valor da centrífuga é dividido entre os primeiros <span id="centri-proc-label">100</span> procedimentos. A partir do <span id="centri-proc-label2">101</span>º, esse custo desaparece — aumentando automaticamente a margem de lucro.</div>
+      </div>
+      <div id="box-comodato" class="comodato-box" style="display:none;">
+        <strong>✅ Comodato:</strong> A centrífuga é cedida pelo fornecedor sem custo de aquisição. O custo de amortização não é incluído.<br><br>
+        <strong>Atenção:</strong> Verifique volume mínimo de kits, exclusividade e prazo do contrato de comodato.
+        <div class="inp-row" style="border-bottom:none;margin-top:10px;padding-top:10px;border-top:1px solid #5EEAD4;">
+          <div><div class="inp-label">Taxa de manutenção / suporte (se houver)</div><div class="inp-sub">Valor mensal rateado por procedimento</div></div>
+          <div class="inp-ctrl"><div class="inp-prefix">R$</div><input type="number" id="comodato_taxa" class="pre" value="0" min="0" step="5" oninput="calc()"></div>
+        </div>
+      </div>
+      <div class="subtotal" style="margin-top:12px;"><span class="subtotal-l">Subtotal — Centrífuga</span><span class="subtotal-v" id="sub_centri">R$ 80,00</span></div>
+    </div>
+  </div>
+
+  <!-- MÃO DE OBRA -->
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-navy">👩‍⚕️</div>
+      <div class="card-head-text"><h3>Mão de Obra</h3><p>Todos os profissionais envolvidos no procedimento</p></div></div>
+    <div class="card-body">
+      <div class="inp-row">
+        <div><div class="inp-label">Honorário médico</div><div class="inp-sub">Valor pago ao médico pela realização do procedimento</div></div>
+        <div class="inp-ctrl"><div class="inp-prefix">R$</div><input type="number" id="mdo_medico" class="pre" value="300" min="0" step="10" oninput="calc()"></div>
+      </div>
+      <div class="inp-row">
+        <div>
+          <div class="inp-label">Enfermeira / Técnico de Enfermagem</div>
+          <div class="inp-sub">Coleta de sangue, punção venosa, preparo do paciente e suporte durante o procedimento</div>
+        </div>
+        <div class="inp-ctrl"><div class="inp-prefix">R$</div><input type="number" id="mdo_enf" class="pre" value="80" min="0" step="10" oninput="calc()"></div>
+      </div>
+      <div class="inp-row" style="border-bottom:none;">
+        <div><div class="inp-label">Outros profissionais (se aplicável)</div><div class="inp-sub">Anestesista, recepção, auxiliar de saúde</div></div>
+        <div class="inp-ctrl"><div class="inp-prefix">R$</div><input type="number" id="mdo_outros" class="pre" value="0" min="0" step="10" oninput="calc()"></div>
+      </div>
+      <div class="subtotal"><span class="subtotal-l">Subtotal — Mão de Obra</span><span class="subtotal-v" id="sub_mdo">R$ 380,00</span></div>
+    </div>
+  </div>
+
+  <!-- CONSUMÍVEIS -->
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-navy">🧪</div>
+      <div class="card-head-text"><h3>Materiais Consumíveis</h3><p>Insumos por procedimento — edite, remova ou adicione itens</p></div></div>
+    <div class="card-body" id="consumables-list"></div>
+    <div style="padding:0 20px 14px;">
+      <button onclick="addConsumable()" style="width:100%;padding:9px;border-radius:8px;border:1px dashed var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);cursor:pointer;font-weight:600;">+ Adicionar consumível</button>
+    </div>
+    <div class="card-body" style="border-top:1px solid var(--border);padding-top:12px;margin-top:0;">
+      <div class="subtotal"><span class="subtotal-l">Subtotal — Consumíveis</span><span class="subtotal-v" id="sub_cons">R$ 0,00</span></div>
+    </div>
+  </div>
+
+  <!-- OPERACIONAL -->
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-gold">🏥</div>
+      <div class="card-head-text"><h3>Custos Operacionais</h3><p>Estrutura física e custos fixos rateados por procedimento</p></div></div>
+    <div class="card-body">
+      <div class="inp-row">
+        <div><div class="inp-label">Taxa de uso de sala / centro cirúrgico</div><div class="inp-sub">Valor por procedimento — inclui equipamentos da sala</div></div>
+        <div class="inp-ctrl"><div class="inp-prefix">R$</div><input type="number" id="sala" class="pre" value="200" min="0" step="10" oninput="calc()"></div>
+      </div>
+      <div class="inp-row" style="border-bottom:none;">
+        <div><div class="inp-label">Outros custos fixos rateados</div><div class="inp-sub">Energia, esterilização, administrativo, limpeza</div></div>
+        <div class="inp-ctrl"><div class="inp-prefix">R$</div><input type="number" id="outros_op" class="pre" value="80" min="0" step="10" oninput="calc()"></div>
+      </div>
+      <div class="subtotal"><span class="subtotal-l">Subtotal — Operacional</span><span class="subtotal-v" id="sub_op">R$ 280,00</span></div>
+    </div>
+  </div>
+
+  <!-- MARGEM E IMPOSTOS -->
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-green">📈</div>
+      <div class="card-head-text"><h3>Margem de Lucro e Impostos</h3><p>Rentabilidade esperada e carga tributária</p></div></div>
+    <div class="card-body">
+      <div class="inp-row">
+        <div><div class="inp-label">Margem de lucro desejada</div><div class="inp-sub">Calculada sobre o custo total do procedimento</div></div>
+        <div class="inp-ctrl"><input type="number" id="margem" class="suf" value="40" min="0" max="500" step="1" oninput="calc()"><div class="inp-suffix">%</div></div>
+      </div>
+      <div class="inp-row" style="border-bottom:none;">
+        <div><div class="inp-label">Imposto sobre nota fiscal</div><div class="inp-sub">ISS, IRPJ, PIS/Cofins — conforme regime tributário da clínica</div></div>
+        <div class="inp-ctrl"><input type="number" id="imposto" class="suf" value="0" min="0" max="100" step="0.5" oninput="calc()"><div class="inp-suffix">%</div></div>
+      </div>
+      <div class="info-note info-gold">💡 <strong>Referência:</strong> Simples Nacional (saúde): ~6–12% · Lucro Presumido: ~13,33% · ISS isolado: 2–5% conforme município. Consulte seu contador.</div>
+    </div>
+  </div>
+
+  <!-- SESSÕES -->
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-navy">📅</div>
+      <div class="card-head-text"><h3>Protocolo de Sessões</h3><p>Calcule o valor total do tratamento completo para o paciente</p></div></div>
+    <div class="card-body">
+      <div class="inp-label" style="margin-bottom:4px;">Sessões no protocolo</div>
+      <div class="sess-btns">
+        <button class="sess-btn active" data-s="1" onclick="setSess(1)">1×<br><span style="font-size:9px;font-weight:400;">Sessão única</span></button>
+        <button class="sess-btn" data-s="2" onclick="setSess(2)">2×<br><span style="font-size:9px;font-weight:400;">Duas sessões</span></button>
+        <button class="sess-btn" data-s="3" onclick="setSess(3)">3×<br><span style="font-size:9px;font-weight:400;">Padrão OA</span></button>
+        <button class="sess-btn" data-s="5" onclick="setSess(5)">5×<br><span style="font-size:9px;font-weight:400;">Estendido</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOLUME MENSAL -->
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-teal">📊</div>
+      <div class="card-head-text"><h3>Projeção de Faturamento Mensal</h3><p>Impacto do PRP na receita total da clínica ou consultório</p></div></div>
+    <div class="card-body">
+      <div class="inp-row" style="border-bottom:none;">
+        <div><div class="inp-label">Procedimentos PRP realizados por mês</div><div class="inp-sub">Estimativa de volume de sessões mensais — não de pacientes novos</div></div>
+        <div class="inp-ctrl"><input type="number" id="vol_mensal" class="lone" value="10" min="1" step="1" oninput="calc()" style="width:90px;border-radius:8px;border:1px solid var(--border);"></div>
+      </div>
+      <div class="info-note info-blue">ℹ️ Para protocolos de 3 sessões, cada paciente retorna 3 vezes — o volume mensal representa <em>sessões realizadas</em>, independente de serem pacientes novos ou retornos.</div>
+    </div>
+  </div>
+
+</div><!-- /left -->
+
+<!-- RIGHT -->
+<div class="result-sticky">
+
+  <div class="result-hero">
+    <div class="result-label">Valor sugerido por sessão</div>
+    <div class="result-price"><span>R$&nbsp;</span><span id="r-price">0,00</span></div>
+    <div class="result-sub" id="r-sub">Calculando...</div>
+    <div style="margin-top:14px;margin-bottom:5px;display:flex;justify-content:space-between;">
+      <div style="font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px;">MARGEM EFETIVA</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.55);"><strong id="r-margin-pct" style="color:#F5D98A;">—</strong></div>
+    </div>
+    <div class="margin-bar-bg"><div class="margin-bar" id="r-margin-bar" style="width:0%"></div></div>
+    <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:4px;" id="r-margin-note"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-navy">🧾</div>
+      <div class="card-head-text"><h3>Composição do Preço</h3><p>Por sessão — detalhamento completo</p></div></div>
+    <div class="card-body">
+      <div class="bk-row"><div class="bk-label"><div class="bk-dot" style="background:#0C2D5E"></div>Kit PRP</div><div class="bk-val" id="bk-kit">—</div></div>
+      <div class="bk-row"><div class="bk-label"><div class="bk-dot" style="background:#7C3AED"></div>Centrífuga</div><div class="bk-val" id="bk-centri">—</div></div>
+      <div class="bk-row"><div class="bk-label"><div class="bk-dot" style="background:#0D9488"></div>Mão de obra</div><div class="bk-val" id="bk-mdo">—</div></div>
+      <div class="bk-row"><div class="bk-label"><div class="bk-dot" style="background:#1B5C8A"></div>Consumíveis</div><div class="bk-val" id="bk-cons">—</div></div>
+      <div class="bk-row" style="border-bottom:1px dashed var(--border)"><div class="bk-label"><div class="bk-dot" style="background:#C9973A"></div>Operacional</div><div class="bk-val" id="bk-op">—</div></div>
+      <div class="bk-row" style="border-bottom:1px dashed #ccc"><div class="bk-label" style="font-weight:600;color:var(--text);">Custo total</div><div class="bk-val" id="bk-cost">—</div></div>
+      <div class="bk-row"><div class="bk-label"><div class="bk-dot" style="background:#16A34A"></div>Margem de lucro</div><div class="bk-val" style="color:var(--green)" id="bk-margin">—</div></div>
+      <div class="bk-row" id="bk-tax-row" style="display:none"><div class="bk-label"><div class="bk-dot" style="background:#DC2626"></div>Imposto NF</div><div class="bk-val" style="color:var(--red)" id="bk-tax">—</div></div>
+      <div class="bk-total"><div class="bk-total-l">💰 Valor final / sessão</div><div class="bk-total-v" id="bk-total">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-gold">📋</div>
+      <div class="card-head-text"><h3>Protocolo Completo</h3><p id="prot-label">1 sessão</p></div></div>
+    <div class="card-body">
+      <div class="bk-row"><div class="bk-label">Valor por sessão</div><div class="bk-val" id="prot-sess">—</div></div>
+      <div class="bk-row" style="border-bottom:none"><div class="bk-label">Número de sessões</div><div class="bk-val" id="prot-n">—</div></div>
+      <div class="bk-total" style="background:rgba(201,151,58,.08);border-color:rgba(201,151,58,.25);margin-top:10px;">
+        <div class="bk-total-l" style="color:#B45309;">🏆 Protocolo completo</div>
+        <div class="bk-total-v" style="color:#B45309;" id="prot-total">—</div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted);line-height:1.5;" id="prot-note"></div>
+    </div>
+  </div>
+
+  <div class="fat-hero">
+    <div class="fat-label">Projeção de faturamento mensal</div>
+    <div class="fat-val" id="fat-val">R$ 0,00</div>
+    <div class="fat-sub" id="fat-sub">— procedimentos × R$ —</div>
+    <div class="fat-grid">
+      <div class="fat-mini"><div class="fat-mini-l">RECEITA BRUTA / MÊS</div><div class="fat-mini-v" id="fat-bruto">—</div></div>
+      <div class="fat-mini"><div class="fat-mini-l">LUCRO LÍQUIDO / MÊS</div><div class="fat-mini-v" id="fat-lucro">—</div></div>
+      <div class="fat-mini"><div class="fat-mini-l">RECEITA BRUTA / ANO</div><div class="fat-mini-v" id="fat-ano">—</div></div>
+      <div class="fat-mini"><div class="fat-mini-l">LUCRO LÍQUIDO / ANO</div><div class="fat-mini-v" id="fat-ano-liq">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="card-icon ci-green">✅</div>
+      <div class="card-head-text"><h3>Análise de Rentabilidade</h3><p>Benchmarks do mercado médico privado</p></div></div>
+    <div class="card-body">
+      <div id="semaforo"></div>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);"><span style="width:10px;height:10px;border-radius:99px;background:var(--red);display:inline-block;"></span>&lt; 20% — Abaixo do mínimo</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);"><span style="width:10px;height:10px;border-radius:99px;background:var(--amber);display:inline-block;"></span>20–39% — Aceitável</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);"><span style="width:10px;height:10px;border-radius:99px;background:var(--green);display:inline-block;"></span>≥ 40% — Rentabilidade saudável</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="share-btn" onclick="showPrint()">📄 Gerar Resumo Imprimível</button>
+
+</div>
+</div>
+</div>
+
+<div id="print-overlay">
+  <div class="print-card">
+    <h3>Resumo do Procedimento PRP</h3>
+    <p>Optima Solutions · Precificação e Projeção de Faturamento</p>
+    <div id="print-content"></div>
+    <div class="print-btns">
+      <button class="pb pb-cancel" onclick="closePrint()">Fechar</button>
+      <button class="pb pb-ok" onclick="window.print()">🖨️ Imprimir</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Optima Solutions &bull; Calculadora de Precificação PRP &bull; Valores são estimativas de apoio à decisão &bull; Consulte seu contador para orientação tributária
+</div>
+
+<script>
+let consumables = [
+  {id:1,name:'Seringa 20mL coleta',val:8},
+  {id:2,name:'Agulha coleta + injeção',val:5},
+  {id:3,name:'Luvas estéreis',val:6},
+  {id:4,name:'Kit curativo / gazes',val:12},
+  {id:5,name:'Antisséptico / campo estéril',val:9},
+  {id:6,name:'Tubo anticoagulante (ACD)',val:4},
+];
+let nextId=7, kits=1, sessions=1, centri_mode='compra';
+
+function renderConsumables(){
+  const el=document.getElementById('consumables-list');
+  el.innerHTML=consumables.map((c,i)=>`
+    <div class="inp-row" style="${i===consumables.length-1?'border-bottom:none':''}">
+      <div style="flex:1;padding-right:10px;">
+        <input type="text" value="${c.name.replace(/"/g,'&quot;')}"
+          style="width:100%;border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-family:'DM Sans',sans-serif;font-size:12px;outline:none;"
+          onchange="consumables[${i}].name=this.value">
+        ${consumables.length>1?`<button onclick="removeConsumable(${c.id})" style="background:none;border:none;color:#ccc;cursor:pointer;font-size:10px;margin-top:3px;">✕ remover</button>`:''}
+      </div>
+      <div class="inp-ctrl">
+        <div class="inp-prefix">R$</div>
+        <input type="number" value="${c.val}" class="pre" min="0" step="0.5"
+          oninput="consumables[${i}].val=parseFloat(this.value)||0;calc()">
+      </div>
+    </div>`).join('');
+  calc();
+}
+
+function addConsumable(){consumables.push({id:nextId++,name:'Novo consumível',val:0});renderConsumables();}
+function removeConsumable(id){consumables=consumables.filter(c=>c.id!==id);renderConsumables();}
+function changeKits(d){kits=Math.max(1,Math.min(10,kits+d));document.getElementById('kits-display').textContent=kits;calc();}
+function setSess(n){sessions=n;document.querySelectorAll('.sess-btn').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.s)===n));calc();}
+
+function setCentri(mode){
+  centri_mode=mode;
+  document.getElementById('tgl-compra').classList.toggle('active',mode==='compra');
+  document.getElementById('tgl-comodato').classList.toggle('active',mode==='comodato');
+  document.getElementById('box-compra').style.display=mode==='compra'?'block':'none';
+  document.getElementById('box-comodato').style.display=mode==='comodato'?'block':'none';
+  calc();
+}
+
+function fmt(v){return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+function calc(){
+  const kit_u   = parseFloat(document.getElementById('kit_price').value)||0;
+  const medico  = parseFloat(document.getElementById('mdo_medico').value)||0;
+  const enf     = parseFloat(document.getElementById('mdo_enf').value)||0;
+  const mdo_out = parseFloat(document.getElementById('mdo_outros').value)||0;
+  const sala    = parseFloat(document.getElementById('sala').value)||0;
+  const outros  = parseFloat(document.getElementById('outros_op').value)||0;
+  const margPct = parseFloat(document.getElementById('margem').value)||0;
+  const taxPct  = parseFloat(document.getElementById('imposto').value)||0;
+  const vol     = parseInt(document.getElementById('vol_mensal').value)||1;
+
+  let centri_cost=0;
+  if(centri_mode==='compra'){
+    const cv=parseFloat(document.getElementById('centri_val').value)||0;
+    const cp=parseInt(document.getElementById('centri_proc').value)||100;
+    centri_cost=cv/cp;
+    document.getElementById('centri-amort-val').textContent=fmt(centri_cost);
+    document.getElementById('centri-proc-label').textContent=cp;
+    document.getElementById('centri-proc-label2').textContent=cp+1;
+  } else {
+    centri_cost=parseFloat(document.getElementById('comodato_taxa').value)||0;
+  }
+
+  const kit_total  = kit_u*kits;
+  const mdo_total  = medico+enf+mdo_out;
+  const cons_total = consumables.reduce((a,c)=>a+(parseFloat(c.val)||0),0);
+  const op_total   = sala+outros;
+  const custo      = kit_total+centri_cost+mdo_total+cons_total+op_total;
+  const margem_val = custo*(margPct/100);
+  const pre_tax    = custo+margem_val;
+  const tax_val    = taxPct>0?pre_tax*(taxPct/100):0;
+  const final      = pre_tax+tax_val;
+  const lucro_liq  = margem_val-tax_val;
+  const eff_margin = final>0?((lucro_liq/final)*100):0;
+
+  document.getElementById('sub_kit').textContent=fmt(kit_total);
+  document.getElementById('sub_centri').textContent=fmt(centri_cost);
+  document.getElementById('sub_mdo').textContent=fmt(mdo_total);
+  document.getElementById('sub_cons').textContent=fmt(cons_total);
+  document.getElementById('sub_op').textContent=fmt(op_total);
+
+  document.getElementById('r-price').textContent=final.toLocaleString('pt-BR',{minimumFractionDigits:2});
+  document.getElementById('r-sub').textContent='Custo: '+fmt(custo)+' · Margem: '+margPct+'% · Imposto: '+taxPct+'%';
+  document.getElementById('r-margin-pct').textContent=eff_margin.toFixed(1)+'% sobre preço final';
+  document.getElementById('r-margin-bar').style.width=Math.min(100,eff_margin*1.5)+'%';
+  document.getElementById('r-margin-note').textContent=lucro_liq>0?'Lucro líquido/sessão: '+fmt(lucro_liq):'Configure a margem desejada';
+
+  document.getElementById('bk-kit').textContent=fmt(kit_total);
+  document.getElementById('bk-centri').textContent=fmt(centri_cost);
+  document.getElementById('bk-mdo').textContent=fmt(mdo_total);
+  document.getElementById('bk-cons').textContent=fmt(cons_total);
+  document.getElementById('bk-op').textContent=fmt(op_total);
+  document.getElementById('bk-cost').textContent=fmt(custo);
+  document.getElementById('bk-margin').textContent='+'+fmt(margem_val);
+  document.getElementById('bk-total').textContent=fmt(final);
+  const tr=document.getElementById('bk-tax-row');
+  if(taxPct>0){tr.style.display='flex';document.getElementById('bk-tax').textContent='+'+fmt(tax_val);}
+  else{tr.style.display='none';}
+
+  const prot_total=final*sessions;
+  document.getElementById('prot-label').textContent=sessions+' sessão'+(sessions>1?'ões':'');
+  document.getElementById('prot-sess').textContent=fmt(final);
+  document.getElementById('prot-n').textContent=sessions+'×';
+  document.getElementById('prot-total').textContent=fmt(prot_total);
+  const notes={1:'',2:'✓ Protocolo de reforço — indicado para manutenção ou casos leves',3:'✓ Protocolo padrão para OA — Corsini et al. (2025): 3 × 4B = 12B acumulados',5:'✓ Protocolo estendido — tendinopatias crônicas e casos complexos'};
+  document.getElementById('prot-note').textContent=notes[sessions]||'';
+
+  const fat_bruto=final*vol;
+  const fat_lucro=lucro_liq*vol;
+  document.getElementById('fat-val').textContent=fmt(fat_bruto);
+  document.getElementById('fat-sub').textContent=vol+' procedimento'+(vol>1?'s':'')+'/mês × '+fmt(final);
+  document.getElementById('fat-bruto').textContent=fmt(fat_bruto);
+  document.getElementById('fat-lucro').textContent=fmt(fat_lucro);
+  document.getElementById('fat-ano').textContent=fmt(fat_bruto*12);
+  document.getElementById('fat-ano-liq').textContent=fmt(fat_lucro*12);
+
+  const sem=document.getElementById('semaforo');
+  let sc,st,sd;
+  if(margPct<20){sc='tag-bad';st='🔴 Margem insuficiente';sd='Abaixo de 20%, o procedimento pode não cobrir custos indiretos, riscos e retrabalho operacional.';}
+  else if(margPct<40){sc='tag-warn';st='🟡 Margem aceitável';sd='Entre 20–39%, o procedimento é viável mas há espaço para otimização de custos ou ajuste de preço.';}
+  else if(margPct<80){sc='tag-ok';st='🟢 Margem saudável';sd='Acima de 40% é considerado rentável para procedimentos ambulatoriais em medicina privada brasileira.';}
+  else{sc='tag-ok';st='🟢 Alta rentabilidade';sd='Acima de 80% — verifique se o preço final está competitivo com o mercado local para garantir volume.';}
+  sem.innerHTML='<span class="tag '+sc+'" style="font-size:12px;padding:5px 12px;display:inline-block;">'+st+'</span><div style="font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px;">'+sd+'</div>';
+
+  window._calc={kit_total,centri_cost,mdo_total,cons_total,op_total,custo,margem_val,tax_val,lucro_liq,final,prot_total,sessions,margPct,taxPct,fat_bruto,fat_lucro,vol,kits,centri_mode};
+}
+
+function showPrint(){
+  const d=window._calc; if(!d) return;
+  function r(l,v,bold){return '<div class="ps-row" style="'+(bold?'font-weight:700;font-size:13px;':'')+'"><span>'+l+'</span><span>'+v+'</span></div>';}
+  document.getElementById('print-content').innerHTML=
+    '<div style="background:var(--light);border-radius:10px;padding:14px;margin-bottom:12px;">'+
+    '<div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:8px;">CUSTOS POR SESSÃO</div>'+
+    r('Kit PRP ('+d.kits+'x)',fmt(d.kit_total))+
+    r('Centrífuga ('+d.centri_mode+')',fmt(d.centri_cost))+
+    r('Mão de obra',fmt(d.mdo_total))+
+    r('Consumíveis',fmt(d.cons_total))+
+    r('Operacional',fmt(d.op_total))+
+    '<div class="ps-sep"></div>'+
+    r('Custo total',fmt(d.custo),true)+
+    r('Margem ('+d.margPct+'%)','+'+fmt(d.margem_val))+
+    (d.taxPct>0?r('Imposto NF ('+d.taxPct+'%)','+'+fmt(d.tax_val)):'')+
+    '<div class="ps-sep"></div>'+
+    r('VALOR FINAL / SESSÃO',fmt(d.final),true)+
+    '</div>'+
+    '<div style="background:rgba(201,151,58,.08);border-radius:10px;padding:14px;margin-bottom:12px;">'+
+    '<div style="font-size:11px;font-weight:700;color:#B45309;margin-bottom:8px;">PROTOCOLO COMPLETO</div>'+
+    r(d.sessions+' sessão(ões) x '+fmt(d.final),'—')+
+    r('VALOR TOTAL DO PROTOCOLO',fmt(d.prot_total),true)+
+    '</div>'+
+    '<div style="background:rgba(13,148,136,.07);border-radius:10px;padding:14px;">'+
+    '<div style="font-size:11px;font-weight:700;color:#0D9488;margin-bottom:8px;">PROJEÇÃO MENSAL ('+d.vol+' procedimentos)</div>'+
+    r('Receita bruta / mês',fmt(d.fat_bruto))+
+    r('Lucro líquido / mês',fmt(d.fat_lucro))+
+    r('Receita bruta / ano',fmt(d.fat_bruto*12))+
+    r('Lucro líquido / ano',fmt(d.fat_lucro*12),true)+
+    '</div>';
+  document.getElementById('print-overlay').classList.add('show');
+}
+function closePrint(){document.getElementById('print-overlay').classList.remove('show');}
+renderConsumables();
+calc();
+</script>
+</body>
+</html>
