@@ -25,9 +25,9 @@
   --radius-md: 8px;
   --radius-lg: 12px;
 }
-
+ 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   background: var(--bg3);
@@ -35,13 +35,13 @@ body {
   font-size: 14px;
   line-height: 1.5;
 }
-
+ 
 .container {
   max-width: 1060px;
   margin: 0 auto;
   padding: 28px 20px 64px;
 }
-
+ 
 /* HEADER */
 .header {
   display: flex;
@@ -50,7 +50,7 @@ body {
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
-
+ 
 .logo {
   width: 46px;
   height: 46px;
@@ -65,29 +65,29 @@ body {
   letter-spacing: 1px;
   flex-shrink: 0;
 }
-
+ 
 .header-info { flex: 1; min-width: 200px; }
-
+ 
 .header-title {
   font-size: 17px;
   font-weight: 700;
   color: var(--text);
   line-height: 1.25;
 }
-
+ 
 .header-subtitle {
   font-size: 12px;
   color: var(--text2);
   margin-top: 3px;
 }
-
+ 
 .header-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
 }
-
+ 
 .badge-warn {
   background: var(--warn-bg);
   color: var(--warn);
@@ -98,40 +98,40 @@ body {
   font-weight: 500;
   white-space: nowrap;
 }
-
+ 
 .task-counter { text-align: right; }
-
+ 
 .counter-row {
   display: flex;
   align-items: baseline;
   gap: 4px;
   justify-content: flex-end;
 }
-
+ 
 .counter-done {
   font-size: 26px;
   font-weight: 700;
   color: var(--text);
   line-height: 1;
 }
-
+ 
 .counter-sep {
   font-size: 14px;
   color: var(--text3);
 }
-
+ 
 .counter-total {
   font-size: 14px;
   color: var(--text2);
   font-weight: 500;
 }
-
+ 
 .counter-label {
   font-size: 11px;
   color: var(--text3);
   margin-top: 2px;
 }
-
+ 
 /* PROGRESS */
 .progress-wrap {
   display: flex;
@@ -139,7 +139,7 @@ body {
   gap: 10px;
   margin-bottom: 22px;
 }
-
+ 
 .progress-track {
   flex: 1;
   height: 5px;
@@ -148,7 +148,7 @@ body {
   border-radius: 99px;
   overflow: hidden;
 }
-
+ 
 .progress-fill {
   height: 100%;
   background: var(--success);
@@ -156,21 +156,25 @@ body {
   width: 0%;
   transition: width 0.35s ease;
 }
-
+ 
 .progress-pct {
   font-size: 12px;
   color: var(--text2);
   min-width: 38px;
   text-align: right;
 }
-
+ 
 /* TABS */
 .tabs-wrap {
   border-bottom: 1px solid var(--border);
   margin-bottom: 16px;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-
+ 
+.tabs-left { display: flex; }
+ 
 .tab-btn {
   background: none;
   border: none;
@@ -183,15 +187,29 @@ body {
   margin-bottom: -1px;
   transition: color 0.15s;
 }
-
+ 
 .tab-btn:hover { color: var(--text); }
-
+ 
 .tab-btn.active {
   color: var(--info-text);
   font-weight: 500;
   border-bottom-color: var(--info-text);
 }
-
+ 
+.reset-btn {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 11px;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s, background 0.15s;
+  margin-bottom: 4px;
+}
+.reset-btn:hover { color: #D85A30; background: rgba(216,90,48,0.08); }
+ 
 /* LEGEND */
 .legend {
   display: flex;
@@ -199,7 +217,7 @@ body {
   gap: 14px;
   margin-bottom: 16px;
 }
-
+ 
 .legend-item {
   display: flex;
   align-items: center;
@@ -207,14 +225,14 @@ body {
   font-size: 11px;
   color: var(--text2);
 }
-
+ 
 .legend-dot {
   width: 8px;
   height: 8px;
   border-radius: 2px;
   flex-shrink: 0;
 }
-
+ 
 /* GANTT WRAPPER */
 .gantt-wrap {
   background: var(--bg2);
@@ -222,19 +240,19 @@ body {
   border: 1px solid var(--border);
   overflow: hidden;
 }
-
+ 
 .gantt-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-
+ 
 .gantt-table {
   border-collapse: collapse;
   table-layout: fixed;
   min-width: 860px;
   width: 100%;
 }
-
+ 
 /* GANTT THEAD */
 .th-task {
   position: sticky;
@@ -251,7 +269,7 @@ body {
   width: 224px;
   min-width: 224px;
 }
-
+ 
 .th-week {
   padding: 6px 3px 5px;
   text-align: center;
@@ -263,22 +281,22 @@ body {
   vertical-align: bottom;
   width: 68px;
 }
-
+ 
 .th-week .wk-label { display: block; line-height: 1.2; }
 .th-week .wk-date  { display: block; font-size: 9px; color: var(--text3); font-weight: 400; margin-top: 1px; }
-
+ 
 .th-week.is-current {
   background: rgba(55,138,221,0.07);
   color: var(--info-text);
 }
 .th-week.is-current .wk-date { color: rgba(24,95,165,0.6); }
-
+ 
 .th-week.is-event {
   background: rgba(216,90,48,0.08);
   color: #D85A30;
 }
 .th-week.is-event .wk-date { color: rgba(216,90,48,0.65); }
-
+ 
 /* PHASE HEADER ROW */
 .phase-row td {
   background: var(--bg2);
@@ -290,7 +308,7 @@ body {
   border-right: 1px solid var(--border);
   padding: 7px 0;
 }
-
+ 
 .phase-row .ph-label {
   position: sticky;
   left: 0;
@@ -299,7 +317,7 @@ body {
   padding: 7px 12px;
   border-right: 1px solid var(--border2) !important;
 }
-
+ 
 /* TASK ROWS */
 .task-row td {
   background: var(--bg);
@@ -309,9 +327,9 @@ body {
   vertical-align: middle;
   transition: background 0.1s;
 }
-
+ 
 .task-row:hover td { background: var(--bg2); }
-
+ 
 .td-task {
   position: sticky;
   left: 0;
@@ -319,15 +337,15 @@ body {
   padding: 0 10px 0 12px;
   border-right: 1px solid var(--border2) !important;
 }
-
+ 
 .task-row:hover .td-task { background: var(--bg2); }
-
+ 
 .task-name-wrap {
   display: flex;
   align-items: center;
   gap: 6px;
 }
-
+ 
 .task-name-wrap input[type="checkbox"] {
   accent-color: var(--info-text);
   width: 13px;
@@ -335,7 +353,7 @@ body {
   flex-shrink: 0;
   cursor: pointer;
 }
-
+ 
 .task-name {
   font-size: 12px;
   color: var(--text);
@@ -345,12 +363,12 @@ body {
   flex: 1;
   min-width: 0;
 }
-
+ 
 .task-row.done .task-name {
   text-decoration: line-through;
   color: var(--text3);
 }
-
+ 
 .badge-urgent {
   font-size: 9px;
   background: rgba(216,90,48,0.15);
@@ -361,39 +379,39 @@ body {
   flex-shrink: 0;
   font-weight: 500;
 }
-
+ 
 .td-gantt {
   padding: 0;
   vertical-align: middle;
 }
-
+ 
 .td-gantt.is-current { background: rgba(55,138,221,0.04); }
 .td-gantt.is-event   { background: rgba(216,90,48,0.04);  }
-
+ 
 .task-row:hover .td-gantt.is-current { background: rgba(55,138,221,0.09); }
 .task-row:hover .td-gantt.is-event   { background: rgba(216,90,48,0.09);  }
-
+ 
 .bar-div {
   height: 18px;
   width: 100%;
   display: block;
 }
-
+ 
 /* CHECKLIST */
 .checklist-wrap {
   display: none;
   flex-direction: column;
   gap: 16px;
 }
-
+ 
 .checklist-wrap.visible { display: flex; }
-
+ 
 .cl-phase {
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border);
 }
-
+ 
 .cl-phase-head {
   display: flex;
   align-items: center;
@@ -401,20 +419,20 @@ body {
   padding: 10px 14px;
   background: var(--bg2);
 }
-
+ 
 .cl-phase-head .ph-dot {
   width: 10px;
   height: 10px;
   border-radius: 2px;
   flex-shrink: 0;
 }
-
+ 
 .cl-phase-head span {
   font-size: 12px;
   font-weight: 600;
   color: var(--text);
 }
-
+ 
 .cl-item {
   display: flex;
   align-items: center;
@@ -426,9 +444,9 @@ body {
   transition: background 0.1s;
   user-select: none;
 }
-
+ 
 .cl-item:hover { background: var(--bg3); }
-
+ 
 .cl-item input[type="checkbox"] {
   accent-color: var(--info-text);
   width: 14px;
@@ -436,24 +454,24 @@ body {
   flex-shrink: 0;
   cursor: pointer;
 }
-
+ 
 .cl-item-name {
   flex: 1;
   font-size: 13px;
   color: var(--text);
 }
-
+ 
 .cl-item.done .cl-item-name {
   text-decoration: line-through;
   color: var(--text3);
 }
-
+ 
 .cl-dates {
   font-size: 11px;
   color: var(--text3);
   white-space: nowrap;
 }
-
+ 
 /* FOOTER */
 .footer {
   text-align: center;
@@ -461,7 +479,7 @@ body {
   font-size: 11px;
   color: var(--text3);
 }
-
+ 
 /* RESPONSIVE */
 @media (max-width: 680px) {
   .th-task  { width: 160px; min-width: 160px; }
@@ -470,7 +488,7 @@ body {
   .header-title { font-size: 15px; }
   .counter-done { font-size: 22px; }
 }
-
+ 
 /* PRINT */
 @media print {
   body { background: #fff; }
@@ -484,7 +502,7 @@ body {
 </head>
 <body>
 <div class="container">
-
+ 
   <!-- HEADER -->
   <div class="header">
     <div class="logo">AOT</div>
@@ -504,7 +522,7 @@ body {
       </div>
     </div>
   </div>
-
+ 
   <!-- PROGRESS BAR -->
   <div class="progress-wrap">
     <div class="progress-track">
@@ -512,16 +530,19 @@ body {
     </div>
     <div class="progress-pct" id="progress-pct">0%</div>
   </div>
-
+ 
   <!-- TABS -->
   <div class="tabs-wrap">
-    <button class="tab-btn active" id="tab-gantt" onclick="switchTab('gantt')">Gantt</button>
-    <button class="tab-btn" id="tab-checklist" onclick="switchTab('checklist')">Checklist</button>
+    <div class="tabs-left">
+      <button class="tab-btn active" id="tab-gantt" onclick="switchTab('gantt')">Gantt</button>
+      <button class="tab-btn" id="tab-checklist" onclick="switchTab('checklist')">Checklist</button>
+    </div>
+    <button class="reset-btn" onclick="resetAll()" title="Desmarcar todas as tarefas">↺ Resetar progresso</button>
   </div>
-
+ 
   <!-- LEGEND -->
   <div class="legend" id="legend"></div>
-
+ 
   <!-- GANTT -->
   <div id="gantt-view" class="gantt-view">
     <div class="gantt-wrap">
@@ -530,15 +551,15 @@ body {
       </div>
     </div>
   </div>
-
+ 
   <!-- CHECKLIST -->
   <div class="checklist-wrap" id="checklist-view"></div>
-
+ 
   <!-- FOOTER -->
   <div class="footer">AOT · Advanced Osteotomy Training · Goiânia 2026 · Brasil &amp; Argentina</div>
-
+ 
 </div>
-
+ 
 <script>
 /* ─── DATA ─── */
 const WEEKS = [
@@ -554,7 +575,7 @@ const WEEKS = [
   { label:'S10',    date:'21/Jul', start: new Date(2026,6,21), event: false },
   { label:'EVENTO', date:'26-27/Jul', start: new Date(2026,6,26), event: true },
 ];
-
+ 
 const PHASES = [
   {
     id:1, name:'Branding & Estratégia Digital', color:'#534AB7', rgb:'83,74,183',
@@ -617,12 +638,35 @@ const PHASES = [
     ]
   }
 ];
-
+ 
+/* ─── LOCALSTORAGE KEY ─── */
+const LS_KEY = 'aot_gantt_2026';
+ 
 /* ─── STATE ─── */
 const checked = {};
 let totalTasks = 0;
 PHASES.forEach(p => p.tasks.forEach(t => { checked[t.id] = false; totalTasks++; }));
-
+ 
+/* ─── LOAD SAVED STATE ─── */
+function loadState() {
+  try {
+    const saved = localStorage.getItem(LS_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      Object.keys(parsed).forEach(id => {
+        if (id in checked) checked[id] = !!parsed[id];
+      });
+    }
+  } catch(e) { /* silently ignore */ }
+}
+ 
+/* ─── SAVE STATE ─── */
+function saveState() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify(checked));
+  } catch(e) { /* silently ignore */ }
+}
+ 
 /* ─── CURRENT WEEK ─── */
 const today = new Date();
 let currentWeekIdx = -1;
@@ -630,10 +674,10 @@ for (let i = 0; i < WEEKS.length; i++) {
   const nextStart = i + 1 < WEEKS.length ? WEEKS[i+1].start : new Date(2026,6,29);
   if (today >= WEEKS[i].start && today < nextStart) { currentWeekIdx = i; break; }
 }
-
+ 
 /* ─── HELPERS ─── */
 function weekDate(n) { return WEEKS[n - 1].date; }
-
+ 
 function updateStats() {
   const done = Object.values(checked).filter(Boolean).length;
   document.getElementById('done-count').textContent  = done;
@@ -642,22 +686,37 @@ function updateStats() {
   document.getElementById('progress-fill').style.width = pct + '%';
   document.getElementById('progress-pct').textContent  = pct + '%';
 }
-
+ 
 function toggle(id) {
   checked[id] = !checked[id];
   const isDone = checked[id];
-
+ 
   document.querySelectorAll(`input[data-tid="${id}"]`).forEach(cb => { cb.checked = isDone; });
-
+ 
   const row = document.getElementById('gantt-row-' + id);
   if (row) row.classList.toggle('done', isDone);
-
+ 
   const item = document.getElementById('cl-item-' + id);
   if (item) item.classList.toggle('done', isDone);
-
+ 
+  saveState();
   updateStats();
 }
-
+ 
+function resetAll() {
+  if (!confirm('Desmarcar todas as tarefas?')) return;
+  PHASES.forEach(p => p.tasks.forEach(t => {
+    checked[t.id] = false;
+    document.querySelectorAll(`input[data-tid="${t.id}"]`).forEach(cb => { cb.checked = false; });
+    const row = document.getElementById('gantt-row-' + t.id);
+    if (row) row.classList.remove('done');
+    const item = document.getElementById('cl-item-' + t.id);
+    if (item) item.classList.remove('done');
+  }));
+  saveState();
+  updateStats();
+}
+ 
 /* ─── LEGEND ─── */
 function buildLegend() {
   const el = document.getElementById('legend');
@@ -670,19 +729,17 @@ function buildLegend() {
     );
   });
 }
-
+ 
 /* ─── GANTT ─── */
 function buildGantt() {
   const table = document.getElementById('gantt-table');
   let h = '';
-
-  /* colgroup */
+ 
   h += '<colgroup>';
   h += '<col style="width:224px;min-width:224px">';
   WEEKS.forEach(w => h += `<col style="width:${w.event ? 80 : 64}px">`);
   h += '</colgroup>';
-
-  /* thead */
+ 
   h += '<thead><tr>';
   h += '<th class="th-task">Tarefa</th>';
   WEEKS.forEach((w, i) => {
@@ -695,12 +752,10 @@ function buildGantt() {
     </th>`;
   });
   h += '</tr></thead>';
-
-  /* tbody */
+ 
   h += '<tbody>';
-
+ 
   PHASES.forEach(p => {
-    /* Phase header */
     h += '<tr class="phase-row">';
     h += `<td class="ph-label" style="border-left:3px solid ${p.color}">${p.name}</td>`;
     WEEKS.forEach((w, i) => {
@@ -710,13 +765,11 @@ function buildGantt() {
       h += `<td class="${cls}"></td>`;
     });
     h += '</tr>';
-
-    /* Task rows */
+ 
     p.tasks.forEach(t => {
       const doneCls = checked[t.id] ? ' done' : '';
       h += `<tr class="task-row${doneCls}" id="gantt-row-${t.id}">`;
-
-      /* Sticky task cell */
+ 
       h += `<td class="td-task">
         <div class="task-name-wrap">
           <input type="checkbox" data-tid="${t.id}" ${checked[t.id] ? 'checked' : ''} onchange="toggle(${t.id})">
@@ -724,18 +777,17 @@ function buildGantt() {
           ${t.urgent ? '<span class="badge-urgent">urgente</span>' : ''}
         </div>
       </td>`;
-
-      /* Week cells */
+ 
       WEEKS.forEach((w, i) => {
         const wn = i + 1;
         let cls = 'td-gantt';
         if (i === currentWeekIdx) cls += ' is-current';
         if (w.event) cls += ' is-event';
-
+ 
         if (wn >= t.s && wn <= t.e) {
           const isFirst = wn === t.s;
           const isLast  = wn === t.e;
-
+ 
           let br, barBorder;
           if (isFirst && isLast) {
             br = '4px';
@@ -750,7 +802,7 @@ function buildGantt() {
             br = '0';
             barBorder = `border-top:1px solid ${p.color};border-bottom:1px solid ${p.color}`;
           }
-
+ 
           const tdExtra = !isLast ? 'border-right-color:transparent;' : '';
           h += `<td class="${cls}" style="${tdExtra}padding:0">
             <div class="bar-div" style="border-radius:${br};background:rgba(${p.rgb},0.20);${barBorder}"></div>
@@ -759,27 +811,27 @@ function buildGantt() {
           h += `<td class="${cls}"></td>`;
         }
       });
-
+ 
       h += '</tr>';
     });
   });
-
+ 
   h += '</tbody>';
   table.innerHTML = h;
 }
-
+ 
 /* ─── CHECKLIST ─── */
 function buildChecklist() {
   const el = document.getElementById('checklist-view');
   let h = '';
-
+ 
   PHASES.forEach(p => {
     h += `<div class="cl-phase">`;
     h += `<div class="cl-phase-head" style="border-left:3px solid ${p.color}">
       <div class="ph-dot" style="background:${p.color}"></div>
       <span>${p.name}</span>
     </div>`;
-
+ 
     p.tasks.forEach(t => {
       const doneCls = checked[t.id] ? ' done' : '';
       h += `<label class="cl-item${doneCls}" id="cl-item-${t.id}">
@@ -789,13 +841,13 @@ function buildChecklist() {
         <span class="cl-dates">${weekDate(t.s)} → ${weekDate(t.e)}</span>
       </label>`;
     });
-
+ 
     h += `</div>`;
   });
-
+ 
   el.innerHTML = h;
 }
-
+ 
 /* ─── TAB SWITCH ─── */
 function switchTab(tab) {
   document.getElementById('tab-gantt').classList.toggle('active', tab === 'gantt');
@@ -803,8 +855,9 @@ function switchTab(tab) {
   document.getElementById('gantt-view').style.display = tab === 'gantt' ? 'block' : 'none';
   document.getElementById('checklist-view').classList.toggle('visible', tab === 'checklist');
 }
-
+ 
 /* ─── INIT ─── */
+loadState();       // ← carrega estado salvo ANTES de renderizar
 buildLegend();
 buildGantt();
 buildChecklist();
