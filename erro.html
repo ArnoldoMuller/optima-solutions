@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erro no Pagamento — Curso Avançado de Osteotomia</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue-deep: #07204e;
+  --blue-dark: #0a2a6e;
+  --blue-mid:  #1a5aad;
+  --error:     #c0392b;
+  --error-bg:  #fdf0ef;
+  --white:     #ffffff;
+  --off-white: #f4f6fa;
+  --text2:     #4a5568;
+}
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--off-white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.card {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 56px 48px;
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(10,42,110,0.10);
+}
+.icon-wrap {
+  width: 80px;
+  height: 80px;
+  background: var(--error-bg);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 36px;
+}
+.tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--error);
+  margin-bottom: 10px;
+}
+h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--blue-dark);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.desc {
+  font-size: 16px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+.tips {
+  background: var(--off-white);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  text-align: left;
+}
+.tips-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.tip-item::before {
+  content: '→';
+  color: var(--blue-mid);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.btn-wrap { display: flex; flex-direction: column; gap: 10px; }
+.btn {
+  display: inline-block;
+  background: var(--blue-dark);
+  color: var(--white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 14px 36px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn:hover { background: var(--blue-mid); }
+.btn.secondary {
+  background: transparent;
+  color: var(--blue-dark);
+  border: 2px solid var(--blue-dark);
+  font-size: 15px;
+}
+.btn.secondary:hover { background: var(--off-white); }
+.footer-note {
+  font-size: 12px;
+  color: #9a9a96;
+  margin-top: 24px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon-wrap">❌</div>
+  <div class="tag">Pagamento não concluído</div>
+  <h1>Algo deu<br>errado</h1>
+  <p class="desc">Não foi possível processar seu pagamento. Sua inscrição <strong>não foi confirmada</strong>. Por favor, tente novamente.</p>
+  <div class="tips">
+    <div class="tips-title">O que verificar</div>
+    <div class="tip-item">Confira os dados do cartão — número, validade e CVV</div>
+    <div class="tip-item">Verifique se há limite disponível no cartão</div>
+    <div class="tip-item">Tente com outro cartão ou escolha PIX/boleto</div>
+    <div class="tip-item">Se o problema persistir, entre em contato conosco</div>
+  </div>
+  <div class="btn-wrap">
+    <a href="https://www.optimasolutions.com.br/osteotomia#inscricao" class="btn">Tentar novamente →</a>
+    <a href="mailto:contato@optimasolutions.com.br" class="btn secondary">Falar com a equipe</a>
+  </div>
+  <div class="footer-note">contato@optimasolutions.com.br</div>
+</div>
+</body>
+</html>
