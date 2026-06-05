@@ -1,8 +1,29 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/osteotomia", "destination": "/osteotomia.html" },
-    { "source": "/card_osteotomia", "destination": "/card_osteotomia.html" },
-    { "source": "/gantt_aot", "destination": "/gantt_aot.html" }
+    {
+      "source": "/osteotomia",
+      "destination": "/osteotomia.html"
+    },
+    {
+      "source": "/osteotomia/confirmacao",
+      "destination": "/confirmacao.html"
+    },
+    {
+      "source": "/osteotomia/pendente",
+      "destination": "/pendente.html"
+    },
+    {
+      "source": "/osteotomia/erro",
+      "destination": "/erro.html"
+    },
+    {
+      "source": "/card_osteotomia",
+      "destination": "/card_osteotomia.html"
+    },
+    {
+      "source": "/gantt_aot",
+      "destination": "/gantt_aot.html"
+    }
   ]
 }
