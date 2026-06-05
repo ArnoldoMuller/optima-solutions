@@ -6,22 +6,27 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const MP_ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
 
 export default async function handler(req, res) {
-  // Aceita apenas POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { type, data } = req.body;
+    const body = req.body || {};
+    const type = body.type || body.action?.split('.')?.[0];
+    const paymentId = body.data?.id;
 
-    // Só processa notificações de pagamento
+    // Ignora notificações que não são de pagamento
     if (type !== 'payment') {
-      return res.status(200).json({ ok: true, skipped: true });
+      return res.status(200).json({ ok: true, skipped: true, reason: 'not a payment' });
     }
 
-    const paymentId = data?.id;
     if (!paymentId) {
-      return res.status(400).json({ error: 'Missing payment id' });
+      return res.status(200).json({ ok: true, skipped: true, reason: 'no payment id' });
+    }
+
+    // Ignora IDs claramente fictícios (testes do painel MP)
+    if (paymentId === '123456' || String(paymentId).length < 8) {
+      return res.status(200).json({ ok: true, skipped: true, reason: 'test notification' });
     }
 
     // Busca detalhes do pagamento na API do Mercado Pago
@@ -30,14 +35,17 @@ export default async function handler(req, res) {
     });
 
     if (!mpRes.ok) {
-      throw new Error(`MP API error: ${mpRes.status}`);
+      const errText = await mpRes.text();
+      console.error('MP API error:', mpRes.status, errText);
+      // Retorna 200 para o MP não reenviar indefinidamente
+      return res.status(200).json({ ok: false, reason: 'mp_api_error', status: mpRes.status });
     }
 
     const payment = await mpRes.json();
 
-    // Só salva pagamentos aprovados ou pendentes
+    // Só salva pagamentos relevantes
     if (!['approved', 'pending', 'in_process'].includes(payment.status)) {
-      return res.status(200).json({ ok: true, status: payment.status, skipped: true });
+      return res.status(200).json({ ok: true, skipped: true, status: payment.status });
     }
 
     const meta = payment.metadata || {};
@@ -49,7 +57,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'apikey': SUPABASE_SERVICE_KEY,
         'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
-        'Prefer': 'resolution=merge-duplicates'
+        'Prefer': 'resolution=merge-duplicates,return=minimal'
       },
       body: JSON.stringify({
         mp_payment_id:        String(payment.id),
@@ -73,13 +81,16 @@ export default async function handler(req, res) {
 
     if (!sbRes.ok) {
       const err = await sbRes.text();
-      throw new Error(`Supabase error: ${err}`);
+      console.error('Supabase error:', err);
+      return res.status(200).json({ ok: false, reason: 'supabase_error' });
     }
 
+    console.log('Inscrição salva:', paymentId, payment.status);
     return res.status(200).json({ ok: true, payment_id: paymentId, status: payment.status });
 
   } catch (error) {
-    console.error('Webhook error:', error);
-    return res.status(500).json({ error: error.message });
+    console.error('Webhook error:', error.message);
+    // Sempre retorna 200 para o MP não reenviar
+    return res.status(200).json({ ok: false, error: error.message });
   }
 }
