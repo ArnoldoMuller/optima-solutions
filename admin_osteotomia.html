@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Inscrições Osteotomia</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue-deep:  #07204e;
+  --blue-dark:  #0a2a6e;
+  --blue-mid:   #1a5aad;
+  --blue-light: #378ADD;
+  --blue-pale:  #e6f1fb;
+  --gold:       #c9a84c;
+  --gold-light: #f0d980;
+  --success:    #0F6E56;
+  --success-bg: #e6f5f1;
+  --warn:       #BA7517;
+  --warn-bg:    #fdf3e3;
+  --error:      #c0392b;
+  --error-bg:   #fdf0ef;
+  --white:      #ffffff;
+  --bg:         #f4f6fa;
+  --bg2:        #eeecea;
+  --text:       #1a1a18;
+  --text2:      #4a5568;
+  --text3:      #9a9a96;
+  --border:     rgba(0,0,0,0.10);
+}
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* LOGIN */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(160deg, var(--blue-deep) 0%, var(--blue-dark) 60%, var(--blue-mid) 100%);
+}
+
+.login-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.login-sub {
+  font-size: 12px;
+  color: var(--text3);
+  margin-bottom: 32px;
+}
+
+.login-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: left;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.login-input {
+  width: 100%;
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  margin-bottom: 16px;
+  transition: border-color 0.15s;
+}
+
+.login-input:focus { border-color: var(--blue-light); }
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--blue-dark);
+  color: var(--white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 4px;
+}
+
+.login-btn:hover { background: var(--blue-mid); }
+
+.login-error {
+  font-size: 13px;
+  color: var(--error);
+  margin-top: 12px;
+  display: none;
+}
+
+/* ADMIN */
+.admin-wrap { display: none; }
+
+.topbar {
+  background: var(--blue-dark);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-export {
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 16px;
+  background: rgba(255,255,255,0.12);
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-export:hover { background: rgba(255,255,255,0.2); }
+
+.btn-logout {
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.btn-logout:hover { color: var(--white); }
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+
+/* KPIs */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+}
+
+.kpi-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.kpi-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--blue-dark);
+  line-height: 1;
+}
+
+.kpi-card.success .kpi-value { color: var(--success); }
+.kpi-card.gold .kpi-value { color: var(--warn); }
+
+.kpi-sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+/* FILTROS */
+.filters {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-input {
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  padding: 8px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  transition: border-color 0.15s;
+  flex: 1;
+  min-width: 180px;
+}
+
+.filter-input:focus { border-color: var(--blue-light); }
+
+.filter-select {
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  padding: 8px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  cursor: pointer;
+}
+
+.filter-count {
+  font-size: 12px;
+  color: var(--text3);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* TABELA */
+.table-wrap {
+  background: var(--white);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.table-scroll { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead th {
+  background: var(--bg);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+thead th:hover { color: var(--blue-dark); }
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg); }
+
+tbody td {
+  padding: 11px 14px;
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.td-nome { font-weight: 600; min-width: 160px; }
+.td-email { color: var(--text2); min-width: 180px; }
+.td-crm { font-size: 12px; color: var(--text2); }
+.td-cidade { font-size: 12px; }
+
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.badge-approved { background: var(--success-bg); color: var(--success); }
+.badge-pending  { background: var(--warn-bg);    color: var(--warn); }
+.badge-other    { background: var(--bg2);         color: var(--text2); }
+
+.scrub-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--blue-pale);
+  color: var(--blue-dark);
+}
+
+.restricao-badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+
+.td-data {
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+}
+
+.td-valor {
+  font-weight: 700;
+  color: var(--success);
+  white-space: nowrap;
+}
+
+/* EMPTY / LOADING */
+.state-msg {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+  font-size: 14px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--blue-light);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* MODAL DETALHE */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 540px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--blue-dark);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.modal-field { display: flex; flex-direction: column; gap: 3px; }
+.modal-field.full { grid-column: 1 / -1; }
+.modal-field label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+.modal-field span { font-size: 14px; color: var(--text); font-weight: 500; }
+
+.modal-close {
+  width: 100%;
+  padding: 12px;
+  background: var(--bg);
+  color: var(--text2);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.modal-close:hover { background: var(--bg2); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .login-card { padding: 36px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">Osteotomia</div>
+    <div class="login-sub">Painel de Inscrições · Acesso Restrito</div>
+    <label class="login-label">Senha de acesso</label>
+    <input type="password" class="login-input" id="login-pass" placeholder="Digite a senha" onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="login-btn" onclick="doLogin()">Entrar →</button>
+    <div class="login-error" id="login-error">Senha incorreta. Tente novamente.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-wrap" id="admin-wrap">
+
+  <div class="topbar">
+    <div class="topbar-title">📋 Inscrições · Curso de Osteotomia</div>
+    <div class="topbar-right">
+      <button class="btn-export" onclick="exportCSV()">⬇ Exportar CSV</button>
+      <button class="btn-logout" onclick="doLogout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card success">
+        <div class="kpi-label">Inscrições confirmadas</div>
+        <div class="kpi-value" id="kpi-confirmed">—</div>
+        <div class="kpi-sub">pagamento aprovado</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total de inscrições</div>
+        <div class="kpi-value" id="kpi-total">—</div>
+        <div class="kpi-sub">todos os status</div>
+      </div>
+      <div class="kpi-card gold">
+        <div class="kpi-label">Receita confirmada</div>
+        <div class="kpi-value" id="kpi-receita">—</div>
+        <div class="kpi-sub">pagamentos aprovados</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Restrições alimentares</div>
+        <div class="kpi-value" id="kpi-restricoes">—</div>
+        <div class="kpi-sub">participantes com restrição</div>
+      </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filters">
+      <input type="text" class="filter-input" id="filter-search" placeholder="🔍 Buscar por nome, e-mail ou CRM..." oninput="applyFilters()">
+      <select class="filter-select" id="filter-status" onchange="applyFilters()">
+        <option value="">Todos os status</option>
+        <option value="approved">Aprovado</option>
+        <option value="pending">Pendente</option>
+        <option value="in_process">Em processo</option>
+      </select>
+      <select class="filter-select" id="filter-scrub" onchange="applyFilters()">
+        <option value="">Todos os scrubs</option>
+        <option value="PP">PP</option>
+        <option value="P">P</option>
+        <option value="M">M</option>
+        <option value="G">G</option>
+        <option value="GG">GG</option>
+        <option value="XGG">XGG</option>
+      </select>
+      <div class="filter-count" id="filter-count">— inscrições</div>
+    </div>
+
+    <!-- TABELA -->
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th onclick="sortBy('created_at')">Data ↕</th>
+              <th onclick="sortBy('nome')">Nome ↕</th>
+              <th>CRM</th>
+              <th>Especialidade</th>
+              <th>E-mail</th>
+              <th>Cidade/UF</th>
+              <th>Scrub</th>
+              <th>Restrição</th>
+              <th onclick="sortBy('valor_pago')">Valor ↕</th>
+              <th onclick="sortBy('mp_status')">Status ↕</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <tr><td colspan="10"><div class="state-msg"><div class="spinner"></div>Carregando inscrições...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL DETALHE -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content">
+    <div class="modal-title" id="modal-name">—</div>
+    <div class="modal-grid" id="modal-grid"></div>
+    <button class="modal-close" onclick="closeModal()">Fechar</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL  = 'https://gbgfqjuazcwqjgwgqjaw.supabase.co';
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiZ2ZxanVhemN3cWpnd2dxamF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyNzU2OTIsImV4cCI6MjA5NDg1MTY5Mn0.FxpE9faSZj79Ii597Yd_2nQ__oKISoWf3a6QJoCzZfw';
+const ADMIN_PASS    = 'aot2026optima'; // senha de acesso ao painel
+
+let allData = [];
+let sortKey = 'created_at';
+let sortAsc = false;
+let currentModal = null;
+
+/* ── LOGIN ── */
+function doLogin() {
+  const pass = document.getElementById('login-pass').value;
+  if (pass === ADMIN_PASS) {
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('admin-wrap').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('login-pass').value = '';
+  }
+}
+
+function doLogout() {
+  document.getElementById('login-wrap').style.display = 'flex';
+  document.getElementById('admin-wrap').style.display = 'none';
+  document.getElementById('login-pass').value = '';
+  allData = [];
+}
+
+/* ── LOAD DATA ── */
+async function loadData() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/inscricoes_osteotomia?select=*&order=created_at.desc`,
+      {
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`HTTP ${res.status}: ${errText}`);
+    }
+    allData = await res.json();
+    updateKPIs();
+    applyFilters();
+  } catch (err) {
+    document.getElementById('table-body').innerHTML =
+      `<tr><td colspan="10"><div class="state-msg">⚠ Erro ao carregar dados: ${err.message}</div></td></tr>`;
+  }
+}
+
+/* ── KPIs ── */
+function updateKPIs() {
+  const confirmed = allData.filter(r => r.mp_status === 'approved');
+  const receita   = confirmed.reduce((s, r) => s + (parseFloat(r.valor_pago) || 0), 0);
+  const restricoes = allData.filter(r => r.restricao_alimentar && r.restricao_alimentar !== 'nenhuma').length;
+
+  document.getElementById('kpi-confirmed').textContent = confirmed.length;
+  document.getElementById('kpi-total').textContent     = allData.length;
+  document.getElementById('kpi-receita').textContent   = 'R$ ' + receita.toLocaleString('pt-BR', {minimumFractionDigits:0});
+  document.getElementById('kpi-restricoes').textContent = restricoes;
+}
+
+/* ── FILTERS ── */
+function applyFilters() {
+  const search = document.getElementById('filter-search').value.toLowerCase();
+  const status = document.getElementById('filter-status').value;
+  const scrub  = document.getElementById('filter-scrub').value;
+
+  let filtered = allData.filter(r => {
+    const matchSearch = !search ||
+      (r.nome  || '').toLowerCase().includes(search) ||
+      (r.email || '').toLowerCase().includes(search) ||
+      (r.crm   || '').toLowerCase().includes(search);
+    const matchStatus = !status || r.mp_status === status;
+    const matchScrub  = !scrub  || r.scrub === scrub;
+    return matchSearch && matchStatus && matchScrub;
+  });
+
+  // Sort
+  filtered.sort((a, b) => {
+    let va = a[sortKey] || '', vb = b[sortKey] || '';
+    if (sortKey === 'valor_pago') { va = parseFloat(va) || 0; vb = parseFloat(vb) || 0; }
+    if (va < vb) return sortAsc ? -1 : 1;
+    if (va > vb) return sortAsc ? 1 : -1;
+    return 0;
+  });
+
+  document.getElementById('filter-count').textContent = `${filtered.length} inscrição${filtered.length !== 1 ? 'ões' : ''}`;
+  renderTable(filtered);
+}
+
+function sortBy(key) {
+  if (sortKey === key) sortAsc = !sortAsc;
+  else { sortKey = key; sortAsc = false; }
+  applyFilters();
+}
+
+/* ── RENDER TABLE ── */
+function renderTable(data) {
+  if (!data.length) {
+    document.getElementById('table-body').innerHTML =
+      '<tr><td colspan="10"><div class="state-msg">Nenhuma inscrição encontrada.</div></td></tr>';
+    return;
+  }
+
+  document.getElementById('table-body').innerHTML = data.map(r => {
+    const date = r.created_at ? new Date(r.created_at).toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit'}) : '—';
+    const statusBadge = r.mp_status === 'approved'
+      ? `<span class="badge badge-approved">✓ Aprovado</span>`
+      : r.mp_status === 'pending' || r.mp_status === 'in_process'
+      ? `<span class="badge badge-pending">⏳ Pendente</span>`
+      : `<span class="badge badge-other">${r.mp_status || '—'}</span>`;
+    const valor = r.valor_pago ? 'R$ ' + parseFloat(r.valor_pago).toLocaleString('pt-BR', {minimumFractionDigits:0}) : '—';
+    const restricao = r.restricao_alimentar && r.restricao_alimentar !== 'nenhuma'
+      ? `<span class="restricao-badge">${r.restricao_alimentar}</span>` : '—';
+
+    return `<tr onclick="openModal('${r.id}')" style="cursor:pointer;">
+      <td class="td-data">${date}</td>
+      <td class="td-nome">${r.nome || '—'}</td>
+      <td class="td-crm">${r.crm || '—'}</td>
+      <td>${r.especialidade || '—'}</td>
+      <td class="td-email">${r.email || '—'}</td>
+      <td class="td-cidade">${r.cidade || ''}${r.uf ? '/' + r.uf : ''}</td>
+      <td>${r.scrub ? `<span class="scrub-badge">${r.scrub}</span>` : '—'}</td>
+      <td>${restricao}</td>
+      <td class="td-valor">${valor}</td>
+      <td>${statusBadge}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── MODAL ── */
+function openModal(id) {
+  const r = allData.find(x => x.id === id);
+  if (!r) return;
+  currentModal = r;
+
+  document.getElementById('modal-name').textContent = r.nome || '—';
+
+  const date = r.created_at ? new Date(r.created_at).toLocaleString('pt-BR') : '—';
+  const fields = [
+    { label: 'CRM',           value: r.crm || '—' },
+    { label: 'Especialidade', value: r.especialidade || '—' },
+    { label: 'E-mail',        value: r.email || '—', full: true },
+    { label: 'Endereço',      value: r.endereco || '—', full: true },
+    { label: 'Cidade',        value: r.cidade || '—' },
+    { label: 'Estado',        value: r.uf || '—' },
+    { label: 'Tamanho scrub', value: r.scrub || '—' },
+    { label: 'Restrição alimentar', value: r.restricao_alimentar || 'Nenhuma' },
+    { label: 'Detalhe restrição',   value: r.restricao_detalhe || '—' },
+    { label: 'Status pagamento',    value: r.mp_status || '—' },
+    { label: 'Valor pago',          value: r.valor_pago ? 'R$ ' + parseFloat(r.valor_pago).toLocaleString('pt-BR', {minimumFractionDigits:2}) : '—' },
+    { label: 'Forma de pagamento',  value: r.mp_payment_type || '—' },
+    { label: 'ID Mercado Pago',     value: r.mp_payment_id || '—' },
+    { label: 'Data de inscrição',   value: date, full: true },
+  ];
+
+  document.getElementById('modal-grid').innerHTML = fields.map(f =>
+    `<div class="modal-field${f.full ? ' full' : ''}">
+      <label>${f.label}</label>
+      <span>${f.value}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+}
+
+/* ── EXPORT CSV ── */
+function exportCSV() {
+  const headers = ['Data','Nome','CRM','Especialidade','Email','Endereço','Cidade','UF','Scrub','Restrição','Detalhe Restrição','Valor','Status','ID MP'];
+  const rows = allData.map(r => [
+    r.created_at ? new Date(r.created_at).toLocaleString('pt-BR') : '',
+    r.nome || '', r.crm || '', r.especialidade || '',
+    r.email || '', r.endereco || '', r.cidade || '', r.uf || '',
+    r.scrub || '', r.restricao_alimentar || '', r.restricao_detalhe || '',
+    r.valor_pago || '', r.mp_status || '', r.mp_payment_id || ''
+  ].map(v => `"${String(v).replace(/"/g, '""')}"`));
+
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = `inscricoes_osteotomia_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ── AUTO-REFRESH a cada 2 minutos ── */
+setInterval(() => {
+  if (document.getElementById('admin-wrap').style.display === 'block') loadData();
+}, 120000);
+</script>
+</body>
+</html>
