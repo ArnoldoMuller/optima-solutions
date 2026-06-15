@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gantt AOT 2026 · Optima Solutions</title>
+<style>
+  :root {
+    --bg: #eeecea;
+    --bg2: #e5e3e0;
+    --bg3: #d8d6d2;
+    --card: #ffffff;
+    --border: #d0cdc9;
+    --text1: #1a1917;
+    --text2: #6b6864;
+    --text3: #9b9895;
+    --info-text: #185FA5;
+    --info-bg: #e8f0fa;
+    --warn: #9a5c00;
+    --warn-bg: #fff3d6;
+    --success: #0F6E56;
+    --success-bg: #e6f4f0;
+    --danger: #D85A30;
+
+    --c1: #534AB7;
+    --c2: #1D9E75;
+    --c3: #D85A30;
+    --c4: #378ADD;
+    --c5: #BA7517;
+    --c6: #D4537E;
+    --c7: #7B5EA7;
+    --c8: #4A7C59;
+
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 4px rgba(0,0,0,.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    color: var(--text1);
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 24px 16px 60px;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    width: 44px; height: 44px;
+    background: var(--info-text);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 13px;
+    flex-shrink: 0;
+  }
+  .header-text h1 { font-size: 18px; font-weight: 700; }
+  .header-text p { font-size: 12px; color: var(--text2); }
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .badge-warn {
+    background: var(--warn-bg); color: var(--warn);
+    border-radius: 99px; padding: 4px 12px;
+    font-size: 12px; font-weight: 500;
+  }
+  .task-counter { text-align: right; }
+  .task-counter .big { font-size: 22px; font-weight: 700; color: var(--info-text); }
+  .task-counter .label { font-size: 11px; color: var(--text3); }
+
+  /* PROGRESSO */
+  .progress-wrap { margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .progress-track {
+    flex: 1; height: 5px; background: var(--bg3); border-radius: 99px; overflow: hidden;
+  }
+  .progress-fill { height: 100%; background: var(--success); border-radius: 99px; transition: width .3s; }
+  .progress-pct { font-size: 12px; color: var(--text2); min-width: 34px; text-align: right; }
+
+  /* ABAS */
+  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .tab {
+    padding: 8px 18px; font-size: 14px; cursor: pointer;
+    border-bottom: 2px solid transparent; color: var(--text2);
+    transition: color .15s, border-color .15s;
+    user-select: none;
+  }
+  .tab.active { border-bottom-color: var(--info-text); color: var(--info-text); font-weight: 500; }
+
+  /* LEGENDA */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 10px 20px;
+    margin-bottom: 18px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text2); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+  /* GANTT */
+  .gantt-wrap { overflow-x: auto; border-radius: var(--radius); box-shadow: var(--shadow); }
+  .gantt-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--card); min-width: 900px;
+  }
+  .gantt-table th, .gantt-table td {
+    border: 1px solid var(--border); padding: 0;
+  }
+  /* sticky task column */
+  .col-task {
+    position: sticky; left: 0; z-index: 2;
+    background: var(--card); min-width: 230px; max-width: 230px; width: 230px;
+  }
+  .col-week { width: 52px; min-width: 52px; }
+
+  /* week header */
+  .week-head {
+    font-size: 10px; font-weight: 600;
+    text-align: center; padding: 5px 2px;
+    color: var(--text2);
+  }
+  .week-head.current { background: rgba(55,138,221,.07); color: var(--info-text); }
+  .week-head.event-wk { background: rgba(216,90,48,.08); color: var(--danger); }
+  .week-head .wk-date { font-size: 9px; font-weight: 400; display: block; color: var(--text3); }
+
+  /* phase header row */
+  .phase-row td {
+    background: var(--bg2); font-weight: 600;
+    font-size: 12px; padding: 6px 10px;
+    border-left: 3px solid var(--phase-color, #888);
+  }
+
+  /* task row */
+  .task-row:hover td { background: var(--bg2); }
+  .task-cell {
+    padding: 6px 10px; font-size: 12px;
+    display: flex; align-items: center; gap: 7px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .task-cell input[type=checkbox] { flex-shrink: 0; cursor: pointer; accent-color: var(--info-text); }
+  .task-cell .task-name { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+  .task-cell .task-name.done { text-decoration: line-through; color: var(--text3); }
+  .badge-urgent {
+    font-size: 9px; background: rgba(216,90,48,.15); color: #D85A30;
+    border-radius: 99px; padding: 1px 7px; white-space: nowrap; flex-shrink: 0;
+  }
+  .badge-new {
+    font-size: 9px; background: rgba(83,74,183,.15); color: #534AB7;
+    border-radius: 99px; padding: 1px 7px; white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* week cells */
+  .week-cell { position: relative; height: 32px; }
+  .week-cell.current-col { background: rgba(55,138,221,.03); }
+  .week-cell.event-col { background: rgba(216,90,48,.04); }
+
+  /* bars */
+  .bar {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    height: 18px; border-radius: 4px;
+    left: 2px; right: 2px;
+  }
+
+  /* CHECKLIST */
+  .checklist { display: none; }
+  .cl-phase {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow); margin-bottom: 14px; overflow: hidden;
+  }
+  .cl-phase-head {
+    padding: 10px 14px; font-weight: 600; font-size: 13px;
+    border-left: 4px solid var(--phase-color, #888);
+    background: var(--bg2); display: flex; align-items: center; gap: 8px;
+  }
+  .cl-phase-head .ph-badge {
+    margin-left: auto; font-size: 11px; color: var(--text3); font-weight: 400;
+  }
+  .cl-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 14px; border-top: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .cl-item input[type=checkbox] { flex-shrink: 0; accent-color: var(--info-text); cursor: pointer; }
+  .cl-item .ci-name.done { text-decoration: line-through; color: var(--text3); }
+  .cl-item .ci-week { margin-left: auto; font-size: 11px; color: var(--text3); white-space: nowrap; }
+  .cl-item .badge-urgent, .cl-item .badge-new { flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">AOT</div>
+  <div class="header-text">
+    <h1>AOT · Advanced Osteotomy Training</h1>
+    <p>Dr. Marcelo Torres · Dr. Helder Rocha · Dr. Ricardo Manilov</p>
+  </div>
+  <div class="header-right">
+    <span class="badge-warn">⚠ Evento 27–28 Jul 2026</span>
+    <div class="task-counter">
+      <div class="big"><span id="done-count">0</span>/<span id="total-count">0</span></div>
+      <div class="label">tarefas concluídas</div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progress-bar" style="width:0%"></div></div>
+  <div class="progress-pct" id="progress-pct">0%</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('gantt',this)">Gantt</div>
+  <div class="tab" onclick="switchTab('checklist',this)">Checklist</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#534AB7"></div>Branding & Digital</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1D9E75"></div>Patrocinadores</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#D85A30"></div>Pacientes & CC</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#378ADD"></div>Transmissão</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#BA7517"></div>Logística</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#7B5EA7"></div>Operações & Secretaria</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#D4537E"></div>Happy Hour</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4A7C59"></div>Pós-Evento</div>
+</div>
+
+<!-- ===== GANTT VIEW ===== -->
+<div id="view-gantt" class="gantt-wrap">
+<table class="gantt-table" id="gantt-table">
+<thead>
+<tr>
+  <th class="col-task" style="padding:6px 10px;font-size:11px;font-weight:600;color:var(--text2);">Tarefa</th>
+  <th class="col-week"><div class="week-head">S1<span class="wk-date">19/Mai</span></div></th>
+  <th class="col-week"><div class="week-head">S2<span class="wk-date">26/Mai</span></div></th>
+  <th class="col-week"><div class="week-head">S3<span class="wk-date">02/Jun</span></div></th>
+  <th class="col-week"><div class="week-head">S4<span class="wk-date">09/Jun</span></div></th>
+  <th class="col-week"><div class="week-head current">S5<span class="wk-date">16/Jun</span></div></th>
+  <th class="col-week"><div class="week-head">S6<span class="wk-date">23/Jun</span></div></th>
+  <th class="col-week"><div class="week-head">S7<span class="wk-date">30/Jun</span></div></th>
+  <th class="col-week"><div class="week-head">S8<span class="wk-date">07/Jul</span></div></th>
+  <th class="col-week"><div class="week-head">S9<span class="wk-date">14/Jul</span></div></th>
+  <th class="col-week"><div class="week-head">S10<span class="wk-date">21/Jul</span></div></th>
+  <th class="col-week"><div class="week-head event-wk">S11<span class="wk-date">27/Jul</span></div></th>
+  <th class="col-week"><div class="week-head event-wk">S12<span class="wk-date">28/Jul</span></div></th>
+</tr>
+</thead>
+<tbody id="gantt-body">
+</tbody>
+</table>
+</div>
+
+<!-- ===== CHECKLIST VIEW ===== -->
+<div id="view-checklist" class="checklist" id="checklist-view">
+</div>
+
+<script>
+// =============================================
+// DADOS
+// =============================================
+// s: semana início (1-based), e: semana fim (inclusive)
+// urgent: badge laranja, isNew: badge roxo (novo desta revisão)
+const PHASES = [
+  {
+    id: 'p1', label: 'Branding & Estratégia Digital', color: '#534AB7',
+    tasks: [
+      { id:'t01', label:'Briefing da identidade visual AOT', s:1, e:2, urgent:true },
+      { id:'t02', label:'Desenvolvimento do logotipo oficial', s:1, e:3, urgent:true },
+      { id:'t03', label:'Criação do Instagram & Landing Page', s:2, e:4, urgent:true },
+      { id:'t04', label:'Conteúdo teaser — patologias', s:3, e:5 },
+      { id:'t05', label:'Posts TC, RX e planejamento virtual', s:5, e:8 },
+      { id:'t06', label:'Abertura de inscrições — link de vendas', s:5, e:8 },
+      { id:'t07', label:'Material impresso: crachás, banners e sinalização', s:5, e:8, isNew:true },
+    ]
+  },
+  {
+    id: 'p2', label: 'Captação de Patrocinadores', color: '#1D9E75',
+    tasks: [
+      { id:'t08', label:'Mídia kit / proposta comercial PDF', s:1, e:3, urgent:true },
+      { id:'t09', label:'Definir cotas Diamante, Ouro e Prata', s:1, e:2, urgent:true },
+      { id:'t10', label:'Prospecção OPME (placas, guias, motores)', s:2, e:5 },
+      { id:'t11', label:'Prospecção ác. hialurônico/regenerativos', s:2, e:5 },
+      { id:'t12', label:'Fechar contratos e confirmar entregas', s:4, e:7 },
+    ]
+  },
+  {
+    id: 'p3', label: 'Pacientes & Centro Cirúrgico', color: '#D85A30',
+    tasks: [
+      { id:'t13', label:'Triagem e seleção dos casos cirúrgicos', s:1, e:4, urgent:true },
+      { id:'t14', label:'TCLE — elaboração e coleta de assinaturas', s:3, e:5 },
+      { id:'t15', label:'Termo de uso de imagem do paciente', s:3, e:5 },
+      { id:'t16', label:'Centralizar exames (TC, sangue, risco)', s:5, e:8 },
+      { id:'t17', label:'Equipe de suporte pós-operatório', s:6, e:9 },
+      { id:'t18', label:'Confirmação final dos pacientes', s:9, e:10 },
+    ]
+  },
+  {
+    id: 'p4', label: 'Transmissão & Marketing', color: '#378ADD',
+    tasks: [
+      { id:'t19', label:'Contratação da produtora cirúrgica', s:2, e:4, urgent:true },
+      { id:'t20', label:'Teste de áudio bidirecional campo-sala', s:6, e:8 },
+      { id:'t21', label:'Reels e cobertura Instagram pré-evento', s:7, e:10 },
+      { id:'t22', label:'Setup completo transmissão ao vivo', s:10, e:11 },
+    ]
+  },
+  {
+    id: 'p5', label: 'Logística & Hospitalidade', color: '#BA7517',
+    tasks: [
+      { id:'t23', label:'Lista hotéis próximos ao Hospital Unique', s:1, e:2, urgent:true },
+      { id:'t24', label:'Encomendar scrubs bordados AOT', s:2, e:5 },
+      { id:'t25', label:'Contratar catering: coffee & breaks', s:6, e:9 },
+      { id:'t26', label:'Welcome kit e brindes dos patrocinadores', s:7, e:9 },
+      { id:'t27', label:'Certificados físicos premium', s:8, e:10 },
+    ]
+  },
+  {
+    id: 'p6', label: 'Operações & Secretaria', color: '#7B5EA7',
+    tasks: [
+      { id:'t28', label:'Contrato e recibo para patrocinadores/expositores', s:3, e:5, isNew:true },
+      { id:'t29', label:'Contratar fotógrafo para o evento', s:3, e:5, isNew:true },
+      { id:'t30', label:'Checagem da sonorização e mídia desk', s:8, e:10, isNew:true },
+      { id:'t31', label:'Selecionar e treinar equipe de recepção', s:5, e:8, isNew:true },
+      { id:'t32', label:'Definir equipe de apoio no local', s:6, e:8, isNew:true },
+      { id:'t33', label:'Supervisão de montagem das salas', s:10, e:11, isNew:true },
+      { id:'t34', label:'Controle de acesso: lista e credenciamento', s:9, e:11, isNew:true },
+      { id:'t35', label:'Coordenação da equipe — Dia 1 (27/Jul)', s:11, e:11, isNew:true },
+      { id:'t36', label:'Coordenação da equipe — Dia 2 (28/Jul)', s:12, e:12, isNew:true },
+      { id:'t37', label:'Recepção executiva e credenciamento', s:11, e:11, isNew:true },
+    ]
+  },
+  {
+    id: 'p7', label: 'Happy Hour de Encerramento', color: '#D4537E',
+    tasks: [
+      { id:'t38', label:'Reservar local: rooftop ou espaço drinks', s:2, e:4 },
+      { id:'t39', label:'Contratar bar / serviço de drinks', s:4, e:7 },
+      { id:'t40', label:'Copos personalizados AOT e branding', s:7, e:9 },
+      { id:'t41', label:'Roteiro de entrega de certificados', s:9, e:10 },
+    ]
+  },
+  {
+    id: 'p8', label: 'Pós-Evento', color: '#4A7C59',
+    tasks: [
+      { id:'t42', label:'Envio de certificados online', s:12, e:12, isNew:true },
+      { id:'t43', label:'Cartas de agradecimento a patrocinadores', s:12, e:12, isNew:true },
+      { id:'t44', label:'Relatório final de participantes e inscrições', s:12, e:12, isNew:true },
+      { id:'t45', label:'Arquivo geral e materiais não utilizados', s:12, e:12, isNew:true },
+    ]
+  },
+];
+
+const WEEKS = 12;
+const CURRENT_WEEK = 5; // S5 = 16/Jun (semana atual)
+const EVENT_WEEKS = [11, 12];
+
+// =============================================
+// ESTADO
+// =============================================
+function getState() {
+  try { return JSON.parse(localStorage.getItem('aot-gantt-v2') || '{}'); } catch { return {}; }
+}
+function setState(id, checked) {
+  const s = getState(); s[id] = checked;
+  localStorage.setItem('aot-gantt-v2', JSON.stringify(s));
+}
+
+// =============================================
+// RENDER GANTT
+// =============================================
+function renderGantt() {
+  const state = getState();
+  const tbody = document.getElementById('gantt-body');
+  tbody.innerHTML = '';
+
+  PHASES.forEach(phase => {
+    // Phase header row
+    const phRow = document.createElement('tr');
+    phRow.className = 'phase-row';
+    phRow.style.setProperty('--phase-color', phase.color);
+    const phTd = document.createElement('td');
+    phTd.colSpan = WEEKS + 1;
+    phTd.textContent = phase.label;
+    phRow.appendChild(phTd);
+    tbody.appendChild(phRow);
+
+    // Task rows
+    phase.tasks.forEach(task => {
+      const checked = !!state[task.id];
+      const tr = document.createElement('tr');
+      tr.className = 'task-row';
+
+      // Task cell (sticky)
+      const taskTd = document.createElement('td');
+      taskTd.className = 'col-task';
+      const cellDiv = document.createElement('div');
+      cellDiv.className = 'task-cell';
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox'; cb.checked = checked; cb.id = 'g-'+task.id;
+      cb.addEventListener('change', e => { setState(task.id, e.target.checked); updateProgress(); syncChecklist(task.id, e.target.checked); });
+
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'task-name' + (checked ? ' done' : '');
+      nameSpan.textContent = task.label;
+
+      cellDiv.appendChild(cb);
+      cellDiv.appendChild(nameSpan);
+      if (task.urgent) { const b = document.createElement('span'); b.className='badge-urgent'; b.textContent='urgente'; cellDiv.appendChild(b); }
+      if (task.isNew) { const b = document.createElement('span'); b.className='badge-new'; b.textContent='novo'; cellDiv.appendChild(b); }
+      taskTd.appendChild(cellDiv);
+      tr.appendChild(taskTd);
+
+      // Week cells
+      for (let w = 1; w <= WEEKS; w++) {
+        const td = document.createElement('td');
+        td.className = 'week-cell' + (w === CURRENT_WEEK ? ' current-col' : '') + (EVENT_WEEKS.includes(w) ? ' event-col' : '');
+
+        if (w >= task.s && w <= task.e) {
+          const bar = document.createElement('div');
+          bar.className = 'bar';
+          const c = phase.color;
+          bar.style.background = hexToRgba(c, 0.20);
+          bar.style.border = `1px solid ${c}`;
+          if (checked) { bar.style.opacity = '0.35'; }
+          td.appendChild(bar);
+        }
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+// =============================================
+// RENDER CHECKLIST
+// =============================================
+function renderChecklist() {
+  const state = getState();
+  const wrap = document.getElementById('view-checklist');
+  wrap.innerHTML = '';
+
+  PHASES.forEach(phase => {
+    const done = phase.tasks.filter(t => !!state[t.id]).length;
+    const div = document.createElement('div');
+    div.className = 'cl-phase';
+
+    const head = document.createElement('div');
+    head.className = 'cl-phase-head';
+    head.style.setProperty('--phase-color', phase.color);
+    head.innerHTML = `${phase.label} <span class="ph-badge">${done}/${phase.tasks.length}</span>`;
+    div.appendChild(head);
+
+    phase.tasks.forEach(task => {
+      const checked = !!state[task.id];
+      const item = document.createElement('div');
+      item.className = 'cl-item';
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox'; cb.checked = checked; cb.id = 'c-'+task.id;
+      cb.addEventListener('change', e => { setState(task.id, e.target.checked); updateProgress(); syncGantt(task.id, e.target.checked); });
+
+      const name = document.createElement('span');
+      name.className = 'ci-name' + (checked ? ' done' : '');
+      name.textContent = task.label;
+
+      const weekSpan = document.createElement('span');
+      weekSpan.className = 'ci-week';
+      weekSpan.textContent = `S${task.s}${task.e !== task.s ? '–S'+task.e : ''}`;
+
+      item.appendChild(cb);
+      item.appendChild(name);
+      if (task.urgent) { const b = document.createElement('span'); b.className='badge-urgent'; b.textContent='urgente'; item.appendChild(b); }
+      if (task.isNew) { const b = document.createElement('span'); b.className='badge-new'; b.textContent='novo'; item.appendChild(b); }
+      item.appendChild(weekSpan);
+      div.appendChild(item);
+    });
+    wrap.appendChild(div);
+  });
+}
+
+// =============================================
+// SYNC
+// =============================================
+function syncChecklist(id, checked) {
+  const el = document.getElementById('c-'+id);
+  if (!el) return;
+  el.checked = checked;
+  const nameEl = el.parentElement.querySelector('.ci-name');
+  if (nameEl) nameEl.classList.toggle('done', checked);
+  updatePhaseCounters();
+}
+function syncGantt(id, checked) {
+  const el = document.getElementById('g-'+id);
+  if (!el) return;
+  el.checked = checked;
+  const nameEl = el.parentElement.querySelector('.task-name');
+  if (nameEl) nameEl.classList.toggle('done', checked);
+  // bar opacity
+  const row = el.closest('tr');
+  if (row) { row.querySelectorAll('.bar').forEach(b => b.style.opacity = checked ? '0.35' : '1'); }
+}
+function updatePhaseCounters() {
+  const state = getState();
+  PHASES.forEach(phase => {
+    const done = phase.tasks.filter(t => !!state[t.id]).length;
+    // find the phase head in checklist
+    const heads = document.querySelectorAll('.cl-phase-head');
+    heads.forEach(h => {
+      if (h.textContent.includes(phase.label)) {
+        const badge = h.querySelector('.ph-badge');
+        if (badge) badge.textContent = `${done}/${phase.tasks.length}`;
+      }
+    });
+  });
+}
+
+// =============================================
+// PROGRESSO
+// =============================================
+function updateProgress() {
+  const state = getState();
+  const total = PHASES.reduce((a,p) => a + p.tasks.length, 0);
+  const done = PHASES.reduce((a,p) => a + p.tasks.filter(t=>!!state[t.id]).length, 0);
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('done-count').textContent = done;
+  document.getElementById('total-count').textContent = total;
+  document.getElementById('progress-bar').style.width = pct+'%';
+  document.getElementById('progress-pct').textContent = pct+'%';
+}
+
+// =============================================
+// TABS
+// =============================================
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('view-gantt').style.display = name === 'gantt' ? 'block' : 'none';
+  document.getElementById('view-checklist').style.display = name === 'checklist' ? 'block' : 'none';
+}
+
+// =============================================
+// UTIL
+// =============================================
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+// =============================================
+// INIT
+// =============================================
+renderGantt();
+renderChecklist();
+updateProgress();
+</script>
+</body>
+</html>
