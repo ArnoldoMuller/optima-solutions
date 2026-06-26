@@ -29,8 +29,11 @@ export default async function handler(req, res) {
         email: body.email
       },
       payment_methods: {
-        installments: 3,
-        default_installments: 1
+        installments: 10,           // máximo de 10x
+        default_installments: 1,
+        // Parcelas sem juros: 1x, 2x e 3x — acima disso os juros são do comprador
+        // O MP aplica juros automaticamente nas parcelas acima deste número
+        installments_without_fees: 3
       },
       back_urls: {
         success: 'https://www.optimasolutions.com.br/osteotomia/confirmacao',
