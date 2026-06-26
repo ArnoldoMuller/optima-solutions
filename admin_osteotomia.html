@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Curso de Osteotomia</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue-deep:#07204e;--blue-dark:#0a2a6e;--blue-mid:#1a5aad;--blue-light:#378ADD;--blue-pale:#e6f1fb;
+  --gold:#c9a84c;--success:#0F6E56;--success-bg:#e6f5f1;--warn:#BA7517;--warn-bg:#fdf3e3;
+  --error:#c0392b;--error-bg:#fdf0ef;--white:#fff;--bg:#f4f6fa;--bg2:#eeecea;
+  --text:#1a1a18;--text2:#4a5568;--text3:#9a9a96;--border:rgba(0,0,0,0.10);
+}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* LOGIN */
+#login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+  background:linear-gradient(160deg,var(--blue-deep) 0%,var(--blue-dark) 60%,var(--blue-mid) 100%);}
+.login-card{background:var(--white);border-radius:20px;padding:48px 40px;width:100%;max-width:400px;text-align:center;}
+.login-logo{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--blue-dark);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;}
+.login-sub{font-size:12px;color:var(--text3);margin-bottom:32px;}
+.login-label{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;text-align:left;display:block;margin-bottom:6px;}
+.login-input{width:100%;font-family:'Barlow',sans-serif;font-size:15px;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;color:var(--text);background:var(--bg);outline:none;margin-bottom:16px;}
+.login-input:focus{border-color:var(--blue-light);}
+.login-btn{width:100%;padding:14px;background:var(--blue-dark);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border:none;border-radius:10px;cursor:pointer;}
+.login-btn:hover{background:var(--blue-mid);}
+.login-error{font-size:13px;color:var(--error);margin-top:12px;display:none;}
+
+/* TOPBAR */
+#admin-wrap{display:none;}
+.topbar{background:var(--blue-dark);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;gap:12px;}
+.topbar-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--white);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+.topbar-tabs{display:flex;gap:4px;}
+.ttab{font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;padding:6px 14px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.12);border-radius:7px;cursor:pointer;transition:all .15s;}
+.ttab:hover{background:rgba(255,255,255,.15);color:var(--white);}
+.ttab.active{background:rgba(255,255,255,.22);color:var(--white);font-weight:600;}
+.topbar-right{display:flex;gap:8px;align-items:center;}
+.btn-exp{font-family:'Barlow',sans-serif;font-size:12px;font-weight:600;padding:6px 14px;background:rgba(255,255,255,.12);color:var(--white);border:1px solid rgba(255,255,255,.2);border-radius:7px;cursor:pointer;}
+.btn-exp:hover{background:rgba(255,255,255,.22);}
+.btn-logout{font-size:12px;color:rgba(255,255,255,.45);background:none;border:none;cursor:pointer;padding:4px 8px;}
+.btn-logout:hover{color:var(--white);}
+
+/* PANELS */
+.panel{display:none;}.panel.active{display:block;}
+.main{max-width:1300px;margin:0 auto;padding:24px 16px 60px;}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.kpi-grid.five{grid-template-columns:repeat(5,1fr);}
+.kpi{background:var(--white);border-radius:12px;padding:16px 18px;border:1px solid var(--border);}
+.kpi-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.kpi-val{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;color:var(--blue-dark);line-height:1;}
+.kpi.green .kpi-val{color:var(--success);}
+.kpi.gold .kpi-val{color:var(--warn);}
+.kpi.red .kpi-val{color:var(--error);}
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:3px;}
+
+/* FILTERS */
+.filters{background:var(--white);border-radius:12px;padding:14px 16px;margin-bottom:14px;border:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.fi{font-family:'Barlow',sans-serif;font-size:13px;padding:7px 11px;border:1.5px solid var(--border);border-radius:7px;color:var(--text);background:var(--bg);outline:none;flex:1;min-width:160px;}
+.fi:focus{border-color:var(--blue-light);}
+.fi-cnt{font-size:12px;color:var(--text3);margin-left:auto;white-space:nowrap;}
+
+/* TABLE */
+.tbl-wrap{background:var(--white);border-radius:12px;border:1px solid var(--border);overflow:hidden;}
+.tbl-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{background:var(--bg);padding:9px 12px;text-align:left;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;}
+thead th:hover{color:var(--blue-dark);}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--bg);}
+tbody td{padding:10px 12px;vertical-align:middle;}
+.bd{font-weight:600;}
+.sm{font-size:12px;color:var(--text2);}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap;}
+.b-ok{background:var(--success-bg);color:var(--success);}
+.b-pend{background:var(--warn-bg);color:var(--warn);}
+.b-other{background:var(--bg2);color:var(--text2);}
+.b-scrub{background:var(--blue-pale);color:var(--blue-dark);font-size:11px;padding:2px 7px;border-radius:5px;}
+.b-rest{background:var(--warn-bg);color:var(--warn);font-size:10px;padding:2px 7px;border-radius:5px;}
+.state-msg{text-align:center;padding:50px 20px;color:var(--text3);font-size:14px;}
+.spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue-light);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.mo.open{display:flex;}
+.mo-box{background:var(--white);border-radius:18px;padding:28px;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;}
+.mo-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--blue-dark);text-transform:uppercase;margin-bottom:18px;}
+.mo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.mo-f{display:flex;flex-direction:column;gap:2px;}.mo-f.full{grid-column:1/-1;}
+.mo-f label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;}
+.mo-f span{font-size:13px;color:var(--text);font-weight:500;}
+.mo-close{width:100%;padding:11px;background:var(--bg);color:var(--text2);font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;border:1px solid var(--border);border-radius:9px;cursor:pointer;}
+.mo-close:hover{background:var(--bg2);}
+
+/* ── FLUXO DE CAIXA ── */
+.fluxo-actions{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+.btn-add{font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;padding:8px 16px;border:none;border-radius:8px;cursor:pointer;transition:all .15s;}
+.btn-add.rec{background:var(--success);color:var(--white);}
+.btn-add.rec:hover{background:#0a5a47;}
+.btn-add.dep{background:var(--error);color:var(--white);}
+.btn-add.dep:hover{background:#a02520;}
+.btn-add.exp{background:var(--bg);color:var(--text2);border:1px solid var(--border);}
+.btn-add.exp:hover{background:var(--bg2);}
+.fluxo-hint{font-size:11px;color:var(--text3);margin-left:auto;}
+
+.ftbl{width:100%;border-collapse:collapse;font-size:12px;}
+.ftbl thead th{background:var(--bg);padding:8px 8px;text-align:left;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);white-space:nowrap;}
+.ftbl tbody tr{border-bottom:1px solid var(--border);}
+.ftbl tbody tr:last-child{border-bottom:none;}
+.ftbl tbody tr:hover{background:rgba(0,0,0,.02);}
+.ftbl td{padding:4px 4px;vertical-align:middle;}
+
+.ci{font-family:'Barlow',sans-serif;font-size:12px;padding:5px 7px;border:1.5px solid transparent;border-radius:6px;color:var(--text);background:transparent;outline:none;width:100%;transition:border-color .15s,background .15s;}
+.ci:hover{background:var(--bg);border-color:var(--border);}
+.ci:focus{border-color:var(--blue-light);background:var(--white);}
+.cs{font-family:'Barlow',sans-serif;font-size:12px;padding:5px 7px;border:1.5px solid transparent;border-radius:6px;color:var(--text);background:transparent;outline:none;width:100%;cursor:pointer;transition:border-color .15s,background .15s;}
+.cs:hover{background:var(--bg);border-color:var(--border);}
+.cs:focus{border-color:var(--blue-light);background:var(--white);}
+
+.btn-sv{background:none;border:none;cursor:pointer;font-size:14px;padding:3px 5px;border-radius:5px;color:var(--text3);transition:all .15s;}
+.btn-sv:hover{color:var(--success);background:var(--success-bg);}
+.btn-sv.dirty{color:var(--warn);}
+.btn-sv.saved{color:var(--success);}
+.btn-dl{background:none;border:none;cursor:pointer;font-size:14px;padding:3px 5px;border-radius:5px;color:var(--text3);transition:all .15s;}
+.btn-dl:hover{color:var(--error);background:var(--error-bg);}
+
+@media(max-width:768px){.kpi-grid{grid-template-columns:1fr 1fr;}.topbar-title{display:none;}}
+@media(max-width:480px){.kpi-grid{grid-template-columns:1fr;}.login-card{padding:36px 24px;}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">Osteotomia</div>
+    <div class="login-sub">Painel Administrativo · Acesso Restrito</div>
+    <label class="login-label">Senha de acesso</label>
+    <input type="password" class="login-input" id="login-pass" placeholder="Digite a senha" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Entrar →</button>
+    <div class="login-error" id="login-error">Senha incorreta.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-wrap">
+  <div class="topbar">
+    <div class="topbar-title">Curso de Osteotomia · Admin</div>
+    <div class="topbar-tabs">
+      <button class="ttab active" id="ttab-insc" onclick="switchTab('insc')">📋 Inscrições</button>
+      <button class="ttab" id="ttab-fluxo" onclick="switchTab('fluxo')">💰 Fluxo de Caixa</button>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-exp" id="btn-exp" onclick="doExport()">⬇ CSV</button>
+      <button class="btn-logout" onclick="doLogout()">Sair</button>
+    </div>
+  </div>
+
+  <!-- PAINEL INSCRIÇÕES -->
+  <div id="panel-insc" class="panel active">
+    <div class="main">
+      <div class="kpi-grid">
+        <div class="kpi green"><div class="kpi-lbl">Confirmadas</div><div class="kpi-val" id="ki-conf">—</div><div class="kpi-sub">pagamento aprovado</div></div>
+        <div class="kpi"><div class="kpi-lbl">Total</div><div class="kpi-val" id="ki-total">—</div><div class="kpi-sub">todos os status</div></div>
+        <div class="kpi gold"><div class="kpi-lbl">Receita confirmada</div><div class="kpi-val" id="ki-rec">—</div><div class="kpi-sub">aprovados</div></div>
+        <div class="kpi"><div class="kpi-lbl">Restrições alimentares</div><div class="kpi-val" id="ki-rest">—</div><div class="kpi-sub">com restrição</div></div>
+      </div>
+      <div class="filters">
+        <input type="text" class="fi" id="fi-search" placeholder="🔍 Buscar nome, e-mail ou CRM..." oninput="applyFilters()" autocomplete="off">
+        <select class="fi" style="flex:0;min-width:140px" id="fi-status" onchange="applyFilters()">
+          <option value="">Todos os status</option>
+          <option value="approved">Aprovado</option>
+          <option value="pending">Pendente</option>
+        </select>
+        <select class="fi" style="flex:0;min-width:120px" id="fi-scrub" onchange="applyFilters()">
+          <option value="">Todos scrubs</option>
+          <option>PP</option><option>P</option><option>M</option><option>G</option><option>GG</option><option>XGG</option>
+        </select>
+        <div class="fi-cnt" id="fi-cnt">— inscrições</div>
+      </div>
+      <div class="tbl-wrap"><div class="tbl-scroll">
+        <table>
+          <thead><tr>
+            <th onclick="sortBy('created_at')">Data ↕</th>
+            <th onclick="sortBy('nome')">Nome ↕</th>
+            <th>CRM</th><th>Especialidade</th><th>E-mail</th><th>Celular</th><th>Cidade/UF</th>
+            <th>Scrub</th><th>Restrição</th>
+            <th onclick="sortBy('valor_pago')">Valor ↕</th>
+            <th onclick="sortBy('mp_status')">Status ↕</th>
+          </tr></thead>
+          <tbody id="insc-body"><tr><td colspan="11"><div class="state-msg"><div class="spinner"></div>Carregando...</div></td></tr></tbody>
+        </table>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- PAINEL FLUXO -->
+  <div id="panel-fluxo" class="panel">
+    <div class="main">
+      <div class="kpi-grid five">
+        <div class="kpi green"><div class="kpi-lbl">Receitas realizadas</div><div class="kpi-val" id="kf-rec">R$ 0</div><div class="kpi-sub">status: realizado</div></div>
+        <div class="kpi red"><div class="kpi-lbl">Despesas realizadas</div><div class="kpi-val" id="kf-dep">R$ 0</div><div class="kpi-sub">status: realizado</div></div>
+        <div class="kpi red"><div class="kpi-lbl">Taxas Mercado Pago</div><div class="kpi-val" id="kf-taxa">R$ 0</div><div class="kpi-sub">taxas automáticas MP</div></div>
+        <div class="kpi"><div class="kpi-lbl">Saldo líquido</div><div class="kpi-val" id="kf-saldo">R$ 0</div><div class="kpi-sub">receitas − despesas</div></div>
+        <div class="kpi gold"><div class="kpi-lbl">Receita inscrições (MP)</div><div class="kpi-val" id="kf-insc">—</div><div class="kpi-sub">pagamentos aprovados</div></div>
+      </div>
+      <div class="fluxo-actions">
+        <button class="btn-add rec" onclick="addRow('receita')">+ Receita</button>
+        <button class="btn-add dep" onclick="addRow('despesa')">+ Despesa</button>
+        <button class="btn-add exp" onclick="exportFluxo()">⬇ Exportar CSV</button>
+        <span class="fluxo-hint">💾 salva a linha · 🗑 exclui</span>
+      </div>
+      <div class="tbl-wrap"><div class="tbl-scroll">
+        <table class="ftbl">
+          <thead><tr>
+            <th style="width:100px">Data</th>
+            <th style="width:90px">Tipo</th>
+            <th style="width:130px">Categoria</th>
+            <th style="min-width:170px">Descrição</th>
+            <th style="width:110px">Valor (R$)</th>
+            <th style="width:110px">Origem</th>
+            <th style="width:120px">Patrocinador</th>
+            <th style="width:90px">Status</th>
+            <th style="min-width:170px">Observações</th>
+            <th style="width:60px"></th>
+          </tr></thead>
+          <tbody id="fluxo-body"><tr><td colspan="10"><div class="state-msg"><div class="spinner"></div>Carregando...</div></td></tr></tbody>
+        </table>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALHE INSCRIÇÃO -->
+<div class="mo" id="mo" onclick="if(event.target===this)closeMo()">
+  <div class="mo-box">
+    <div class="mo-title" id="mo-name">—</div>
+    <div class="mo-grid" id="mo-grid"></div>
+    <button class="mo-close" onclick="closeMo()">Fechar</button>
+  </div>
+</div>
+
+<script>
+const SB_URL = 'https://gbgfqjuazcwqjgwgqjaw.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiZ2ZxanVhemN3cWpnd2dxamF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyNzU2OTIsImV4cCI6MjA5NDg1MTY5Mn0.FxpE9faSZj79Ii597Yd_2nQ__oKISoWf3a6QJoCzZfw';
+const PASS   = 'aot2026optima';
+
+let inscData = [];
+let fluxoData = [];
+let sortKey = 'created_at';
+let sortAsc = false;
+let dirty = {};
+
+const hdrs = { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Accept': 'application/json' };
+
+/* ── LOGIN ── */
+function doLogin() {
+  if (document.getElementById('login-pass').value === PASS) {
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('admin-wrap').style.display = 'block';
+    loadInsc();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('login-pass').value = '';
+  }
+}
+function doLogout() {
+  document.getElementById('login-wrap').style.display = 'flex';
+  document.getElementById('admin-wrap').style.display = 'none';
+  document.getElementById('login-pass').value = '';
+}
+
+/* ── TAB SWITCH ── */
+let currentTab = 'insc';
+function switchTab(tab) {
+  currentTab = tab;
+  ['insc','fluxo'].forEach(t => {
+    document.getElementById('ttab-' + t).classList.toggle('active', t === tab);
+    document.getElementById('panel-' + t).classList.toggle('active', t === tab);
+  });
+  if (tab === 'fluxo' && fluxoData.length === 0) loadFluxo();
+}
+
+function doExport() {
+  if (currentTab === 'fluxo') exportFluxo(); else exportInsc();
+}
+
+/* ══════════════════════════════
+   INSCRIÇÕES
+══════════════════════════════ */
+async function loadInsc() {
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/inscricoes_osteotomia?select=*&order=created_at.desc`, { headers: hdrs });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    inscData = await r.json();
+    updateInscKPIs();
+    applyFilters();
+  } catch(e) {
+    document.getElementById('insc-body').innerHTML = `<tr><td colspan="11"><div class="state-msg">⚠ ${e.message}</div></td></tr>`;
+  }
+}
+
+function updateInscKPIs() {
+  const conf = inscData.filter(r => r.mp_status === 'approved');
+  const rec  = conf.reduce((s,r) => s + (parseFloat(r.valor_pago)||0), 0);
+  const rest = inscData.filter(r => r.restricao_alimentar && r.restricao_alimentar !== 'nenhuma').length;
+  document.getElementById('ki-conf').textContent  = conf.length;
+  document.getElementById('ki-total').textContent = inscData.length;
+  document.getElementById('ki-rec').textContent   = 'R$' + rec.toLocaleString('pt-BR',{maximumFractionDigits:0});
+  document.getElementById('ki-rest').textContent  = rest;
+  document.getElementById('kf-insc').textContent  = rec > 0 ? 'R$' + rec.toLocaleString('pt-BR',{maximumFractionDigits:0}) : '—';
+}
+
+function applyFilters() {
+  const q = (document.getElementById('fi-search').value || '').toLowerCase();
+  const s = document.getElementById('fi-status').value;
+  const sc = document.getElementById('fi-scrub').value;
+  let f = inscData.filter(r =>
+    (!q || (r.nome||'').toLowerCase().includes(q) || (r.email||'').toLowerCase().includes(q) || (r.crm||'').toLowerCase().includes(q)) &&
+    (!s  || r.mp_status === s) &&
+    (!sc || r.scrub === sc)
+  );
+  f.sort((a,b) => {
+    let va = a[sortKey]||'', vb = b[sortKey]||'';
+    if (sortKey==='valor_pago'){va=parseFloat(va)||0;vb=parseFloat(vb)||0;}
+    return (va<vb?-1:va>vb?1:0)*(sortAsc?1:-1);
+  });
+  document.getElementById('fi-cnt').textContent = f.length + ' inscrição' + (f.length!==1?'ões':'');
+  renderInsc(f);
+}
+
+function sortBy(k) { if(sortKey===k)sortAsc=!sortAsc; else{sortKey=k;sortAsc=false;} applyFilters(); }
+
+function renderInsc(data) {
+  if (!data.length) { document.getElementById('insc-body').innerHTML='<tr><td colspan="11"><div class="state-msg">Nenhuma inscrição.</div></td></tr>'; return; }
+  document.getElementById('insc-body').innerHTML = data.map(r => {
+    const dt = r.created_at ? new Date(r.created_at).toLocaleDateString('pt-BR') : '—';
+    const st = r.mp_status==='approved' ? '<span class="badge b-ok">✓ Aprovado</span>'
+             : (r.mp_status==='pending'||r.mp_status==='in_process') ? '<span class="badge b-pend">⏳ Pendente</span>'
+             : `<span class="badge b-other">${r.mp_status||'—'}</span>`;
+    const v  = r.valor_pago ? 'R$'+parseFloat(r.valor_pago).toLocaleString('pt-BR',{minimumFractionDigits:0}) : '—';
+    const rs = r.restricao_alimentar && r.restricao_alimentar!=='nenhuma' ? `<span class="b-rest">${r.restricao_alimentar}</span>` : '—';
+    return `<tr onclick="openMo('${r.id}')">
+      <td class="sm">${dt}</td><td class="bd">${r.nome||'—'}</td><td class="sm">${r.crm||'—'}</td>
+      <td>${r.especialidade||'—'}</td><td class="sm">${r.email||'—'}</td>
+      <td class="sm">${r.celular||'—'}</td>
+      <td class="sm">${r.cidade||''}${r.uf?'/'+r.uf:''}</td>
+      <td>${r.scrub?`<span class="b-scrub">${r.scrub}</span>`:'—'}</td>
+      <td>${rs}</td><td style="font-weight:700;color:var(--success)">${v}</td><td>${st}</td>
+    </tr>`;
+  }).join('');
+}
+
+function openMo(id) {
+  const r = inscData.find(x=>x.id===id); if(!r) return;
+  document.getElementById('mo-name').textContent = r.nome||'—';
+  const dt = r.created_at ? new Date(r.created_at).toLocaleString('pt-BR') : '—';
+  const flds = [
+    {l:'CRM',v:r.crm},{l:'Especialidade',v:r.especialidade},{l:'E-mail',v:r.email,f:true},
+    {l:'Celular',v:r.celular},{l:'Endereço',v:r.endereco,f:true},{l:'Cidade',v:r.cidade},{l:'Estado',v:r.uf},
+    {l:'Scrub',v:r.scrub},{l:'Restrição',v:r.restricao_alimentar},{l:'Detalhe',v:r.restricao_detalhe},
+    {l:'Status',v:r.mp_status},{l:'Valor',v:r.valor_pago?'R$'+parseFloat(r.valor_pago).toLocaleString('pt-BR',{minimumFractionDigits:2}):''},{l:'Pagamento',v:r.mp_payment_type},
+    {l:'ID MP',v:r.mp_payment_id},{l:'Data',v:dt,f:true}
+  ];
+  document.getElementById('mo-grid').innerHTML = flds.map(f=>`<div class="mo-f${f.f?' full':''}"><label>${f.l}</label><span>${f.v||'—'}</span></div>`).join('');
+  document.getElementById('mo').classList.add('open');
+}
+function closeMo(){ document.getElementById('mo').classList.remove('open'); }
+
+function exportInsc() {
+  const h = ['Data','Nome','CRM','Especialidade','Email','Celular','Endereço','Cidade','UF','Scrub','Restrição','Detalhe','Valor','Status','ID MP'];
+  const rows = inscData.map(r=>[r.created_at?new Date(r.created_at).toLocaleString('pt-BR'):'',r.nome,r.crm,r.especialidade,r.email,r.celular,r.endereco,r.cidade,r.uf,r.scrub,r.restricao_alimentar,r.restricao_detalhe,r.valor_pago,r.mp_status,r.mp_payment_id].map(v=>`"${String(v||'').replace(/"/g,'""')}"`));
+  dlCSV([h,...rows],'inscricoes_osteotomia');
+}
+
+/* ══════════════════════════════
+   FLUXO DE CAIXA
+══════════════════════════════ */
+async function loadFluxo() {
+  document.getElementById('fluxo-body').innerHTML = '<tr><td colspan="10"><div class="state-msg"><div class="spinner"></div>Carregando...</div></td></tr>';
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/fluxo_caixa_osteotomia?select=*&order=data_lancamento.desc.nullslast,created_at.desc`, { headers: hdrs });
+    if (!r.ok) throw new Error('HTTP ' + r.status + ': ' + await r.text());
+    fluxoData = await r.json();
+    renderFluxo();
+    updateFluxoKPIs();
+  } catch(e) {
+    document.getElementById('fluxo-body').innerHTML = `<tr><td colspan="10"><div class="state-msg">⚠ Erro: ${e.message}</div></td></tr>`;
+  }
+}
+
+function updateFluxoKPIs() {
+  const real  = fluxoData.filter(r=>r.status==='realizado');
+  const rec   = real.filter(r=>r.tipo==='receita').reduce((s,r)=>s+(parseFloat(r.valor)||0),0);
+  const dep   = real.filter(r=>r.tipo==='despesa').reduce((s,r)=>s+(parseFloat(r.valor)||0),0);
+  // Taxas MP = despesas com categoria 'Taxas MP' (lançadas automaticamente pelo webhook)
+  const taxas = real.filter(r=>r.tipo==='despesa' && r.categoria==='Taxas MP').reduce((s,r)=>s+(parseFloat(r.valor)||0),0);
+  const saldo = rec - dep;
+  document.getElementById('kf-rec').textContent  = 'R$'+rec.toLocaleString('pt-BR',{minimumFractionDigits:2});
+  document.getElementById('kf-dep').textContent  = 'R$'+dep.toLocaleString('pt-BR',{minimumFractionDigits:2});
+  document.getElementById('kf-taxa').textContent = 'R$'+taxas.toLocaleString('pt-BR',{minimumFractionDigits:2});
+  const sel = document.getElementById('kf-saldo');
+  sel.textContent = 'R$'+Math.abs(saldo).toLocaleString('pt-BR',{minimumFractionDigits:2});
+  sel.style.color = saldo>=0 ? 'var(--success)' : 'var(--error)';
+}
+
+const CATS = ['Inscrições','Taxas MP','Patrocínio','Equipamentos','Materiais','Catering','Logística','Marketing','Hospedagem','Transporte','Honorários','Locação','Comunicação','Outros'];
+
+function buildRow(r) {
+  const tc = r.tipo==='receita'?'var(--success)':'var(--error)';
+  return `<tr id="fr-${r.id}" data-id="${r.id}">
+    <td><input class="ci" type="date" value="${r.data_lancamento||''}" onchange="mark('${r.id}','data_lancamento',this.value)"></td>
+    <td><select class="cs" style="color:${tc};font-weight:700" onchange="mark('${r.id}','tipo',this.value);this.style.color=this.value==='receita'?'var(--success)':'var(--error)'">
+      <option value="receita" ${r.tipo==='receita'?'selected':''}>↑ Receita</option>
+      <option value="despesa" ${r.tipo==='despesa'?'selected':''}>↓ Despesa</option>
+    </select></td>
+    <td><select class="cs" onchange="mark('${r.id}','categoria',this.value)">
+      <option value="">— Categoria —</option>
+      ${CATS.map(c=>`<option ${r.categoria===c?'selected':''}>${c}</option>`).join('')}
+    </select></td>
+    <td><input class="ci" type="text" value="${esc(r.descricao)}" placeholder="Descrição..." onchange="mark('${r.id}','descricao',this.value)"></td>
+    <td><input class="ci" type="number" value="${r.valor||''}" placeholder="0.00" step="0.01" style="color:${tc};font-weight:600" onchange="mark('${r.id}','valor',this.value)"></td>
+    <td><select class="cs" onchange="mark('${r.id}','origem',this.value)">
+      <option value="">— Origem —</option>
+      <option value="proprio" ${r.origem==='proprio'?'selected':''}>Próprio</option>
+      <option value="patrocinio" ${r.origem==='patrocinio'?'selected':''}>Patrocínio</option>
+      <option value="inscricao" ${r.origem==='inscricao'?'selected':''}>Inscrição</option>
+      <option value="outro" ${r.origem==='outro'?'selected':''}>Outro</option>
+    </select></td>
+    <td><input class="ci" type="text" value="${esc(r.patrocinador)}" placeholder="Nome..." onchange="mark('${r.id}','patrocinador',this.value)"></td>
+    <td><select class="cs" onchange="mark('${r.id}','status',this.value)">
+      <option value="previsto" ${r.status==='previsto'?'selected':''}>Previsto</option>
+      <option value="realizado" ${r.status==='realizado'?'selected':''}>Realizado</option>
+      <option value="cancelado" ${r.status==='cancelado'?'selected':''}>Cancelado</option>
+    </select></td>
+    <td><input class="ci" type="text" value="${esc(r.observacoes)}" placeholder="Observações..." onchange="mark('${r.id}','observacoes',this.value)"></td>
+    <td style="white-space:nowrap">
+      <button class="btn-sv" id="sv-${r.id}" onclick="saveRow('${r.id}')" title="Salvar">💾</button>
+      <button class="btn-dl" onclick="delRow('${r.id}')" title="Excluir">🗑</button>
+    </td>
+  </tr>`;
+}
+
+function esc(v){ return (v||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+function renderFluxo() {
+  if (!fluxoData.length) {
+    document.getElementById('fluxo-body').innerHTML = '<tr><td colspan="10"><div class="state-msg">Nenhum lançamento ainda.<br>Use "+ Receita" ou "+ Despesa" para começar.</div></td></tr>';
+    return;
+  }
+  document.getElementById('fluxo-body').innerHTML = fluxoData.map(buildRow).join('');
+}
+
+function mark(id, field, value) {
+  if (!dirty[id]) dirty[id] = {};
+  dirty[id][field] = value;
+  const btn = document.getElementById('sv-'+id);
+  if (btn) { btn.classList.add('dirty'); btn.classList.remove('saved'); }
+}
+
+async function saveRow(id) {
+  const changes = dirty[id];
+  if (!changes || !Object.keys(changes).length) return;
+  changes.updated_at = new Date().toISOString();
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/fluxo_caixa_osteotomia?id=eq.${id}`, {
+      method:'PATCH', headers:{...hdrs,'Prefer':'return=minimal'}, body:JSON.stringify(changes)
+    });
+    if (!r.ok) throw new Error(await r.text());
+    const idx = fluxoData.findIndex(x=>x.id===id);
+    if (idx>=0) Object.assign(fluxoData[idx], changes);
+    delete dirty[id];
+    const btn = document.getElementById('sv-'+id);
+    if (btn) { btn.classList.remove('dirty'); btn.classList.add('saved'); setTimeout(()=>btn.classList.remove('saved'),2000); }
+    updateFluxoKPIs();
+  } catch(e) { alert('Erro ao salvar: '+e.message); }
+}
+
+async function addRow(tipo) {
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/fluxo_caixa_osteotomia`, {
+      method:'POST', headers:{...hdrs,'Prefer':'return=representation'},
+      body:JSON.stringify({ tipo, status:'previsto', data_lancamento:new Date().toISOString().slice(0,10) })
+    });
+    if (!r.ok) throw new Error(await r.text());
+    const [row] = await r.json();
+    fluxoData.unshift(row);
+    const tbody = document.getElementById('fluxo-body');
+    if (tbody.querySelector('.state-msg')) tbody.innerHTML = '';
+    tbody.insertAdjacentHTML('afterbegin', buildRow(row));
+    document.getElementById('fr-'+row.id)?.querySelector('input')?.focus();
+  } catch(e) { alert('Erro ao adicionar: '+e.message); }
+}
+
+async function delRow(id) {
+  if (!confirm('Excluir este lançamento?')) return;
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/fluxo_caixa_osteotomia?id=eq.${id}`, {
+      method:'DELETE', headers: hdrs
+    });
+    if (!r.ok) throw new Error(await r.text());
+    fluxoData = fluxoData.filter(x=>x.id!==id);
+    document.getElementById('fr-'+id)?.remove();
+    if (!fluxoData.length) renderFluxo();
+    updateFluxoKPIs();
+  } catch(e) { alert('Erro ao excluir: '+e.message); }
+}
+
+function exportFluxo() {
+  const h = ['Data','Tipo','Categoria','Descrição','Valor','Origem','Patrocinador','Status','Observações'];
+  const rows = fluxoData.map(r=>[r.data_lancamento,r.tipo,r.categoria,r.descricao,r.valor,r.origem,r.patrocinador,r.status,r.observacoes].map(v=>`"${String(v||'').replace(/"/g,'""')}"`));
+  dlCSV([h,...rows],'fluxo_caixa_osteotomia');
+}
+
+function dlCSV(rows, name) {
+  const csv = rows.map(r=>r.join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${name}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+setInterval(()=>{ if(document.getElementById('admin-wrap').style.display==='block'){ loadInsc(); if(currentTab==='fluxo') loadFluxo(); } }, 120000);
+</script>
+</body>
+</html>
