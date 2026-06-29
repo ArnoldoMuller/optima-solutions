@@ -146,7 +146,9 @@ tbody td{padding:10px 12px;vertical-align:middle;}
     <div class="login-logo">Osteotomia</div>
     <div class="login-sub">Painel Administrativo · Acesso Restrito</div>
     <label class="login-label">Senha de acesso</label>
-    <input type="password" class="login-input" id="login-pass" placeholder="Digite a senha" onkeydown="if(event.key==='Enter')doLogin()">
+    <input type="text" name="fakeusernameremembered" style="display:none" autocomplete="username">
+    <input type="password" name="fakepasswordremembered" style="display:none" autocomplete="password">
+    <input type="password" class="login-input" id="login-pass" placeholder="Digite a senha" autocomplete="new-password" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">Entrar →</button>
     <div class="login-error" id="login-error">Senha incorreta.</div>
   </div>
@@ -275,19 +277,26 @@ const hdrs = { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-T
 /* ── LOGIN ── */
 function doLogin() {
   if (document.getElementById('login-pass').value === PASS) {
-    document.getElementById('login-wrap').style.display = 'none';
-    document.getElementById('admin-wrap').style.display = 'block';
-    loadInsc();
+    sessionStorage.setItem('aot_auth', '1');
+    showAdmin();
   } else {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('login-pass').value = '';
   }
 }
+function showAdmin() {
+  document.getElementById('login-wrap').style.display = 'none';
+  document.getElementById('admin-wrap').style.display = 'block';
+  loadInsc();
+}
 function doLogout() {
+  sessionStorage.removeItem('aot_auth');
   document.getElementById('login-wrap').style.display = 'flex';
   document.getElementById('admin-wrap').style.display = 'none';
   document.getElementById('login-pass').value = '';
 }
+// Auto-login se sessão ainda ativa
+if (sessionStorage.getItem('aot_auth') === '1') { showAdmin(); }
 
 /* ── TAB SWITCH ── */
 let currentTab = 'insc';
@@ -362,6 +371,8 @@ function renderInsc(data) {
       ? '<span class="badge" style="background:rgba(24,95,165,0.1);color:#185FA5;border:1px solid rgba(24,95,165,0.3)">🎟 Convidado</span>'
       : r.mp_status==='approved' ? '<span class="badge b-ok">✓ Aprovado</span>'
       : (r.mp_status==='pending'||r.mp_status==='in_process') ? '<span class="badge b-pend">⏳ Pendente</span>'
+      : r.mp_status==='refunded' ? '<span class="badge" style="background:rgba(192,57,43,0.08);color:#c0392b;border:1px solid rgba(192,57,43,0.25)">↩ Reembolsado</span>'
+      : r.mp_status==='cancelled' ? '<span class="badge b-other">✕ Cancelado</span>'
       : `<span class="badge b-other">${r.mp_status||'—'}</span>`;
     const v  = r.valor_pago ? 'R$'+parseFloat(r.valor_pago).toLocaleString('pt-BR',{minimumFractionDigits:0}) : '—';
     const rs = r.restricao_alimentar && r.restricao_alimentar!=='nenhuma' ? `<span class="b-rest">${r.restricao_alimentar}</span>` : '—';
@@ -396,10 +407,28 @@ function openMo(id) {
   ];
   document.getElementById('mo-grid').innerHTML = flds.map(f=>`<div class="mo-f${f.f?' full':''}"><label>${f.l}</label><span>${f.v||'—'}</span></div>`).join('');
   document.getElementById('mo-edit-section').innerHTML = `
-    <div class="mo-edit-label">Nº Transação MP — editar manualmente</div>
-    <div class="mo-edit-row">
-      <input class="mo-edit-input" id="mo-txid-input" value="${r.mp_payment_id||''}" placeholder="Ex: 166325610328">
-      <button class="mo-edit-btn" onclick="saveTxId('${r.id}')">Salvar</button>
+    <div class="mo-edit-label" style="margin-bottom:10px">Edição manual da inscrição</div>
+    <div style="display:grid;gap:8px">
+      <div>
+        <div class="mo-edit-label">Nº Transação MP</div>
+        <div class="mo-edit-row">
+          <input class="mo-edit-input" id="mo-txid-input" value="${r.mp_payment_id||''}" placeholder="Ex: 166325610328">
+          <button class="mo-edit-btn" onclick="saveTxId('${r.id}')">Salvar</button>
+        </div>
+      </div>
+      <div>
+        <div class="mo-edit-label">Status do pagamento</div>
+        <div class="mo-edit-row">
+          <select class="mo-edit-input" id="mo-status-input">
+            <option value="approved" ${r.mp_status==='approved'?'selected':''}>✓ Aprovado</option>
+            <option value="pending" ${r.mp_status==='pending'?'selected':''}>⏳ Pendente</option>
+            <option value="refunded" ${r.mp_status==='refunded'?'selected':''}>↩ Reembolsado</option>
+            <option value="cancelled" ${r.mp_status==='cancelled'?'selected':''}>✕ Cancelado</option>
+            <option value="convidado" ${r.mp_status==='convidado'?'selected':''}>🎟 Convidado</option>
+          </select>
+          <button class="mo-edit-btn" onclick="saveStatus('${r.id}')">Salvar</button>
+        </div>
+      </div>
     </div>`;
   document.getElementById('mo').classList.add('open');
 }
@@ -419,6 +448,29 @@ async function saveTxId(id) {
     // Update local data
     const rec = inscData.find(x => x.id === id);
     if (rec) rec.mp_payment_id = val;
+    btn.textContent = '✓ Salvo!';
+    setTimeout(() => { btn.textContent = 'Salvar'; btn.disabled = false; }, 1500);
+  } catch(e) {
+    btn.textContent = 'Erro!'; btn.disabled = false;
+    console.error(e);
+  }
+}
+
+async function saveStatus(id) {
+  const val = document.getElementById('mo-status-input').value;
+  const btn = document.querySelectorAll('.mo-edit-btn')[1];
+  btn.textContent = 'Salvando...'; btn.disabled = true;
+  try {
+    const res = await fetch(`${SB_URL}/rest/v1/inscricoes_osteotomia?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: { ...hdrs, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ mp_status: val })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const rec = inscData.find(x => x.id === id);
+    if (rec) rec.mp_status = val;
+    updateInscKPIs();
+    applyFilters();
     btn.textContent = '✓ Salvo!';
     setTimeout(() => { btn.textContent = 'Salvar'; btn.disabled = false; }, 1500);
   } catch(e) {
