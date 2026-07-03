@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acesso — OPTIMA CLINICAL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --navy:   #1b3254;
+  --navy-d: #122040;
+  --gold:   #c9a24b;
+  --gold-l: #D9BC72;
+  --cream:  #F5F0E6;
+  --text:   #1A2B3C;
+  --muted:  #5C6E80;
+  --serif:  'Syne', sans-serif;
+  --sans:   'IBM Plex Sans', system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--sans);background:var(--navy-d);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background-image:
+    radial-gradient(ellipse 60% 70% at 50% 50%,rgba(28,52,97,.6) 0%,transparent 70%),
+    linear-gradient(rgba(200,168,75,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,168,75,.03) 1px,transparent 1px);
+  background-size:auto,72px 72px,72px 72px;
+}
+.card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(200,168,75,.18);
+  border-radius:6px;padding:48px 40px;width:100%;max-width:420px;
+  backdrop-filter:blur(12px);
+}
+.logo{text-align:center;margin-bottom:36px;}
+.logo img{height:44px;width:auto;}
+.logo-text{
+  font-family:var(--serif);font-size:1.4rem;font-weight:600;
+  color:#fff;margin-top:12px;letter-spacing:.02em;
+}
+.logo-sub{font-size:.72rem;color:rgba(255,255,255,.4);letter-spacing:.12em;text-transform:uppercase;margin-top:4px;}
+.divider{width:32px;height:1px;background:var(--gold);margin:20px auto 28px;}
+h1{
+  font-family:var(--serif);font-size:1.3rem;font-weight:600;
+  color:#fff;text-align:center;margin-bottom:24px;
+}
+label{
+  display:block;font-size:.72rem;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:6px;
+}
+input{
+  width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+  border-radius:4px;padding:11px 14px;font-size:.88rem;color:#fff;
+  font-family:var(--sans);outline:none;transition:border-color .2s;
+}
+input::placeholder{color:rgba(255,255,255,.25);}
+input:focus{border-color:rgba(200,168,75,.5);}
+.field{margin-bottom:18px;}
+.btn{
+  width:100%;background:var(--gold);color:var(--navy-d);border:none;
+  border-radius:4px;padding:12px;font-size:.82rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+  font-family:var(--sans);transition:background .2s;margin-top:8px;
+}
+.btn:hover{background:var(--gold-l);}
+.btn:disabled{opacity:.6;cursor:not-allowed;}
+.msg{
+  margin-top:16px;padding:10px 14px;border-radius:4px;
+  font-size:.8rem;text-align:center;display:none;
+}
+.msg.error{background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.3);color:#e88;}
+.msg.success{background:rgba(26,122,84,.18);border:1px solid rgba(26,122,84,.3);color:#6d9;}
+.back{
+  display:block;text-align:center;margin-top:22px;
+  font-size:.72rem;color:rgba(255,255,255,.35);text-decoration:none;
+  letter-spacing:.06em;transition:color .2s;
+}
+.back:hover{color:rgba(255,255,255,.6);}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <div class="logo-text">Optima Clinical</div>
+    <div class="logo-sub">Medicina Regenerativa</div>
+  </div>
+  <div class="divider"></div>
+  <h1>Acesso Restrito</h1>
+  <div class="field">
+    <label for="email">E-mail</label>
+    <input type="email" id="email" placeholder="seu@email.com" autocomplete="username">
+  </div>
+  <div class="field">
+    <label for="senha">Senha</label>
+    <input type="password" id="senha" placeholder="••••••••" autocomplete="current-password">
+  </div>
+  <button class="btn" id="btnLogin">Entrar</button>
+  <div class="msg" id="msg"></div>
+  <a class="back" href="index.html">← Voltar ao site</a>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://gbgfqjuazcwqjgwgqjaw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_F5NWBNz5bKyfeJr7RaOWAA_PCI6qmAb';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) window.location.replace('area-restrita.html');
+})();
+
+const btn = document.getElementById('btnLogin');
+const msgEl = document.getElementById('msg');
+
+function showMsg(text, type) {
+  msgEl.textContent = text;
+  msgEl.className = 'msg ' + type;
+  msgEl.style.display = 'block';
+}
+
+btn.addEventListener('click', async () => {
+  const email = document.getElementById('email').value.trim();
+  const senha = document.getElementById('senha').value;
+  if (!email || !senha) { showMsg('Preencha e-mail e senha.', 'error'); return; }
+  btn.disabled = true;
+  btn.textContent = 'Entrando…';
+  const { error } = await sb.auth.signInWithPassword({ email, password: senha });
+  if (error) {
+    showMsg('Credenciais inválidas. Verifique e tente novamente.', 'error');
+    btn.disabled = false;
+    btn.textContent = 'Entrar';
+  } else {
+    showMsg('Acesso autorizado. Redirecionando…', 'success');
+    setTimeout(() => window.location.replace('area-restrita.html'), 800);
+  }
+});
+
+document.getElementById('senha').addEventListener('keydown', e => {
+  if (e.key === 'Enter') btn.click();
+});
+</script>
+</body>
+</html>
