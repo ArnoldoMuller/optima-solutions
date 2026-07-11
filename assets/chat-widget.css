@@ -208,7 +208,7 @@
   border-radius: 10px;
   padding: 9px 12px;
   font-family: inherit;
-  font-size: 0.86rem;
+  font-size: 16px; /* mínimo 16px evita zoom automático ao focar no iOS */
   line-height: 1.4;
   max-height: 90px;
   color: #1A2B3C;
@@ -259,8 +259,9 @@
   text-decoration: underline;
 }
 
-/* Mobile: janela quase em tela cheia, respeitando safe areas */
-@media (max-width: 480px) {
+/* Mobile: janela quase em tela cheia, respeitando safe areas.
+   Breakpoint 768px cobre celulares e telas pequenas em geral. */
+@media (max-width: 768px) {
   .optima-chat-widget-panel {
     right: 12px;
     left: 12px;
@@ -269,9 +270,22 @@
     width: auto;
     height: auto;
     max-height: none;
+    border-radius: 14px;
   }
   .optima-chat-widget-launcher {
-    right: 20px;
-    bottom: 90px;
+    right: 16px;
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    width: 56px;
+    height: 56px;
+  }
+
+  /* Com o chat aberto, o botão flutuante (que já vira um X redundante com o
+     fechar do cabeçalho) e o botão do WhatsApp da própria página somem, para
+     não cobrir o campo de mensagem da janela quase em tela cheia. */
+  body.optima-chat-open .optima-chat-widget-launcher {
+    display: none;
+  }
+  body.optima-chat-open .wa {
+    display: none !important;
   }
 }

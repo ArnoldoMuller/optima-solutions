@@ -26,8 +26,8 @@
   --sans:    'IBM Plex Sans', system-ui, sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--sans);color:var(--text);background:var(--white);overflow-x:hidden;}
+html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%;}
+body{font-family:var(--sans);color:var(--text);background:var(--white);overflow-x:hidden;max-width:100%;}
 
 /* NAV */
 nav{
@@ -287,6 +287,9 @@ footer{background:var(--navy-d);padding:44px 0 36px;border-top:1px solid rgba(20
 
 /* WA FLOAT */
 .wa{position:fixed;bottom:30px;right:30px;z-index:200;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(37,211,102,.48);text-decoration:none;animation:wapulse 2.8s infinite;}
+@media(max-width:768px){
+  .wa{right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:56px;height:56px;}
+}
 @keyframes wapulse{0%,100%{box-shadow:0 8px 28px rgba(37,211,102,.48);}50%{box-shadow:0 8px 42px rgba(37,211,102,.72);}}
 .wa svg{width:28px;height:28px;fill:white;}
 
@@ -323,6 +326,7 @@ footer{background:var(--navy-d);padding:44px 0 36px;border-top:1px solid rgba(20
     padding:14px 0;font-size:.82rem;
     border-bottom:1px solid rgba(255,255,255,.06);
     letter-spacing:.08em;
+    white-space:normal;
   }
   .nav-links a:last-child{border-bottom:none;margin-top:14px;text-align:center;padding:12px 0!important;border-radius:3px;}
 

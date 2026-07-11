@@ -163,6 +163,7 @@
 
   function openPanel(refs) {
     opened = true;
+    document.body.classList.add('optima-chat-open');
     refs.launcher.setAttribute('data-open', 'true');
     refs.panel.setAttribute('data-open', 'true');
     refs.launcher.setAttribute('aria-label', 'Fechar chat do Assistente Optima');
@@ -180,6 +181,7 @@
 
   function closePanel(refs) {
     opened = false;
+    document.body.classList.remove('optima-chat-open');
     refs.launcher.setAttribute('data-open', 'false');
     refs.panel.setAttribute('data-open', 'false');
     refs.launcher.setAttribute('aria-label', 'Abrir chat do Assistente Optima');
