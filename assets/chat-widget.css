@@ -1,0 +1,277 @@
+/* assets/chat-widget.css
+   Assistente Optima — widget de chat com IA.
+   Paleta e tipografia seguem a identidade Optima (var(--navy)/var(--gold)
+   quando definidas na página; caso contrário usa os valores oficiais). */
+
+.optima-chat-widget-launcher,
+.optima-chat-widget-panel {
+  box-sizing: border-box;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+}
+.optima-chat-widget-launcher *,
+.optima-chat-widget-panel * {
+  box-sizing: border-box;
+}
+
+/* Botão flutuante — empilhado acima do botão do WhatsApp (bottom:30px; right:30px; 56x56; z-index:200) */
+.optima-chat-widget-launcher {
+  position: fixed;
+  right: 30px;
+  bottom: 98px; /* 30 (offset do WA) + 56 (altura do WA) + 12 (folga) */
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--navy, #1C3461);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(19, 36, 74, 0.38);
+  z-index: 199;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 0;
+}
+.optima-chat-widget-launcher:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(19, 36, 74, 0.45);
+}
+.optima-chat-widget-launcher svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--gold, #C8A84B);
+  fill: none;
+}
+.optima-chat-widget-launcher .optima-chat-widget-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold, #C8A84B);
+  border: 2px solid #fff;
+}
+.optima-chat-widget-launcher[data-open="true"] .optima-chat-widget-icon-open { display: none; }
+.optima-chat-widget-launcher[data-open="true"] .optima-chat-widget-icon-close { display: block; }
+.optima-chat-widget-launcher .optima-chat-widget-icon-close { display: none; }
+
+/* Janela do chat */
+.optima-chat-widget-panel {
+  position: fixed;
+  right: 30px;
+  bottom: 166px; /* acima do botão flutuante */
+  width: 380px;
+  height: 560px;
+  max-height: calc(100vh - 200px);
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(19, 36, 74, 0.28), 0 2px 10px rgba(19, 36, 74, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 198;
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.optima-chat-widget-panel[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.optima-chat-widget-header {
+  background: linear-gradient(160deg, var(--navy, #1C3461) 0%, var(--navy-d, #13244A) 100%);
+  padding: 18px 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.optima-chat-widget-header-title {
+  font-family: 'Syne', Georgia, serif;
+  color: #FFFFFF;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+.optima-chat-widget-header-subtitle {
+  font-size: 0.72rem;
+  color: var(--gold-l, #E3D2A2);
+  margin: 3px 0 0;
+  letter-spacing: 0.02em;
+}
+.optima-chat-widget-header-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.optima-chat-widget-header-close:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.1);
+}
+.optima-chat-widget-header-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.optima-chat-widget-body {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--cream, #F5F0E6);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.optima-chat-widget-msg {
+  max-width: 84%;
+  padding: 10px 13px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+.optima-chat-widget-msg a {
+  color: inherit;
+  text-decoration: underline;
+  font-weight: 600;
+}
+.optima-chat-widget-msg-assistant {
+  align-self: flex-start;
+  background: #FFFFFF;
+  border: 1px solid rgba(19, 36, 74, 0.1);
+  color: #1A2B3C;
+  border-bottom-left-radius: 3px;
+}
+.optima-chat-widget-msg-assistant a {
+  color: var(--navy, #1C3461);
+}
+.optima-chat-widget-msg-user {
+  align-self: flex-end;
+  background: var(--navy, #1C3461);
+  color: #FFFFFF;
+  border-bottom-right-radius: 3px;
+}
+
+.optima-chat-widget-typing {
+  align-self: flex-start;
+  display: flex;
+  gap: 4px;
+  padding: 12px 14px;
+  background: #FFFFFF;
+  border: 1px solid rgba(19, 36, 74, 0.1);
+  border-radius: 12px;
+  border-bottom-left-radius: 3px;
+}
+.optima-chat-widget-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--navy, #1C3461);
+  opacity: 0.4;
+  animation: optima-chat-widget-blink 1.2s infinite ease-in-out;
+}
+.optima-chat-widget-typing span:nth-child(2) { animation-delay: 0.2s; }
+.optima-chat-widget-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes optima-chat-widget-blink {
+  0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+  40% { opacity: 0.9; transform: translateY(-2px); }
+}
+
+.optima-chat-widget-inputbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #FFFFFF;
+  border-top: 1px solid rgba(19, 36, 74, 0.08);
+}
+.optima-chat-widget-textarea {
+  flex: 1;
+  resize: none;
+  border: 1px solid rgba(19, 36, 74, 0.18);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-family: inherit;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  max-height: 90px;
+  color: #1A2B3C;
+  outline: none;
+}
+.optima-chat-widget-textarea:focus {
+  border-color: var(--navy, #1C3461);
+}
+.optima-chat-widget-send {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  background: var(--gold, #C8A84B);
+  color: var(--navy-d, #13244A);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+.optima-chat-widget-send:hover:not(:disabled) {
+  background: var(--gold-l, #E3D2A2);
+}
+.optima-chat-widget-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.optima-chat-widget-send svg {
+  width: 17px;
+  height: 17px;
+}
+
+.optima-chat-widget-footer {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 7px 10px calc(7px + env(safe-area-inset-bottom, 0px));
+  background: #FFFFFF;
+  border-top: 1px solid rgba(19, 36, 74, 0.06);
+}
+.optima-chat-widget-footer span {
+  font-size: 0.68rem;
+  color: #8592a3;
+}
+.optima-chat-widget-footer a {
+  color: #8592a3;
+  text-decoration: underline;
+}
+
+/* Mobile: janela quase em tela cheia, respeitando safe areas */
+@media (max-width: 480px) {
+  .optima-chat-widget-panel {
+    right: 12px;
+    left: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    top: calc(12px + env(safe-area-inset-top, 0px));
+    width: auto;
+    height: auto;
+    max-height: none;
+  }
+  .optima-chat-widget-launcher {
+    right: 20px;
+    bottom: 90px;
+  }
+}

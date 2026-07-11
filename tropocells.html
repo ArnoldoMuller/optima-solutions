@@ -7,6 +7,8 @@
 <meta name="description" content="Tropocells PRP: alta concentração plaquetária, centrífuga inclusa e suporte completo. Implementação imediata em ortopedia e medicina regenerativa. CE, RN, PI e MA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Tipografia do Assistente Optima (chat com IA) -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -428,5 +430,9 @@ footer img{height:30px;filter:brightness(0) invert(1);opacity:.55;}
 const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:0.08});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 </script>
+
+<!-- Assistente Optima (chat com IA) -->
+<link rel="stylesheet" href="/assets/chat-widget.css">
+<script src="/assets/chat-widget.js" defer></script>
 </body>
 </html>
