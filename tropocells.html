@@ -79,8 +79,7 @@ h1 em{font-style:normal;color:var(--gold);}
 .problem{background:var(--cream);}
 .problem-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
 .barrier-list{display:flex;flex-direction:column;gap:12px;margin-top:28px;}
-.barrier{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;background:#fff;border-left:3px solid var(--teal-l);border-radius:0 5px 5px 0;box-shadow:0 2px 10px rgba(28,52,97,.05);}
-.barrier-ico{width:32px;height:32px;background:rgba(30,185,171,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0;}
+.barrier{display:flex;align-items:flex-start;padding:18px 22px;background:#fff;border-left:3px solid var(--teal-l);border-radius:0 5px 5px 0;box-shadow:0 2px 10px rgba(28,52,97,.05);}
 .barrier strong{display:block;font-size:.86rem;font-weight:600;color:var(--navy-d);}
 .barrier span{font-size:.78rem;color:var(--muted);}
 .solution-box{background:var(--navy);border-radius:8px;padding:40px;position:relative;overflow:hidden;}
@@ -89,17 +88,15 @@ h1 em{font-style:normal;color:var(--gold);}
 .solution-box-title{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:16px;}
 .solution-box-text{font-size:.84rem;line-height:1.75;color:rgba(255,255,255,.45);}
 .diff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;}
-.diff-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:28px 24px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.diff-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:32px 26px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
 .diff-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(28,52,97,.09);}
 .diff-card::after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--teal-l);}
-.diff-ico{font-size:1.8rem;margin-bottom:18px;}
 .diff-title{font-family:var(--serif);font-size:1.18rem;font-weight:700;color:var(--navy-d);margin-bottom:10px;}
 .diff-text{font-size:.82rem;line-height:1.7;color:var(--muted);}
 .ind-bg{background:var(--cream);}
 .ind-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
 .ind-list{display:flex;flex-direction:column;gap:12px;margin-top:28px;}
-.ind-item{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;background:#fff;border-left:3px solid var(--teal-l);border-radius:0 5px 5px 0;}
-.ind-item-ico{width:32px;height:32px;background:rgba(30,185,171,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.86rem;flex-shrink:0;}
+.ind-item{display:flex;align-items:flex-start;padding:18px 22px;background:#fff;border-left:3px solid var(--teal-l);border-radius:0 5px 5px 0;}
 .ind-item strong{display:block;font-size:.86rem;font-weight:600;color:var(--navy-d);}
 .ind-item span{font-size:.78rem;color:var(--muted);}
 .ind-note{margin-top:16px;font-size:.72rem;line-height:1.6;color:var(--muted);}
@@ -157,8 +154,7 @@ h1 em{font-style:normal;color:var(--gold);}
 .comp-note strong{color:var(--navy-d);}
 .kf-box{background:var(--navy);border-radius:8px;padding:40px;margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;}
 .kf-head{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:20px;grid-column:1/-1;}
-.kf-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;}
-.kf-ico{width:32px;height:32px;background:rgba(30,185,171,.12);border:1px solid rgba(30,185,171,.25);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
+.kf-item{display:flex;align-items:flex-start;margin-bottom:16px;}
 .kf-text strong{display:block;font-size:.84rem;font-weight:600;color:#fff;margin-bottom:3px;}
 .kf-text span{font-size:.77rem;color:rgba(255,255,255,.4);line-height:1.6;}
 .final-cta{background:var(--cream);padding:100px 52px;text-align:center;position:relative;overflow:hidden;}
@@ -310,9 +306,9 @@ footer img{height:30px;width:auto;display:block;}
         <h2 class="s-title rv">A incorpora&ccedil;&atilde;o do PRP ainda &eacute; limitada por falta de <em>padroniza&ccedil;&atilde;o e estrutura</em></h2>
         <p class="s-lead rv">A variabilidade na concentra&ccedil;&atilde;o plaquetária, a necessidade de investimento em equipamentos e a aus&ecirc;ncia de suporte t&eacute;cnico s&atilde;o barreiras comuns para ado&ccedil;&atilde;o do PRP.</p>
         <div class="barrier-list">
-          <div class="barrier rv"><div class="barrier-ico">&#9888;&#65039;</div><div><strong>Variabilidade na concentra&ccedil;&atilde;o plaquetária</strong><span>Resultados inconsistentes comprometem a previsibilidade cl&iacute;nica</span></div></div>
-          <div class="barrier rv"><div class="barrier-ico">&#128176;</div><div><strong>Investimento inicial em equipamentos</strong><span>Centr&iacute;fuga e insumos representam barreira financeira significativa</span></div></div>
-          <div class="barrier rv"><div class="barrier-ico">&#128218;</div><div><strong>Aus&ecirc;ncia de suporte t&eacute;cnico</strong><span>Implementa&ccedil;&atilde;o sem orienta&ccedil;&atilde;o gera inseguran&ccedil;a na aplica&ccedil;&atilde;o</span></div></div>
+          <div class="barrier rv"><div><strong>Variabilidade na concentra&ccedil;&atilde;o plaquetária</strong><span>Resultados inconsistentes comprometem a previsibilidade cl&iacute;nica</span></div></div>
+          <div class="barrier rv"><div><strong>Investimento inicial em equipamentos</strong><span>Centr&iacute;fuga e insumos representam barreira financeira significativa</span></div></div>
+          <div class="barrier rv"><div><strong>Aus&ecirc;ncia de suporte t&eacute;cnico</strong><span>Implementa&ccedil;&atilde;o sem orienta&ccedil;&atilde;o gera inseguran&ccedil;a na aplica&ccedil;&atilde;o</span></div></div>
         </div>
       </div>
       <div class="solution-box rv">
@@ -330,9 +326,9 @@ footer img{height:30px;width:auto;display:block;}
     <h2 class="s-title rv">Efici&ecirc;ncia cl&iacute;nica com <em>protocolo padronizado</em></h2>
     <p class="s-lead rv">Cada elemento do sistema foi pensado para garantir reprodutibilidade, seguran&ccedil;a e facilidade de aplica&ccedil;&atilde;o no contexto do consult&oacute;rio.</p>
     <div class="diff-grid">
-      <div class="diff-card rv"><div class="diff-ico">&#129978;</div><div class="diff-title">Alta concentra&ccedil;&atilde;o consistente</div><div class="diff-text">Sistema desenvolvido para maximizar a concentra&ccedil;&atilde;o de fatores de crescimento com reprodutibilidade entre aplica&ccedil;&otilde;es &mdash; resultados previs&iacute;veis a cada procedimento.</div></div>
-      <div class="diff-card rv"><div class="diff-ico">&#127939;</div><div class="diff-title">Versatilidade cl&iacute;nica</div><div class="diff-text">Indicado para ortopedia, medicina esportiva, les&otilde;es tendinosas e aplica&ccedil;&otilde;es regenerativas &mdash; uma solu&ccedil;&atilde;o que se adapta &agrave; sua especialidade.</div></div>
-      <div class="diff-card rv"><div class="diff-ico">&#128268;</div><div class="diff-title">Modelo plug-and-play</div><div class="diff-text">Estrutura completa para iniciar sem necessidade de investimento em equipamentos. Centr&iacute;fuga, insumos e capacita&ccedil;&atilde;o j&aacute; est&atilde;o inclusos no modelo da Optima.</div></div>
+      <div class="diff-card rv"><div class="diff-title">Alta concentra&ccedil;&atilde;o consistente</div><div class="diff-text">Sistema desenvolvido para maximizar a concentra&ccedil;&atilde;o de fatores de crescimento com reprodutibilidade entre aplica&ccedil;&otilde;es &mdash; resultados previs&iacute;veis a cada procedimento.</div></div>
+      <div class="diff-card rv"><div class="diff-title">Versatilidade cl&iacute;nica</div><div class="diff-text">Indicado para ortopedia, medicina esportiva, les&otilde;es tendinosas e aplica&ccedil;&otilde;es regenerativas &mdash; uma solu&ccedil;&atilde;o que se adapta &agrave; sua especialidade.</div></div>
+      <div class="diff-card rv"><div class="diff-title">Modelo plug-and-play</div><div class="diff-text">Estrutura completa para iniciar sem necessidade de investimento em equipamentos. Centr&iacute;fuga, insumos e capacita&ccedil;&atilde;o j&aacute; est&atilde;o inclusos no modelo da Optima.</div></div>
     </div>
   </div>
 </section>
@@ -344,10 +340,10 @@ footer img{height:30px;width:auto;display:block;}
         <div class="eyebrow rv">Indica&ccedil;&atilde;o cl&iacute;nica</div>
         <h2 class="s-title rv">Indica&ccedil;&otilde;es pr&aacute;ticas para incorpora&ccedil;&atilde;o <em>imediata</em> na rotina cl&iacute;nica</h2>
         <div class="ind-list">
-          <div class="ind-item rv"><div class="ind-item-ico">&#129459;</div><div><strong>Osteoartrite de joelho</strong><span>Manejo da dor e fun&ccedil;&atilde;o articular em gonartrose</span></div></div>
-          <div class="ind-item rv"><div class="ind-item-ico">&#129915;</div><div><strong>Discopatia lombar</strong><span>Degenera&ccedil;&atilde;o discal e dor lombar de origem discal</span></div></div>
-          <div class="ind-item rv"><div class="ind-item-ico">&#129456;</div><div><strong>Epicondilite de cotovelo</strong><span>Epicondilite lateral e medial (cotovelo do tenista/golfista)</span></div></div>
-          <div class="ind-item rv"><div class="ind-item-ico">&#128260;</div><div><strong>Reparo meniscal</strong><span>Suporte &agrave; cicatriza&ccedil;&atilde;o em les&otilde;es meniscais selecionadas</span></div></div>
+          <div class="ind-item rv"><div><strong>Osteoartrite de joelho</strong><span>Manejo da dor e fun&ccedil;&atilde;o articular em gonartrose</span></div></div>
+          <div class="ind-item rv"><div><strong>Discopatia lombar</strong><span>Degenera&ccedil;&atilde;o discal e dor lombar de origem discal</span></div></div>
+          <div class="ind-item rv"><div><strong>Epicondilite de cotovelo</strong><span>Epicondilite lateral e medial (cotovelo do tenista/golfista)</span></div></div>
+          <div class="ind-item rv"><div><strong>Reparo meniscal</strong><span>Suporte &agrave; cicatriza&ccedil;&atilde;o em les&otilde;es meniscais selecionadas</span></div></div>
         </div>
         <div class="ind-note rv">Indica&ccedil;&otilde;es em ortopedia reconhecidas pelo Conselho Federal de Medicina (CFM).</div>
       </div>
@@ -527,14 +523,14 @@ footer img{height:30px;width:auto;display:block;}
     <div class="kf-box rv">
       <div class="kf-head">Por que esses dados importam na sua pr&aacute;tica cl&iacute;nica</div>
       <div>
-        <div class="kf-item"><div class="kf-ico">&#129978;</div><div class="kf-text"><strong>Dose plaquetária: o fator decisivo</strong><span>90% dos bra&ccedil;os de tratamento com dose &gt;5,5 bilh&otilde;es reportaram melhora cl&iacute;nica significativa. Sistemas abaixo de 2,3 bilh&otilde;es falharam (p &lt; 0,01). Corsini et al., 2025.</span></div></div>
-        <div class="kf-item"><div class="kf-ico">&#128683;</div><div class="kf-text"><strong>Eritr&oacute;citos: evitar a todo custo</strong><span>Contamina&ccedil;&atilde;o por hem&aacute;cias causa hem&oacute;lise, estresse oxidativo, dano &agrave; cartilagem e supress&atilde;o imune &mdash; especialmente prejudicial em aplica&ccedil;&otilde;es intra-articulares.</span></div></div>
-        <div class="kf-item"><div class="kf-ico">&#128300;</div><div class="kf-text"><strong>PBMNC: a vantagem regenerativa</strong><span>Mon&oacute;citos/macr&oacute;fagos dos PBMNCs promovem a transi&ccedil;&atilde;o M1&rarr;M2, amplificando a regenera&ccedil;&atilde;o tecidual. Presente no Tropocells; ausente na maioria dos concorrentes avaliados.</span></div></div>
+        <div class="kf-item"><div class="kf-text"><strong>Dose plaquetária: o fator decisivo</strong><span>90% dos bra&ccedil;os de tratamento com dose &gt;5,5 bilh&otilde;es reportaram melhora cl&iacute;nica significativa. Sistemas abaixo de 2,3 bilh&otilde;es falharam (p &lt; 0,01). Corsini et al., 2025.</span></div></div>
+        <div class="kf-item"><div class="kf-text"><strong>Eritr&oacute;citos: evitar a todo custo</strong><span>Contamina&ccedil;&atilde;o por hem&aacute;cias causa hem&oacute;lise, estresse oxidativo, dano &agrave; cartilagem e supress&atilde;o imune &mdash; especialmente prejudicial em aplica&ccedil;&otilde;es intra-articulares.</span></div></div>
+        <div class="kf-item"><div class="kf-text"><strong>PBMNC: a vantagem regenerativa</strong><span>Mon&oacute;citos/macr&oacute;fagos dos PBMNCs promovem a transi&ccedil;&atilde;o M1&rarr;M2, amplificando a regenera&ccedil;&atilde;o tecidual. Presente no Tropocells; ausente na maioria dos concorrentes avaliados.</span></div></div>
       </div>
       <div>
-        <div class="kf-item"><div class="kf-ico">&#128202;</div><div class="kf-text"><strong>LP-PRP superior em articula&ccedil;&otilde;es</strong><span>Meta-an&aacute;lise de 24 ECRs (1.344 pacientes): LP-PRP oferece significativamente mais al&iacute;vio da dor que LR-PRP em osteoartrite de joelho (Xiong et al.).</span></div></div>
-        <div class="kf-item"><div class="kf-ico">&#9889;</div><div class="kf-text"><strong>Centrifuga&ccedil;&atilde;o simples: menos variabilidade</strong><span>Dispositivos de centr&iacute;fuga dupla introduzem mais etapas e maior varia&ccedil;&atilde;o na composi&ccedil;&atilde;o final. O protocolo simples do Tropocells garante maior reprodutibilidade.</span></div></div>
-        <div class="kf-item"><div class="kf-ico">&#127919;</div><div class="kf-text"><strong>Padroniza&ccedil;&atilde;o &eacute; a chave do resultado</strong><span>44% das publica&ccedil;&otilde;es sobre PRP cont&ecirc;m erros metodol&oacute;gicos (Siegel, 2024). Protocolos bem definidos &mdash; como o do Tropocells &mdash; s&atilde;o a resposta para resultados consistentes.</span></div></div>
+        <div class="kf-item"><div class="kf-text"><strong>LP-PRP superior em articula&ccedil;&otilde;es</strong><span>Meta-an&aacute;lise de 24 ECRs (1.344 pacientes): LP-PRP oferece significativamente mais al&iacute;vio da dor que LR-PRP em osteoartrite de joelho (Xiong et al.).</span></div></div>
+        <div class="kf-item"><div class="kf-text"><strong>Centrifuga&ccedil;&atilde;o simples: menos variabilidade</strong><span>Dispositivos de centr&iacute;fuga dupla introduzem mais etapas e maior varia&ccedil;&atilde;o na composi&ccedil;&atilde;o final. O protocolo simples do Tropocells garante maior reprodutibilidade.</span></div></div>
+        <div class="kf-item"><div class="kf-text"><strong>Padroniza&ccedil;&atilde;o &eacute; a chave do resultado</strong><span>44% das publica&ccedil;&otilde;es sobre PRP cont&ecirc;m erros metodol&oacute;gicos (Siegel, 2024). Protocolos bem definidos &mdash; como o do Tropocells &mdash; s&atilde;o a resposta para resultados consistentes.</span></div></div>
       </div>
     </div>
   </div>
