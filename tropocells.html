@@ -102,6 +102,7 @@ h1 em{font-style:normal;color:var(--gold);}
 .ind-item-ico{width:32px;height:32px;background:rgba(30,185,171,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.86rem;flex-shrink:0;}
 .ind-item strong{display:block;font-size:.86rem;font-weight:600;color:var(--navy-d);}
 .ind-item span{font-size:.78rem;color:var(--muted);}
+.ind-note{margin-top:16px;font-size:.72rem;line-height:1.6;color:var(--muted);}
 .specs-box{background:var(--navy);border-radius:8px;padding:40px;}
 .spec-label{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--teal-pale);margin-bottom:22px;}
 .spec-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:.82rem;}
@@ -172,6 +173,21 @@ footer img{height:30px;width:auto;display:block;}
 @keyframes wap{0%,100%{box-shadow:0 8px 28px rgba(37,211,102,.5);}50%{box-shadow:0 8px 44px rgba(37,211,102,.75);}}
 .wa svg{width:26px;height:26px;fill:#fff;}
 
+/* REGISTROS INTERNACIONAIS + CREDENCIAIS */
+.reg-badges{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px;}
+.reg-badge{border:1px solid var(--line);border-radius:8px;background:var(--cream);padding:18px 16px;text-align:center;}
+.reg-badge-main{font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--navy-d);}
+.reg-badge-sub{display:block;margin-top:4px;font-size:.62rem;font-weight:400;letter-spacing:.04em;color:var(--muted);}
+.cred-card{background:var(--navy);border-radius:8px;padding:40px;position:relative;overflow:hidden;margin-top:52px;}
+.cred-card::before{content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(30,185,171,.15) 0%,transparent 70%);}
+.cred-label{font-size:.67rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-pale);margin-bottom:14px;position:relative;}
+.cred-title{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:#fff;line-height:1.25;margin-bottom:26px;max-width:560px;position:relative;}
+.cred-title em{color:var(--gold);font-style:normal;}
+.cred-list{display:flex;flex-direction:column;gap:16px;position:relative;}
+.cred-item{display:flex;align-items:flex-start;gap:14px;}
+.cred-item-ico{width:32px;height:32px;background:rgba(255,255,255,.08);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.86rem;flex-shrink:0;}
+.cred-item span{font-size:.85rem;line-height:1.65;color:rgba(255,255,255,.75);}
+
 /* MOBILE SAFETY — evita overflow horizontal e ancora os flutuantes na área visível */
 @media(max-width:768px){
   .wa{right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:56px;height:56px;}
@@ -204,6 +220,8 @@ footer img{height:30px;width:auto;display:block;}
   .hero-sub{font-size:.85rem;}
   .kicker{font-size:.65rem;}
   .cta-row .btn-p,.cta-row .btn-s{font-size:.82rem;padding:13px 20px;}
+  .reg-badges{grid-template-columns:1fr 1fr;}
+  .cred-card{padding:28px 22px;}
 }
 </style>
 </head>
@@ -326,21 +344,46 @@ footer img{height:30px;width:auto;display:block;}
         <div class="eyebrow rv">Indica&ccedil;&atilde;o cl&iacute;nica</div>
         <h2 class="s-title rv">Indica&ccedil;&otilde;es pr&aacute;ticas para incorpora&ccedil;&atilde;o <em>imediata</em> na rotina cl&iacute;nica</h2>
         <div class="ind-list">
-          <div class="ind-item rv"><div class="ind-item-ico">&#129456;</div><div><strong>Les&otilde;es tendinosas e ligamentares</strong><span>Tendinopatias, entorses e les&otilde;es por sobrecarga</span></div></div>
-          <div class="ind-item rv"><div class="ind-item-ico">&#127947;&#65039;</div><div><strong>Medicina esportiva</strong><span>Recupera&ccedil;&atilde;o funcional e retorno mais r&aacute;pido &agrave; atividade</span></div></div>
-          <div class="ind-item rv"><div class="ind-item-ico">&#129459;</div><div><strong>Artrose e condropatias</strong><span>Complemento &agrave; viscossuplemeta&ccedil;&atilde;o em casos selecionados</span></div></div>
-          <div class="ind-item rv"><div class="ind-item-ico">&#128260;</div><div><strong>Procedimentos regenerativos e est&eacute;ticos</strong><span>Uso associado a t&eacute;cnicas como lipofilling</span></div></div>
+          <div class="ind-item rv"><div class="ind-item-ico">&#129459;</div><div><strong>Osteoartrite de joelho</strong><span>Manejo da dor e fun&ccedil;&atilde;o articular em gonartrose</span></div></div>
+          <div class="ind-item rv"><div class="ind-item-ico">&#129915;</div><div><strong>Discopatia lombar</strong><span>Degenera&ccedil;&atilde;o discal e dor lombar de origem discal</span></div></div>
+          <div class="ind-item rv"><div class="ind-item-ico">&#129456;</div><div><strong>Epicondilite de cotovelo</strong><span>Epicondilite lateral e medial (cotovelo do tenista/golfista)</span></div></div>
+          <div class="ind-item rv"><div class="ind-item-ico">&#128260;</div><div><strong>Reparo meniscal</strong><span>Suporte &agrave; cicatriza&ccedil;&atilde;o em les&otilde;es meniscais selecionadas</span></div></div>
         </div>
+        <div class="ind-note rv">Indica&ccedil;&otilde;es em ortopedia reconhecidas pelo Conselho Federal de Medicina (CFM).</div>
       </div>
       <div class="specs-box rv">
         <div class="spec-label">Especifica&ccedil;&otilde;es do sistema</div>
         <div class="spec-row"><span class="spec-k">Tecnologia</span><span class="spec-v">PRP &mdash; Plasma Rico em Plaquetas</span></div>
+        <div class="spec-row"><span class="spec-k">Fabricante</span><span class="spec-v" style="color:var(--teal-pale)">Estar Medical &bull; Israel</span></div>
+        <div class="spec-row"><span class="spec-k">Registros</span><span class="spec-v" style="color:var(--teal-pale)">Anvisa &bull; FDA &bull; CE &bull; Jap&atilde;o</span></div>
         <div class="spec-row"><span class="spec-k">Apresenta&ccedil;&otilde;es</span><span class="spec-v">11 ml e 22 ml</span></div>
         <div class="spec-row"><span class="spec-k">Dose plaquetária</span><span class="spec-v" style="color:var(--teal-pale)">4 bilh&otilde;es (limiar m&iacute;nimo eficaz)</span></div>
         <div class="spec-row"><span class="spec-k">Recupera&ccedil;&atilde;o plaquetária</span><span class="spec-v" style="color:var(--teal-pale)">85% (alta efici&ecirc;ncia)</span></div>
         <div class="spec-row"><span class="spec-k">Tipo</span><span class="spec-v">LP-PRP + PBMNC-enriquecido</span></div>
         <div class="spec-row"><span class="spec-k">Contamina&ccedil;&atilde;o por eritr&oacute;citos</span><span class="spec-v" style="color:#4ade80">N&atilde;o detectada</span></div>
         <div class="spec-row"><span class="spec-k">Cobertura</span><span class="spec-v">CE &bull; RN &bull; PI &bull; MA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-pad" style="background:#fff">
+  <div class="container">
+    <div class="eyebrow rv">Registros internacionais</div>
+    <h2 class="s-title rv">Mesma marca registrada em <em>quatro jurisdi&ccedil;&otilde;es</em></h2>
+    <div class="reg-badges">
+      <div class="reg-badge rv"><div class="reg-badge-main">Anvisa</div><span class="reg-badge-sub">Brasil</span></div>
+      <div class="reg-badge rv"><div class="reg-badge-main">FDA</div><span class="reg-badge-sub">Estados Unidos</span></div>
+      <div class="reg-badge rv"><div class="reg-badge-main">CE</div><span class="reg-badge-sub">Uni&atilde;o Europeia</span></div>
+      <div class="reg-badge rv"><div class="reg-badge-main">Jap&atilde;o</div><span class="reg-badge-sub">Registro sanit&aacute;rio</span></div>
+    </div>
+    <div class="cred-card rv">
+      <div class="cred-label">Por que Tropocells</div>
+      <div class="cred-title">Tecnologia israelense com <em>caracteriza&ccedil;&atilde;o comprovada</em></div>
+      <div class="cred-list">
+        <div class="cred-item"><div class="cred-item-ico">&#127981;</div><span>Desenvolvido pela Estar Medical (Israel), refer&ecirc;ncia em sistemas de PRP</span></div>
+        <div class="cred-item"><div class="cred-item-ico">&#127760;</div><span>Mesma marca registrada na Anvisa, FDA, CE e Jap&atilde;o</span></div>
+        <div class="cred-item"><div class="cred-item-ico">&#128300;</div><span>Composi&ccedil;&atilde;o do PRP caracterizada por estudos (LP-PRP enriquecido com PBMNC)</span></div>
       </div>
     </div>
   </div>
