@@ -112,6 +112,12 @@ h1 em{font-style:normal;color:var(--gold);}
 .offer-bg{background:var(--navy-d);}
 .offer-bg .s-title{color:#fff;}
 .offer-bg .s-lead{color:rgba(255,255,255,.44);}
+.video-section{text-align:center;}
+.video-section .eyebrow{justify-content:center;color:var(--gold);}
+.video-section .eyebrow::before{background:var(--gold);}
+.video-section .s-title,.video-section .s-lead{margin-left:auto;margin-right:auto;}
+.video-wrapper{position:relative;width:100%;max-width:860px;margin:36px auto 0;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(201,162,75,.35);box-shadow:0 8px 30px rgba(0,0,0,.25);}
+.video-wrapper iframe{position:absolute;inset:0;width:100%;height:100%;}
 .offer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(30,185,171,.1);border:1px solid rgba(30,185,171,.1);border-radius:8px;overflow:hidden;margin-top:52px;}
 .offer-cell{background:var(--navy-d);padding:34px 26px;transition:background .2s;position:relative;}
 .offer-cell:hover{background:rgba(255,255,255,.03);}
@@ -258,6 +264,23 @@ footer img{height:30px;width:auto;display:block;}
       </div>
     </div>
   </div>
+  </div>
+</section>
+
+<section class="offer-bg sec-pad video-section">
+  <div class="container">
+    <div class="eyebrow rv">Veja na prática</div>
+    <h2 class="s-title rv">Como funciona o <em>Tropocells PRP</em></h2>
+    <p class="s-lead rv">Demonstração oficial do preparo do PRP com a tecnologia de gel separador.</p>
+    <div class="video-wrapper rv">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/yGlZpQfHnqA?rel=0&modestbranding=1"
+        title="Tropocells PRP — Demonstração"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy"></iframe>
+    </div>
   </div>
 </section>
 
