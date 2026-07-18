@@ -153,11 +153,14 @@ h1 em{font-style:normal;color:var(--gold);}
 .comp-note{font-size:.72rem;color:var(--muted);margin-top:14px;line-height:1.65;}
 .comp-note strong{color:var(--navy-d);}
 .int-comp{background:var(--navy);border-radius:8px;padding:40px;margin-top:48px;}
+.int-comp-head{text-align:center;}
+.int-comp-head .eyebrow{justify-content:center;}
 .int-comp .eyebrow{color:var(--teal-pale);}
 .int-comp .s-title{color:#fff;margin-bottom:10px;}
-.int-comp .s-lead{color:rgba(255,255,255,.44);max-width:640px;margin-bottom:26px;}
-.int-comp-select{display:block;width:100%;max-width:360px;font-family:'IBM Plex Sans',sans-serif;font-size:1rem;padding:14px 16px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;margin-bottom:28px;}
+.int-comp .s-lead{color:rgba(255,255,255,.44);max-width:640px;margin-bottom:26px;margin-left:auto;margin-right:auto;}
+.int-comp-select{display:block;width:100%;max-width:360px;font-family:'IBM Plex Sans',sans-serif;font-size:1rem;padding:14px 16px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;margin:0 auto 28px;}
 .int-comp-select:focus{outline:none;border-color:var(--teal-l);}
+.int-comp-select option{background-color:#ffffff;color:var(--navy);}
 .int-comp-wrap{overflow-x:auto;border-radius:8px;border:1px solid rgba(255,255,255,.12);}
 .int-comp-table{width:100%;min-width:520px;border-collapse:collapse;font-size:.82rem;}
 .int-comp-table th{background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);font-weight:500;padding:12px 16px;text-align:left;font-size:.72rem;letter-spacing:.04em;white-space:nowrap;}
@@ -502,9 +505,11 @@ footer img{height:30px;width:auto;display:block;}
     </div>
 
     <div class="int-comp rv">
-      <div class="eyebrow rv">&mdash; Comparativo interativo</div>
-      <h2 class="s-title rv">Compare o Tropocells com outros sistemas de PRP</h2>
-      <p class="s-lead rv">Selecione um sistema para visualizar os par&acirc;metros lado a lado, segundo os dados de Corsini et al. (2025).</p>
+      <div class="int-comp-head">
+        <div class="eyebrow rv">&mdash; Comparativo interativo</div>
+        <h2 class="s-title rv">Compare o Tropocells com outros sistemas de PRP</h2>
+        <p class="s-lead rv">Selecione um sistema para visualizar os par&acirc;metros lado a lado, segundo os dados de Corsini et al. (2025).</p>
+      </div>
       <select id="prp-cmp-select" class="int-comp-select" aria-label="Selecionar sistema concorrente">
         <option value="magellan">Magellan</option>
         <option value="minigps3">Mini GPS III</option>
