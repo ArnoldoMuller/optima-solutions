@@ -152,6 +152,21 @@ h1 em{font-style:normal;color:var(--gold);}
 .xmk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:rgba(220,38,38,.08);border-radius:50%;color:#dc2626;font-size:.72rem;}
 .comp-note{font-size:.72rem;color:var(--muted);margin-top:14px;line-height:1.65;}
 .comp-note strong{color:var(--navy-d);}
+.int-comp{background:var(--navy);border-radius:8px;padding:40px;margin-top:48px;}
+.int-comp .eyebrow{color:var(--teal-pale);}
+.int-comp .s-title{color:#fff;margin-bottom:10px;}
+.int-comp .s-lead{color:rgba(255,255,255,.44);max-width:640px;margin-bottom:26px;}
+.int-comp-select{display:block;width:100%;max-width:360px;font-family:'IBM Plex Sans',sans-serif;font-size:1rem;padding:14px 16px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;margin-bottom:28px;}
+.int-comp-select:focus{outline:none;border-color:var(--teal-l);}
+.int-comp-wrap{overflow-x:auto;border-radius:8px;border:1px solid rgba(255,255,255,.12);}
+.int-comp-table{width:100%;min-width:520px;border-collapse:collapse;font-size:.82rem;}
+.int-comp-table th{background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);font-weight:500;padding:12px 16px;text-align:left;font-size:.72rem;letter-spacing:.04em;white-space:nowrap;}
+.int-comp-table th.int-comp-th-tropo{color:var(--teal-pale);}
+.int-comp-table td{padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.75);vertical-align:middle;}
+.int-comp-table tr:last-child td{border-bottom:none;}
+.int-comp-table td:first-child{color:rgba(255,255,255,.5);font-weight:500;white-space:nowrap;}
+.int-comp-table td:nth-child(2),.int-comp-table td:nth-child(3){font-family:'IBM Plex Mono',monospace;font-size:.8rem;}
+.int-comp-note{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:14px;line-height:1.65;}
 .kf-box{background:var(--navy);border-radius:8px;padding:40px;margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;}
 .kf-head{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:20px;grid-column:1/-1;}
 .kf-item{display:flex;align-items:flex-start;margin-bottom:16px;}
@@ -205,6 +220,8 @@ footer img{height:30px;width:auto;display:block;}
   .diff-grid,.ev-row{grid-template-columns:1fr;}
   .offer-grid{grid-template-columns:1fr 1fr;}
   .ct{font-size:.72rem;}.ct th,.ct td{padding:8px 10px;}
+  .int-comp{padding:28px 22px;}
+  .int-comp-table{font-size:.76rem;}.int-comp-table th,.int-comp-table td{padding:9px 12px;}
   footer{flex-direction:column;gap:14px;text-align:center;padding:28px 20px;}
 }
 
@@ -484,6 +501,35 @@ footer img{height:30px;width:auto;display:block;}
       </p>
     </div>
 
+    <div class="int-comp rv">
+      <div class="eyebrow rv">&mdash; Comparativo interativo</div>
+      <h2 class="s-title rv">Compare o Tropocells com outros sistemas de PRP</h2>
+      <p class="s-lead rv">Selecione um sistema para visualizar os par&acirc;metros lado a lado, segundo os dados de Corsini et al. (2025).</p>
+      <select id="prp-cmp-select" class="int-comp-select" aria-label="Selecionar sistema concorrente">
+        <option value="magellan">Magellan</option>
+        <option value="minigps3">Mini GPS III</option>
+        <option value="gps2">GPS II</option>
+        <option value="smartprep">Smartprep Terumo</option>
+        <option value="hytissue">Hy Tissue 20 Fidia</option>
+        <option value="arthrex" selected>Arthrex ACP</option>
+        <option value="regenlab">RegenLab BCT</option>
+        <option value="endoret">Endoret BTI</option>
+      </select>
+      <div class="int-comp-wrap">
+        <table class="int-comp-table">
+          <thead>
+            <tr>
+              <th>Par&acirc;metro</th>
+              <th class="int-comp-th-tropo">Tropocells 22</th>
+              <th id="prp-cmp-competitor-name">Arthrex ACP</th>
+            </tr>
+          </thead>
+          <tbody id="prp-cmp-tbody"></tbody>
+        </table>
+      </div>
+      <div class="int-comp-note">Fonte: Corsini et al. (2025), Journal of Clinical Medicine &mdash; Tabela 1. Valores m&eacute;dios por sistema.</div>
+    </div>
+
     <div class="kf-box rv">
       <div class="kf-head">Por que esses dados importam na sua pr&aacute;tica cl&iacute;nica</div>
       <div>
@@ -555,6 +601,33 @@ footer img{height:30px;width:auto;display:block;}
 <script>
 const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:0.08});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+const prpCmpParams=["Volume de sangue (mL)","ACD (mL)","Volume de PRP (mL)","Fator de enriquecimento","Recuperação plaquetária (%)","Concentração (×10⁶/µL)","Dose plaquetária (bilhões)","Centrifugação","Contaminação eritrócitos","Tipo de PRP","Neutrófilos","PBMNC"];
+const prpCmpTropocells=["20","2 (tampão pH 7,4)","4,0","5X","85","1080","4,0","Simples","Não","LP-PRP","Não","Sim"];
+const prpCmpData={
+  magellan:{name:"Magellan",values:["25–60","4–6","3–6","5,5X","65","780","5,4","Dupla","Sim","LR-PRP","Sim","Sim"]},
+  minigps3:{name:"Mini GPS III",values:["27","3","3,0","4X","49,2","1015","2,8","Dupla","Sim","LR-PRP","Sim","Sim"]},
+  gps2:{name:"GPS II",values:["55","5","6","2,3X","22,9","1076","3,6","Dupla","Sim","LR-PRP","Sim","Sim"]},
+  smartprep:{name:"Smartprep Terumo",values:["60","6","7–10","4X","65","720","4,9","Dupla","Sim","LR-PRP","Sim","Sim"]},
+  hytissue:{name:"Hy Tissue 20 Fidia",values:["18","2","4–8 / 2–3","2–3X","83,5 / 75–81","288–968","2–2,9","Simples/Dupla","Não","LP-PRP","Não","Não"]},
+  arthrex:{name:"Arthrex ACP",values:["13","2","3–4,8","1,3X","29,5","357–390","1,25","Simples","Não","LP-PRP","Não","Não"]},
+  regenlab:{name:"RegenLab BCT",values:["8","1","3","0,95X / 0,59X","82","142,5","1,35","Simples","Não","LP-PRP","Não","Não"]},
+  endoret:{name:"Endoret BTI",values:["9","1","2","1,3","48","150","1,0","Simples","Não","LP-PRP","Não","Não"]}
+};
+function prpCmpRender(key){
+  const comp=prpCmpData[key];
+  if(!comp)return;
+  const tbody=document.getElementById('prp-cmp-tbody');
+  const nameEl=document.getElementById('prp-cmp-competitor-name');
+  if(!tbody||!nameEl)return;
+  nameEl.textContent=comp.name;
+  tbody.innerHTML=prpCmpParams.map((p,i)=>'<tr><td>'+p+'</td><td>'+prpCmpTropocells[i]+'</td><td>'+comp.values[i]+'</td></tr>').join('');
+}
+const prpCmpSelect=document.getElementById('prp-cmp-select');
+if(prpCmpSelect){
+  prpCmpSelect.addEventListener('change',()=>prpCmpRender(prpCmpSelect.value));
+  prpCmpRender(prpCmpSelect.value);
+}
 </script>
 
 <!-- Assistente Optima (chat com IA) -->
