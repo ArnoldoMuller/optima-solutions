@@ -28,6 +28,9 @@ h1,h2,h3,h4,h5,.display{font-family:'Syne', sans-serif;letter-spacing:-.01em;}
 .hero-left{position:relative;z-index:2;padding:0;}
 .kicker{display:inline-flex;align-items:center;gap:12px;font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;}
 .kicker::before{content:'';width:28px;height:1px;background:var(--gold);}
+.cfm-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(30,185,171,.12);border:1px solid rgba(30,185,171,.35);color:var(--teal-pale);font-size:.78rem;font-weight:600;padding:8px 16px;border-radius:100px;}
+.cfm-badge svg{width:14px;height:14px;stroke:var(--teal-l);flex-shrink:0;}
+.cfm-badge-ref{font-size:.625rem;color:#7d8aa0;margin:8px 0 24px;letter-spacing:.02em;}
 h1{font-family:var(--serif);font-size:clamp(2.6rem,4vw,4.2rem);font-weight:700;line-height:1.08;color:#fff;margin-bottom:26px;}
 h1 em{font-style:normal;color:var(--gold);}
 .hero-sub{font-size:.98rem;line-height:1.78;font-weight:300;color:rgba(255,255,255,.58);max-width:480px;margin-bottom:40px;}
@@ -268,6 +271,7 @@ footer img{height:30px;width:auto;display:block;}
   .hero h1{font-size:1.9rem;line-height:1.12;}
   .hero-sub{font-size:.85rem;}
   .kicker{font-size:.65rem;}
+  .cfm-badge{font-size:.72rem;align-items:flex-start;padding:8px 14px;}
   .cta-row .btn-p,.cta-row .btn-s{font-size:.82rem;padding:13px 20px;}
   .reg-badges{grid-template-columns:1fr 1fr;}
   .cred-card{padding:28px 22px;}
@@ -291,8 +295,12 @@ footer img{height:30px;width:auto;display:block;}
   <div class="hero-mesh"></div>
   <div class="hero-inner">
   <div class="hero-left">
-    <div class="kicker">Sistema PRP · Medicina Regenerativa</div>
-    <h1>PRP com <em>evidência clínica</em>, pronto para o seu consultório</h1>
+    <div class="cfm-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      PRP reconhecido pelo Conselho Federal de Medicina
+    </div>
+    <div class="cfm-badge-ref">Resolução CFM nº 2.464/2026</div>
+    <h1>O PRP foi liberado. Agora é hora de <em>estruturar seu consultório</em> para aproveitar.</h1>
     <p class="hero-sub">Dose de 4 bilhões, centrífuga inclusa e implantação completa em ortopedia e medicina regenerativa.</p>
     <div class="cta-row">
       <a class="btn-p" href="https://wa.me/5585933008206?text=Ol%C3%A1%2C+sou+m%C3%A9dico+e+quero+implementar+o+PRP+no+meu+consult%C3%B3rio+com+Tropocells.">
