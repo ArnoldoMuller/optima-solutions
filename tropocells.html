@@ -162,13 +162,13 @@ h1 em{font-style:normal;color:var(--gold);}
 .int-comp-select:focus{outline:none;border-color:var(--teal-l);}
 .int-comp-select option{background-color:#ffffff;color:var(--navy);}
 .int-comp-wrap{overflow-x:auto;border-radius:8px;border:1px solid rgba(255,255,255,.12);}
-.int-comp-table{width:100%;min-width:520px;border-collapse:collapse;font-size:.82rem;}
-.int-comp-table th{background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);font-weight:500;padding:12px 16px;text-align:left;font-size:.72rem;letter-spacing:.04em;white-space:nowrap;}
+.int-comp-table{width:100%;min-width:520px;border-collapse:collapse;font-size:.99rem;}
+.int-comp-table th{background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);font-weight:500;padding:12px 16px;text-align:left;font-size:.89rem;letter-spacing:.04em;white-space:nowrap;}
 .int-comp-table th.int-comp-th-tropo{color:var(--teal-pale);}
 .int-comp-table td{padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.75);vertical-align:middle;}
 .int-comp-table tr:last-child td{border-bottom:none;}
 .int-comp-table td:first-child{color:rgba(255,255,255,.5);font-weight:500;white-space:nowrap;}
-.int-comp-table td:nth-child(2),.int-comp-table td:nth-child(3){font-family:'IBM Plex Mono',monospace;font-size:.8rem;}
+.int-comp-table td:nth-child(2),.int-comp-table td:nth-child(3){font-family:'IBM Plex Mono',monospace;font-size:.97rem;}
 .int-comp-note{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:14px;line-height:1.65;}
 .kf-box{background:var(--navy);border-radius:8px;padding:40px;margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;}
 .kf-head{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:20px;grid-column:1/-1;}
@@ -224,7 +224,7 @@ footer img{height:30px;width:auto;display:block;}
   .offer-grid{grid-template-columns:1fr 1fr;}
   .ct{font-size:.72rem;}.ct th,.ct td{padding:8px 10px;}
   .int-comp{padding:28px 22px;}
-  .int-comp-table{font-size:.76rem;}.int-comp-table th,.int-comp-table td{padding:9px 12px;}
+  .int-comp-table{font-size:.93rem;}.int-comp-table th,.int-comp-table td{padding:9px 12px;}
   footer{flex-direction:column;gap:14px;text-align:center;padding:28px 20px;}
 }
 
@@ -608,7 +608,7 @@ const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 
 const prpCmpParams=["Volume de sangue (mL)","ACD (mL)","Volume de PRP (mL)","Fator de enriquecimento","Recuperação plaquetária (%)","Concentração (×10⁶/µL)","Dose plaquetária (bilhões)","Centrifugação","Contaminação eritrócitos","Tipo de PRP","Neutrófilos","PBMNC"];
-const prpCmpTropocells=["20","2 (tampão pH 7,4)","4,0","5X","85","1080","4,0","Simples","Não","LP-PRP","Não","Sim"];
+const prpCmpTropocells=["20","2 (tamponado pH 7,4)","4,0","5X","85","1080","4,0","Simples","Não","LP-PRP","Não","Sim"];
 const prpCmpData={
   magellan:{name:"Magellan",values:["25–60","4–6","3–6","5,5X","65","780","5,4","Dupla","Sim","LR-PRP","Sim","Sim"]},
   minigps3:{name:"Mini GPS III",values:["27","3","3,0","4X","49,2","1015","2,8","Dupla","Sim","LR-PRP","Sim","Sim"]},
