@@ -170,11 +170,20 @@ h1 em{font-style:normal;color:var(--gold);}
 .int-comp-table td:first-child{color:rgba(255,255,255,.5);font-weight:500;white-space:nowrap;}
 .int-comp-table td:nth-child(2),.int-comp-table td:nth-child(3){font-family:'IBM Plex Mono',monospace;font-size:.97rem;}
 .int-comp-note{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:14px;line-height:1.65;}
-.kf-box{background:var(--navy);border-radius:8px;padding:40px;margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;}
-.kf-head{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:20px;grid-column:1/-1;}
-.kf-item{display:flex;align-items:flex-start;margin-bottom:16px;}
-.kf-text strong{display:block;font-size:.84rem;font-weight:600;color:#fff;margin-bottom:3px;}
-.kf-text span{font-size:.77rem;color:rgba(255,255,255,.4);line-height:1.6;}
+.faq-box{background:var(--navy);border-radius:8px;padding:40px;margin-top:48px;}
+.faq-box .eyebrow{color:var(--teal-pale);}
+.faq-box .s-title{color:#fff;margin-bottom:0;}
+.faq-list{margin-top:28px;}
+.faq-item{border-bottom:1px solid rgba(255,255,255,.12);}
+.faq-item:first-child{border-top:1px solid rgba(255,255,255,.12);}
+.faq-item summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 2px;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-size:.92rem;font-weight:500;color:#fff;list-style:none;}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::marker{content:"";}
+.faq-chevron{flex-shrink:0;width:18px;height:18px;stroke:var(--gold);transition:transform .25s ease;}
+.faq-item[open] .faq-chevron{transform:rotate(180deg);}
+.faq-body{padding:0 2px 22px;}
+.faq-body p{font-size:.84rem;line-height:1.75;color:#c7d0dc;margin:0 0 10px;}
+.faq-source{font-size:.74rem;font-style:italic;color:#8a97ac;}
 .final-cta{background:var(--cream);padding:100px 52px;text-align:center;position:relative;overflow:hidden;}
 .final-cta::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 50% 110%,rgba(30,185,171,.12) 0%,transparent 65%);}
 .final-cta .s-title{max-width:580px;margin:14px auto 16px;}
@@ -219,7 +228,8 @@ footer img{height:30px;width:auto;display:block;}
   .topbar{padding:12px 0;}.topbar-note{display:none;}
   .hero-inner{grid-template-columns:1fr;gap:36px;padding:100px 22px 60px;}.hero-left{padding:0;}.hero-right{padding:0;}.card-stack{width:100%;max-width:380px;}.hero h1{font-size:clamp(2rem,8vw,3rem);}.hero-sub{font-size:.9rem;}
   .container{padding:0 20px;}
-  .problem-inner,.ind-grid,.science-top,.kf-box{grid-template-columns:1fr;gap:36px;}
+  .problem-inner,.ind-grid,.science-top{grid-template-columns:1fr;gap:36px;}
+  .faq-box{padding:28px 22px;}
   .diff-grid,.ev-row{grid-template-columns:1fr;}
   .offer-grid{grid-template-columns:1fr 1fr;}
   .ct{font-size:.72rem;}.ct th,.ct td{padding:8px 10px;}
@@ -535,17 +545,63 @@ footer img{height:30px;width:auto;display:block;}
       <div class="int-comp-note">Fonte: Corsini et al. (2025), Journal of Clinical Medicine &mdash; Tabela 1. Valores m&eacute;dios por sistema.</div>
     </div>
 
-    <div class="kf-box rv">
-      <div class="kf-head">Por que esses dados importam na sua pr&aacute;tica cl&iacute;nica</div>
-      <div>
-        <div class="kf-item"><div class="kf-text"><strong>Dose plaquetária: o fator decisivo</strong><span>90% dos bra&ccedil;os de tratamento com dose &gt;5,5 bilh&otilde;es reportaram melhora cl&iacute;nica significativa. Sistemas abaixo de 2,3 bilh&otilde;es falharam (p &lt; 0,01). Corsini et al., 2025.</span></div></div>
-        <div class="kf-item"><div class="kf-text"><strong>Eritr&oacute;citos: evitar a todo custo</strong><span>Contamina&ccedil;&atilde;o por hem&aacute;cias causa hem&oacute;lise, estresse oxidativo, dano &agrave; cartilagem e supress&atilde;o imune &mdash; especialmente prejudicial em aplica&ccedil;&otilde;es intra-articulares.</span></div></div>
-        <div class="kf-item"><div class="kf-text"><strong>PBMNC: a vantagem regenerativa</strong><span>Mon&oacute;citos/macr&oacute;fagos dos PBMNCs promovem a transi&ccedil;&atilde;o M1&rarr;M2, amplificando a regenera&ccedil;&atilde;o tecidual. Presente no Tropocells; ausente na maioria dos concorrentes avaliados.</span></div></div>
-      </div>
-      <div>
-        <div class="kf-item"><div class="kf-text"><strong>LP-PRP superior em articula&ccedil;&otilde;es</strong><span>Meta-an&aacute;lise de 24 ECRs (1.344 pacientes): LP-PRP oferece significativamente mais al&iacute;vio da dor que LR-PRP em osteoartrite de joelho (Xiong et al.).</span></div></div>
-        <div class="kf-item"><div class="kf-text"><strong>Centrifuga&ccedil;&atilde;o simples: menos variabilidade</strong><span>Dispositivos de centr&iacute;fuga dupla introduzem mais etapas e maior varia&ccedil;&atilde;o na composi&ccedil;&atilde;o final. O protocolo simples do Tropocells garante maior reprodutibilidade.</span></div></div>
-        <div class="kf-item"><div class="kf-text"><strong>Padroniza&ccedil;&atilde;o &eacute; a chave do resultado</strong><span>44% das publica&ccedil;&otilde;es sobre PRP cont&ecirc;m erros metodol&oacute;gicos (Siegel, 2024). Protocolos bem definidos &mdash; como o do Tropocells &mdash; s&atilde;o a resposta para resultados consistentes.</span></div></div>
+    <div class="faq-box rv">
+      <div class="eyebrow rv">&mdash; Perguntas frequentes &middot; Evidência clínica</div>
+      <h2 class="s-title rv">Por que esses dados importam na sua prática</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Qual a dose plaquetária mínima para eficácia clínica?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </summary>
+          <div class="faq-body">
+            <p>Em uma revisão de 29 ECRs de osteoartrite de joelho, 90% dos braços de tratamento com dose acima de 5,5 bilhões de plaquetas reportaram melhora clínica significativa, enquanto estudos com 2,3 bilhões ou menos falharam em demonstrar benefício (p &lt; 0,01). O limiar mínimo eficaz recomendado é de 4 bilhões por injeção. O Tropocells entrega 4,0 bilhões.</p>
+            <div class="faq-source">Berrigan et al., em Corsini et al., J. Clin. Med. 2025</div>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Por que minimizar a contaminação por eritrócitos (hemácias)?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </summary>
+          <div class="faq-body">
+            <p>Hemácias não contribuem para a regeneração e podem ser prejudiciais: sua degradação (hemólise) libera hemoglobina e ferro, gerando estresse oxidativo, inflamação e supressão imune, além de acúmulo de hemossiderina associado a dano à cartilagem. Por isso, em aplicações intra-articulares prefere-se o PRP livre de hemácias.</p>
+            <div class="faq-source">Corsini et al., J. Clin. Med. 2025</div>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Qual o papel dos PBMNC na regeneração tecidual?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </summary>
+          <div class="faq-body">
+            <p>Monócitos e macrófagos presentes nos PBMNC favorecem a transição do fenótipo M1 (inflamatório) para M2 (reparador), essencial para a cicatrização. Entre os sistemas avaliados, o Tropocells é o único LP-PRP (pobre em neutrófilos) que também é enriquecido com PBMNC.</p>
+            <div class="faq-source">Corsini et al., J. Clin. Med. 2025</div>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>LP-PRP ou LR-PRP: qual oferece melhor alívio da dor no joelho?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </summary>
+          <div class="faq-body">
+            <p>Uma meta-análise de 24 ECRs, com 1.344 pacientes, concluiu que o LP-PRP (pobre em leucócitos) oferece alívio da dor significativamente maior que o LR-PRP na osteoartrite de joelho. O Tropocells é um sistema LP-PRP.</p>
+            <div class="faq-source">Xiong et al. (24 ECRs, 1.344 pacientes), em Corsini et al., 2025</div>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Centrifugação simples ou dupla faz diferença?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </summary>
+          <div class="faq-body">
+            <p>Dispositivos de dupla centrifugação adicionam etapas ao preparo, o que pode introduzir mais variabilidade operacional na composição final. O protocolo de centrifugação simples do Tropocells busca reduzir essa variabilidade no dia a dia do consultório.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Por que a padronização do protocolo é decisiva?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </summary>
+          <div class="faq-body">
+            <p>Uma análise de cerca de 500 publicações sobre PRP identificou que 44% continham erros metodológicos e 26% foram consideradas não confiáveis — reflexo da falta de padronização. Protocolos bem definidos e reprodutíveis são a base para resultados clínicos consistentes.</p>
+            <div class="faq-source">Siegel (2024), em Corsini et al., 2025</div>
+          </div>
+        </details>
       </div>
     </div>
   </div>
